@@ -1,8 +1,11 @@
 
-#include <iostream>
+#include "irc.hpp"
 
 int main()
 {
-	std::cout << "hello world" << std::endl;
+	Server server;
+
+	launchServer();
+
 	return 0;
 }
