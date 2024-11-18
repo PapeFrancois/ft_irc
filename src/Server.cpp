@@ -6,13 +6,15 @@
 /*   By: hepompid <hepompid@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/18 16:39:45 by hepompid          #+#    #+#             */
-/*   Updated: 2024/11/18 16:58:00 by hepompid         ###   ########.fr       */
+/*   Updated: 2024/11/18 17:48:27 by hepompid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "Server.hpp"
 
 Server::Server() : port_(6667), password_("1234") {}
+
+Server::Server(const int& port, const std::string& password) : port_(port), password_(password) {}
 
 Server::Server(const Server& other) : port_(other.port_), password_(other.password_)
 {
@@ -29,12 +31,17 @@ Server& Server::operator = (const Server& other)
 	return *this;
 }
 
-const std::string& Server::getPassword()
+const std::string& Server::getPassword() const
 {
 	return this->password_;
 }
 
-const int& Server::getPort()
+const int& Server::getPort() const
 {
 	return this->port_;
+}
+
+void Server::launchServer()
+{
+	
 }

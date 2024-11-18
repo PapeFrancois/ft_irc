@@ -6,7 +6,7 @@
 /*   By: hepompid <hepompid@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/18 16:08:53 by hepompid          #+#    #+#             */
-/*   Updated: 2024/11/18 16:55:56 by hepompid         ###   ########.fr       */
+/*   Updated: 2024/11/18 17:55:37 by hepompid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,18 +37,21 @@ class Server
 	private:
 		std::map<int, Client>	clients_;
 		struct pollfd			*pollFds_;
-		const std::string		password_;
 		const int				port_;
+		const std::string		password_;
 		
 	public:
 		Server();
+		Server(const int& port, const std::string& password);
 		Server(const Server& other);
 		~Server();
 		
 		Server&	operator = (const Server& other);
 
-		const std::string&	getPassword();
-		const int&			getPort();
+		const std::string&	getPassword() const;
+		const int&			getPort() const;
+
+		void	launchServer();
 };
 
 #endif

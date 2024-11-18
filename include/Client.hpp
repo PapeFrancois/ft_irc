@@ -6,7 +6,7 @@
 /*   By: hepompid <hepompid@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/18 16:16:31 by hepompid          #+#    #+#             */
-/*   Updated: 2024/11/18 16:56:51 by hepompid         ###   ########.fr       */
+/*   Updated: 2024/11/18 18:00:30 by hepompid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,9 +30,9 @@ class Client
 
 		Client&	operator = (const Client& other);
 
-		std::string&	getNick();
-		std::string&	getUser();
-		const int&		getSockFd();
+		const std::string&	getNick() const;
+		const std::string&	getUser() const;
+		const int&			getSockFd() const;
 };
 
 #endif
