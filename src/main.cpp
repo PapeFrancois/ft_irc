@@ -1,11 +1,22 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   main.cpp                                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: hepompid <hepompid@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/11/18 16:06:33 by hepompid          #+#    #+#             */
+/*   Updated: 2024/11/18 16:42:23 by hepompid         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
-#include "irc.hpp"
+#include "Server.hpp"
 
 int main()
 {
 	Server server;
-
-	launchServer();
+	
+	std::cout << "Hello world!" << std::endl;
 
 	return 0;
 }

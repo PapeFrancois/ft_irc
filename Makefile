@@ -5,7 +5,6 @@
 SRCS =	Server.cpp \
 		Client.cpp \
 		main.cpp
-		
 
 
 ###### VARIABLES ####################################

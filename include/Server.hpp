@@ -1,10 +1,21 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   Server.hpp                                         :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: hepompid <hepompid@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/11/18 16:08:53 by hepompid          #+#    #+#             */
+/*   Updated: 2024/11/18 16:55:56 by hepompid         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
 #ifndef SERVER_HPP
 # define SERVER_HPP
 
 # include <iostream>
+# include <string>
 # include <map>
-# include <vector>
 
 # include <netdb.h>
 # include <arpa/inet.h>
@@ -14,27 +25,30 @@
 
 # include "Client.hpp"
 
+# ifndef INFOSERV
+#  define INFOSERV
+#  define BACKLOG 10
+#  define TIMEOUT 2000
+#  define BUFFERSIZE 512
+# endif
+
 class Server
 {
 	private:
-		std::map<std::string, Client>	clientsList_;
-		std::vector<struct pollfd>		pollFds_;
+		std::map<int, Client>	clients_;
+		struct pollfd			*pollFds_;
+		const std::string		password_;
+		const int				port_;
 		
-		int	server_fd;
-
 	public:
 		Server();
 		Server(const Server& other);
 		~Server();
-
+		
 		Server&	operator = (const Server& other);
 
-		int		launchServer();
-		void	addToPollFds(int socketFd);
-		void	removeFromPollFds(int socketFd);
-		int		createServerSocket();
-		void	acceptNewConnection();
-		void	readDataFromSocket();
+		const std::string&	getPassword();
+		const int&			getPort();
 };
 
 #endif
