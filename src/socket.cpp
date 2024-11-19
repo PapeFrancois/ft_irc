@@ -6,11 +6,51 @@
 /*   By: hepompid <hepompid@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/18 19:36:40 by hepompid          #+#    #+#             */
-/*   Updated: 2024/11/19 12:30:06 by hepompid         ###   ########.fr       */
+/*   Updated: 2024/11/19 12:54:11 by hepompid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "Server.hpp"
+
+void Server::addToPollFds(int socketFd)
+{
+	struct pollfd	newPollFd;
+
+	newPollFd.fd = socketFd;
+	
+	if (socketFd == this->serverFd_)
+		newPollFd.events = POLL_IN;
+	else
+		newPollFd.events = POLL_IN | POLL_OUT;
+
+	this->pollFds_.push_back(newPollFd);
+}
+
+void Server::removeFromPollFds(int socketFd)
+{
+	typedef std::vector<struct pollfd>::iterator iterator;
+	
+	for (iterator it = this->pollFds_.begin(); it != this->pollFds_.end(); it++)
+	{
+		if ((*it).fd == socketFd)
+		{
+			this->pollFds_.erase(it);
+		}
+	}
+}
+
+void Server::acceptNewConnection()
+{
+	int	clientFd;
+
+	clientFd = accept(this->serverFd_, NULL, NULL);
+	if (clientFd == -1)
+		throw AcceptFailed();
+		
+	addToPollFds(clientFd);
+	
+	std::cout << GREEN "New connection on fd " << clientFd << RESET << std::endl;
+}
 
 void Server::createServerSocket()
 {
@@ -30,21 +70,9 @@ void Server::createServerSocket()
 	if (listen(this->serverFd_, BACKLOG) == -1)
 		throw ListenFailed();
 
+	addToPollFds(this->serverFd_);
+
 	std::cout << GREEN << "Server is listening on fd " << this->serverFd_ << RESET << std::endl;
-}
-
-void Server::addToPollFds(int socketFd)
-{
-	struct pollfd newPollFd;
-
-	newPollFd.fd = socketFd;
-	
-	if (socketFd == this->serverFd_)
-		newPollFd.events = POLL_IN;
-	else
-		newPollFd.events = POLL_IN | POLL_OUT;
-
-	this->pollFds_.push_back(newPollFd);
 }
 
 void Server::launchServer()
@@ -57,8 +85,6 @@ void Server::launchServer()
 	{
 		std::cout << RED << "Error: " << e.what() << RESET << std::endl;
 	}
-
-	addToPollFds(this->serverFd_);
 }
 
 const char* Server::SocketFailed::what() const throw()
@@ -74,4 +100,9 @@ const char* Server::BindFailed::what() const throw()
 const char* Server::ListenFailed::what() const throw()
 {
 	return ("Listen system call failed");
+}
+
+const char* Server::AcceptFailed::what() const throw()
+{
+	return ("Accept system call failed");
 }
