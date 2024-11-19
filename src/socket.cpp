@@ -6,7 +6,7 @@
 /*   By: hepompid <hepompid@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/18 19:36:40 by hepompid          #+#    #+#             */
-/*   Updated: 2024/11/19 18:30:43 by hepompid         ###   ########.fr       */
+/*   Updated: 2024/11/19 21:02:31 by hepompid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,7 @@ void Server::removeFromPollFds(int socketFd)
 		if ((*it).fd == socketFd)
 		{
 			this->pollFds_.erase(it);
+			return ;
 		}
 	}
 }
@@ -61,19 +62,25 @@ void Server::endConnection(int socketFd)
 
 void Server::pollEvent()
 {
-	typedef std::vector<struct pollfd>::iterator it;
-	
-	for (it it = this->pollFds_.begin(); it != this->pollFds_.end(); it++)
+	std::cout << "new poll" << std::endl;
+	for (size_t i = 0; i < this->pollFds_.size(); i++)
 	{
-		if ((it->revents & POLL_IN) != 1)
+		if ((this->pollFds_[i].revents & POLL_IN) != 1)
 			continue;
 		
-		std::cout << YELLOW << "[" << it->fd << "] ready for lecture" << RESET << std::endl;
+		std::cout << YELLOW << "[" << this->pollFds_[i].fd << "] ready for lecture" << RESET << std::endl;
 		
-		if (it->fd == this->serverFd_)
-			acceptNewConnection();
-		else
-			readData(it->fd);
+		try
+		{
+			if (this->pollFds_[i].fd == this->serverFd_)
+				acceptNewConnection();
+			else
+				readData(this->pollFds_[i].fd);
+		}
+		catch (const std::exception& e)
+		{
+			throw;
+		}
 	}
 }
 
@@ -110,7 +117,7 @@ void Server::launchServer()
 	}
 	catch (const std::exception& e)
 	{
-		throw e;
+		throw;
 	}
 
 	while (1)
@@ -121,7 +128,17 @@ void Server::launchServer()
 		else if (status == 0)
 			std::cout << "Waiting..." << std::endl;
 		else
-			pollEvent();
+		{
+			try
+			{
+				pollEvent();
+			}
+			catch(const std::exception& e)
+			{
+				throw;
+			}
+			
+		}
 	}
 }
 

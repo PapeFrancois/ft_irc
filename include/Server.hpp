@@ -6,7 +6,7 @@
 /*   By: hepompid <hepompid@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/18 16:08:53 by hepompid          #+#    #+#             */
-/*   Updated: 2024/11/19 18:01:06 by hepompid         ###   ########.fr       */
+/*   Updated: 2024/11/19 21:11:51 by hepompid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,14 +49,16 @@ class Server
 		const int					port_;
 		const std::string			password_;
 		int							serverFd_;
+		char						buffer_[BUFFERSIZE + 1];
 
-		void	addToPollFds(int socketFd);
-		void	removeFromPollFds(int socketFd);
 		void	acceptNewConnection();
-		void	endConnection(int socketFd);
-		void	readData(int senderFd);
-		void	pollEvent();
+		void	addToPollFds(int socketFd);
 		void	createServerSocket();
+		void	endConnection(int socketFd);
+		void	pollEvent();
+		void	readData(int senderFd);
+		void	removeFromPollFds(int socketFd);
+		void	parseData();
 		
 	public:
 
