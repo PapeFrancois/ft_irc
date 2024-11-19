@@ -6,7 +6,7 @@
 /*   By: hepompid <hepompid@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/18 19:36:40 by hepompid          #+#    #+#             */
-/*   Updated: 2024/11/19 12:54:11 by hepompid         ###   ########.fr       */
+/*   Updated: 2024/11/19 18:30:43 by hepompid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,6 +52,31 @@ void Server::acceptNewConnection()
 	std::cout << GREEN "New connection on fd " << clientFd << RESET << std::endl;
 }
 
+void Server::endConnection(int socketFd)
+{
+	close(socketFd);
+	
+	removeFromPollFds(socketFd);
+}
+
+void Server::pollEvent()
+{
+	typedef std::vector<struct pollfd>::iterator it;
+	
+	for (it it = this->pollFds_.begin(); it != this->pollFds_.end(); it++)
+	{
+		if ((it->revents & POLL_IN) != 1)
+			continue;
+		
+		std::cout << YELLOW << "[" << it->fd << "] ready for lecture" << RESET << std::endl;
+		
+		if (it->fd == this->serverFd_)
+			acceptNewConnection();
+		else
+			readData(it->fd);
+	}
+}
+
 void Server::createServerSocket()
 {
 	struct sockaddr_in	sa;
@@ -77,13 +102,26 @@ void Server::createServerSocket()
 
 void Server::launchServer()
 {
+	int	status;
+	
 	try
 	{
 		createServerSocket();
 	}
 	catch (const std::exception& e)
 	{
-		std::cout << RED << "Error: " << e.what() << RESET << std::endl;
+		throw e;
+	}
+
+	while (1)
+	{
+		status = poll(&(this->pollFds_[0]), this->pollFds_.size(), TIMEOUT);
+		if (status == -1)
+			throw PollFailed();
+		else if (status == 0)
+			std::cout << "Waiting..." << std::endl;
+		else
+			pollEvent();
 	}
 }
 
@@ -105,4 +143,9 @@ const char* Server::ListenFailed::what() const throw()
 const char* Server::AcceptFailed::what() const throw()
 {
 	return ("Accept system call failed");
+}
+
+const char* Server::PollFailed::what() const throw()
+{
+	return ("Poll system call failed");
 }

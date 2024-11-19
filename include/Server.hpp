@@ -6,7 +6,7 @@
 /*   By: hepompid <hepompid@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/18 16:08:53 by hepompid          #+#    #+#             */
-/*   Updated: 2024/11/19 12:51:14 by hepompid         ###   ########.fr       */
+/*   Updated: 2024/11/19 18:01:06 by hepompid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,6 +53,9 @@ class Server
 		void	addToPollFds(int socketFd);
 		void	removeFromPollFds(int socketFd);
 		void	acceptNewConnection();
+		void	endConnection(int socketFd);
+		void	readData(int senderFd);
+		void	pollEvent();
 		void	createServerSocket();
 		
 	public:
@@ -112,6 +115,18 @@ class Server
 		};
 
 		class AcceptFailed : public std::exception
+		{
+			public:
+				virtual const char* what() const throw();
+		};
+
+		class PollFailed : public std::exception
+		{
+			public:
+				virtual const char* what() const throw();
+		};
+
+		class RecvFailed : public std::exception
 		{
 			public:
 				virtual const char* what() const throw();
