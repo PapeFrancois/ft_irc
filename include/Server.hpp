@@ -6,7 +6,7 @@
 /*   By: hepompid <hepompid@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/18 16:08:53 by hepompid          #+#    #+#             */
-/*   Updated: 2024/11/19 12:17:33 by hepompid         ###   ########.fr       */
+/*   Updated: 2024/11/19 12:18:02 by hepompid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,8 +50,8 @@ class Server
 		const std::string			password_;
 		int							serverFd_;
 
-		// void	addToPollFds(int socketFd);
-		// void	createServerSocket();
+		void	addToPollFds(int socketFd);
+		void	createServerSocket();
 		
 	public:
 
