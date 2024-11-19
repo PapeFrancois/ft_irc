@@ -4,6 +4,7 @@
 
 SRCS =	Server.cpp \
 		Client.cpp \
+		socket.cpp \
 		main.cpp
 
 

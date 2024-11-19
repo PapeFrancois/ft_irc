@@ -6,7 +6,7 @@
 /*   By: hepompid <hepompid@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/18 16:08:53 by hepompid          #+#    #+#             */
-/*   Updated: 2024/11/18 17:55:37 by hepompid         ###   ########.fr       */
+/*   Updated: 2024/11/19 12:17:33 by hepompid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,15 @@
 
 # include "Client.hpp"
 
+# ifndef ANSI_CODES
+#  define ANSI_CODES
+#  define RESET "\033[0m"
+#  define RED "\033[31m"
+#  define GREEN "\033[32m"
+#  define YELLOW "\033[33m"
+#  define UNDERLINE "\033[4m"
+# endif
+
 # ifndef INFOSERV
 #  define INFOSERV
 #  define BACKLOG 10
@@ -35,23 +44,70 @@
 class Server
 {
 	private:
-		std::map<int, Client>	clients_;
-		struct pollfd			*pollFds_;
-		const int				port_;
-		const std::string		password_;
+		std::map<int, Client>		clients_;
+		std::vector<struct pollfd>	pollFds_;
+		const int					port_;
+		const std::string			password_;
+		int							serverFd_;
+
+		// void	addToPollFds(int socketFd);
+		// void	createServerSocket();
 		
 	public:
+
+		// ################
+		// # constructors #
+		// ################
+		
 		Server();
 		Server(const int& port, const std::string& password);
 		Server(const Server& other);
 		~Server();
+
+
+		// #############
+		// # operators #
+		// #############
 		
 		Server&	operator = (const Server& other);
+
+
+		// ###########
+		// # getters #
+		// ###########
 
 		const std::string&	getPassword() const;
 		const int&			getPort() const;
 
+
+		// ###########
+		// # methods #
+		// ###########
+
 		void	launchServer();
+
+
+		// ##############
+		// # exceptions #
+		// ##############
+
+		class SocketFailed : public std::exception
+		{
+			public:
+				virtual const char* what() const throw();
+		};
+
+		class BindFailed : public std::exception
+		{
+			public:
+				virtual const char* what() const throw();
+		};
+
+		class ListenFailed : public std::exception
+		{
+			public:
+				virtual const char* what() const throw();
+		};
 };
 
 #endif

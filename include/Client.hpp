@@ -6,7 +6,7 @@
 /*   By: hepompid <hepompid@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/18 16:16:31 by hepompid          #+#    #+#             */
-/*   Updated: 2024/11/18 18:00:30 by hepompid         ###   ########.fr       */
+/*   Updated: 2024/11/18 19:23:55 by hepompid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,12 +19,13 @@
 class Client
 {
 	private:
-		std::string	nick_;
-		std::string	user_;
-		const int	sockFd_;
+		std::string			nick_;
+		const std::string	user_;
+		const int			sockFd_;
 
 	public:
 		Client();
+		Client(std::string& nick, const std::string& user, const int& sockFd);
 		Client(const Client& other);
 		~Client();
 

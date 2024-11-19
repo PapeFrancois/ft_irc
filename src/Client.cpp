@@ -6,7 +6,7 @@
 /*   By: hepompid <hepompid@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/18 16:25:27 by hepompid          #+#    #+#             */
-/*   Updated: 2024/11/18 18:00:41 by hepompid         ###   ########.fr       */
+/*   Updated: 2024/11/18 20:34:54 by hepompid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,10 @@
 
 Client::Client() : nick_("noNick"), user_("noUser"), sockFd_(-1) {}
 
-Client::Client(const Client& other) : sockFd_(-1)
+Client::Client(std::string& nick, const std::string& user, const int& sockFd) :
+	nick_(nick), user_(user), sockFd_(sockFd) {}
+
+Client::Client(const Client& other) : user_("noUser"), sockFd_(-1)
 {
 	*this = other;
 }
@@ -24,8 +27,6 @@ Client::~Client() {}
 Client& Client::operator = (const Client& other)
 {
 	this->nick_ = other.nick_;
-	this->user_ = other.user_;
-	
 	return *this;
 }
 

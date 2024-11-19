@@ -6,7 +6,7 @@
 /*   By: hepompid <hepompid@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/18 16:39:45 by hepompid          #+#    #+#             */
-/*   Updated: 2024/11/18 17:48:27 by hepompid         ###   ########.fr       */
+/*   Updated: 2024/11/18 20:33:57 by hepompid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,7 @@ Server& Server::operator = (const Server& other)
 {
 	this->clients_ = other.clients_;
 	this->pollFds_ = other.pollFds_;
+	this->serverFd_ = other.serverFd_;
 
 	return *this;
 }
@@ -39,9 +40,4 @@ const std::string& Server::getPassword() const
 const int& Server::getPort() const
 {
 	return this->port_;
-}
-
-void Server::launchServer()
-{
-	
 }
