@@ -6,7 +6,7 @@
 /*   By: hepompid <hepompid@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/18 16:08:53 by hepompid          #+#    #+#             */
-/*   Updated: 2024/11/21 11:49:31 by hepompid         ###   ########.fr       */
+/*   Updated: 2024/11/22 23:46:55 by hepompid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,8 +75,8 @@ class Server
 		void	pollEvent();
 		void	readData(int senderFd);
 		void	removeFromPollFds(int socketFd);
-		void	formatData();
 		void	parseData();
+		void	manageCommand(char command[]);
 		
 	public:
 

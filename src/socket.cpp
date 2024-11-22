@@ -6,7 +6,7 @@
 /*   By: hepompid <hepompid@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/18 19:36:40 by hepompid          #+#    #+#             */
-/*   Updated: 2024/11/22 23:08:45 by hepompid         ###   ########.fr       */
+/*   Updated: 2024/11/23 00:10:11 by hepompid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,7 @@ void Server::pollEvent()
 		if ((this->pollFds_[i].revents & POLL_IN) != 1)
 			continue;
 		
-		std::cout << YELLOW << "[" << this->pollFds_[i].fd << "] ready for lecture" << RESET << std::endl;
+		std::cout << BLUE_BG << "[" << this->pollFds_[i].fd << "] ready for lecture" << RESET << std::endl;
 		
 		try
 		{

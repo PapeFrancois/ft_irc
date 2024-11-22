@@ -6,37 +6,42 @@
 /*   By: hepompid <hepompid@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/19 18:29:26 by hepompid          #+#    #+#             */
-/*   Updated: 2024/11/20 00:42:36 by hepompid         ###   ########.fr       */
+/*   Updated: 2024/11/23 00:13:59 by hepompid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "Server.hpp"
 
-void Server::formatData()
+void Server::manageCommand(char command[])
 {
-	bool	end;
-	
-	end = false;
-	for (int i = 0; i < BUFFERSIZE; i++)
-	{
-		std::cout << (int)this->buffer_[i] << std::endl;
-		if (end == true)
-			this->buffer_[i] = 0;
-		else if (this->buffer_[i] == '\n' && this->buffer_[i - 1] == '\r')
-			end = true;
-	}
-	// std::cout << "end = " << end << std::endl;
-	if (end == false)
-	{
-		this->buffer_[BUFFERSIZE - 2] = '\r';
-		this->buffer_[BUFFERSIZE - 1] = '\n';
-		this->buffer_[BUFFERSIZE] = 0;
-	}
+	std::cout << YELLOW << "Command parsed : " << command << RESET;
 }
 
 void Server::parseData()
 {
+	char	tempBuffer[BUFFERSIZE + 1];
+	int		j;
 	
+	std::memset(tempBuffer, 0, sizeof(tempBuffer));
+	j = 0;
+	for (int i = 0; this->buffer_[i]; i++)
+	{
+		// std::cout << (int)this->buffer_[i] << std::endl;
+		tempBuffer[j] = this->buffer_[i];
+		if (this->buffer_[i] == '\n' && this->buffer_[i - 1] == '\r')
+		{
+			manageCommand(tempBuffer);
+			std::memset(tempBuffer, 0, sizeof(tempBuffer));
+			j = -1;
+		}
+		j++;
+	}
+	if (j >= 2 && (tempBuffer[j - 1] != '\n' || tempBuffer[j - 2] != '\r'))
+	{
+		tempBuffer[j - 1] = '\n';
+		tempBuffer[j - 2] = '\r';
+		manageCommand(tempBuffer);
+	}
 }
 
 void Server::readData(int senderFd)
@@ -55,10 +60,9 @@ void Server::readData(int senderFd)
 		return ;
 	}
 	
-	std::cout << YELLOW << "Message reveived : " << this->buffer_ << RESET;
-	formatData();
-	std::cout << "bytes read = " << bytesRead << std::endl;
-	std::cout << YELLOW << "Message reveived : " << this->buffer_ << RESET;
+	// std::cout << YELLOW << "Buffer received with recv : " << this->buffer_ << RESET;
+	parseData();
+	// std::cout << "bytes read = " << bytesRead << std::endl;
 }
 
 const char* Server::RecvFailed::what() const throw()
