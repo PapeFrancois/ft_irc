@@ -6,7 +6,7 @@
 /*   By: hepompid <hepompid@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/18 16:39:45 by hepompid          #+#    #+#             */
-/*   Updated: 2024/11/19 18:45:38 by hepompid         ###   ########.fr       */
+/*   Updated: 2024/11/23 00:15:21 by hepompid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,4 +40,34 @@ const std::string& Server::getPassword() const
 const int& Server::getPort() const
 {
 	return this->port_;
+}
+
+const char* Server::RecvFailed::what() const throw()
+{
+	return ("Recv system call failed");
+}
+
+const char* Server::SocketFailed::what() const throw()
+{
+	return ("Socket system call failed");
+}
+
+const char* Server::BindFailed::what() const throw()
+{
+	return ("Bind system call failed");
+}
+
+const char* Server::ListenFailed::what() const throw()
+{
+	return ("Listen system call failed");
+}
+
+const char* Server::AcceptFailed::what() const throw()
+{
+	return ("Accept system call failed");
+}
+
+const char* Server::PollFailed::what() const throw()
+{
+	return ("Poll system call failed");
 }

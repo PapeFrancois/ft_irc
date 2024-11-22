@@ -6,7 +6,7 @@
 /*   By: hepompid <hepompid@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/19 18:29:26 by hepompid          #+#    #+#             */
-/*   Updated: 2024/11/23 00:13:59 by hepompid         ###   ########.fr       */
+/*   Updated: 2024/11/23 00:14:48 by hepompid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,9 +63,4 @@ void Server::readData(int senderFd)
 	// std::cout << YELLOW << "Buffer received with recv : " << this->buffer_ << RESET;
 	parseData();
 	// std::cout << "bytes read = " << bytesRead << std::endl;
-}
-
-const char* Server::RecvFailed::what() const throw()
-{
-	return ("Recv system call failed");
 }
