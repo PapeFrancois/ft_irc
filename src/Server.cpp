@@ -6,7 +6,7 @@
 /*   By: hepompid <hepompid@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/18 16:39:45 by hepompid          #+#    #+#             */
-/*   Updated: 2024/11/23 00:15:21 by hepompid         ###   ########.fr       */
+/*   Updated: 2024/11/25 19:37:32 by hepompid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,4 +70,9 @@ const char* Server::AcceptFailed::what() const throw()
 const char* Server::PollFailed::what() const throw()
 {
 	return ("Poll system call failed");
+}
+
+const char* Server::SendFailed::what() const throw()
+{
+	return ("Send system call failed");
 }

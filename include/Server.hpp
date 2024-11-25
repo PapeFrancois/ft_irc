@@ -6,7 +6,7 @@
 /*   By: hepompid <hepompid@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/18 16:08:53 by hepompid          #+#    #+#             */
-/*   Updated: 2024/11/22 23:46:55 by hepompid         ###   ########.fr       */
+/*   Updated: 2024/11/25 19:39:44 by hepompid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,55 +66,36 @@ class Server
 		const int					port_;
 		const std::string			password_;
 		int							serverFd_;
-		char						buffer_[BUFFERSIZE + 1];
+		char						bufferRead_[BUFFERSIZE + 1];
+		char						bufferWrite_[BUFFERSIZE + 1];
+		std::vector<std::string>	commands_;
 
-		void	acceptNewConnection();
-		void	addToPollFds(int socketFd);
-		void	createServerSocket();
-		void	endConnection(int socketFd);
-		void	pollEvent();
-		void	readData(int senderFd);
-		void	removeFromPollFds(int socketFd);
-		void	parseData();
-		void	manageCommand(char command[]);
+		void			acceptNewConnection();
+		void			addToPollFds(int socketFd);
+		void			createServerSocket();
+		void			endConnection(int socketFd);
+		void			pollEvent();
+		void			readData(int senderFd);
+		void			removeFromPollFds(int socketFd);
+		void			parseData();
+		void			manageCommand(std::string& command);
+		std::string	extractCommandName(std::string command);
+
+		void	cap();
 		
 	public:
-
-		// ################
-		// # constructors #
-		// ################
 		
 		Server();
 		Server(const int& port, const std::string& password);
 		Server(const Server& other);
 		~Server();
-
-
-		// #############
-		// # operators #
-		// #############
 		
 		Server&	operator = (const Server& other);
-
-
-		// ###########
-		// # getters #
-		// ###########
 
 		const std::string&	getPassword() const;
 		const int&			getPort() const;
 
-
-		// ###########
-		// # methods #
-		// ###########
-
 		void	launchServer();
-
-
-		// ##############
-		// # exceptions #
-		// ##############
 
 		class SocketFailed : public std::exception
 		{
@@ -147,6 +128,12 @@ class Server
 		};
 
 		class RecvFailed : public std::exception
+		{
+			public:
+				virtual const char* what() const throw();
+		};
+		
+		class SendFailed : public std::exception
 		{
 			public:
 				virtual const char* what() const throw();

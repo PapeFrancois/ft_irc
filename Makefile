@@ -8,6 +8,8 @@ SRCS =	Server.cpp \
 		socket.cpp \
 		data.cpp \
 		\
+		cap.cpp \
+		\
 		main.cpp
 
 
@@ -18,7 +20,7 @@ CC = c++
 
 CFLAGS = -Wall -Wextra -Werror -std=c++98 -MMD -Iinclude
 
-VPATH = src/
+VPATH = src/:src/commands/
 
 BIN = bin
 
