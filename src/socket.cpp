@@ -6,7 +6,7 @@
 /*   By: hepompid <hepompid@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/18 19:36:40 by hepompid          #+#    #+#             */
-/*   Updated: 2024/11/23 00:15:08 by hepompid         ###   ########.fr       */
+/*   Updated: 2024/11/26 12:40:40 by hepompid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,7 +76,7 @@ void Server::pollEvent()
 			if (this->pollFds_[i].fd == this->serverFd_)
 				acceptNewConnection();
 			else
-				readData(this->pollFds_[i].fd);
+				processData(this->pollFds_[i].fd);
 		}
 		catch (const std::exception& e)
 		{

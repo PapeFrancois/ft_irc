@@ -1,19 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   cap.cpp                                            :+:      :+:    :+:   */
+/*   reply.hpp                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: hepompid <hepompid@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/11/23 00:25:45 by hepompid          #+#    #+#             */
-/*   Updated: 2024/11/26 12:32:10 by hepompid         ###   ########.fr       */
+/*   Created: 2024/11/25 20:44:43 by hepompid          #+#    #+#             */
+/*   Updated: 2024/11/25 20:55:40 by hepompid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "Server.hpp"
+#ifndef ERROR_HPP
+# define ERROR_HPP
 
-void Server::cap()
-{
-	std::cout << "entree cap" << std::endl;
-	this->replies_.push_back("CAP * LS :\r\n");
-}
+# define ERR_PASSWDMISMATCH  "464"
+
+#endif

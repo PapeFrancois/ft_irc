@@ -6,7 +6,7 @@
 /*   By: hepompid <hepompid@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/19 18:29:26 by hepompid          #+#    #+#             */
-/*   Updated: 2024/11/25 19:42:08 by hepompid         ###   ########.fr       */
+/*   Updated: 2024/11/26 12:42:21 by hepompid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,15 +34,14 @@ void Server::manageCommand(std::string& command)
 {
 	std::string	commandName;
 
-	std::memset(this->bufferWrite_, 0, sizeof(this->bufferWrite_));
 	std::cout << YELLOW << "Command parsed : " << command << RESET;
 	commandName = extractCommandName(command);
 	std::cout << YELLOW << "Command name : " << commandName << RESET << std::endl;
 
-	if (command == "CAP LS 302")
+	if (command == "CAP LS 302\r\n")
 		cap();
-
-		
+	// if (commandName == "PASS")
+	// {}
 }
 
 void Server::parseData()
@@ -91,16 +90,32 @@ void Server::readData(int senderFd)
 	std::cout << YELLOW << "Buffer received with recv : " << this->bufferRead_ << RESET;
 	parseData();
 	std::cout << "bytes read = " << bytesRead << std::endl;
+}
 
-	for (size_t i = 0; i < this->commands_.size(); i++)
+void Server::sendData(int senderFd)
+{
+	// std::cout << "replies size = " << this->replies_.size() << std::endl;
+	for (size_t i = 0; i < this->replies_.size(); i++)
 	{
-		manageCommand(this->commands_[i]);
-		if (send(senderFd, this->bufferWrite_, BUFFERSIZE, 0) == -1)
+		std::memset(this->bufferWrite_, 0, sizeof(this->bufferWrite_));
+		std::strcpy(this->bufferWrite_, this->replies_[i].c_str());
+		
+		if (send(senderFd, bufferWrite_, BUFFERSIZE, 0) == -1)
 		{
 			endConnection(senderFd);
 			throw SendFailed();
-			break;
 		}
 	}
+}
+
+void Server::processData(int senderFd)
+{
+	readData(senderFd);
+
+	for (size_t i = 0; i < this->commands_.size(); i++)
+		manageCommand(this->commands_[i]);
 	this->commands_.clear();
+	
+	sendData(senderFd);
+	this->replies_.clear();
 }

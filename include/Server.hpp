@@ -6,7 +6,7 @@
 /*   By: hepompid <hepompid@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/18 16:08:53 by hepompid          #+#    #+#             */
-/*   Updated: 2024/11/25 19:39:44 by hepompid         ###   ########.fr       */
+/*   Updated: 2024/11/26 12:40:33 by hepompid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,7 @@
 # include <unistd.h>
 
 # include "Client.hpp"
+# include "reply.hpp"
 
 # ifndef ANSI_CODES
 #  define ANSI_CODES
@@ -56,6 +57,7 @@
 #  define BACKLOG 10
 #  define TIMEOUT 2000
 #  define BUFFERSIZE 512
+#  define SERVER_NAME ":britney-spears "
 # endif
 
 class Server
@@ -69,17 +71,21 @@ class Server
 		char						bufferRead_[BUFFERSIZE + 1];
 		char						bufferWrite_[BUFFERSIZE + 1];
 		std::vector<std::string>	commands_;
+		std::vector<std::string>	replies_;
+		bool						passOK_;
 
-		void			acceptNewConnection();
-		void			addToPollFds(int socketFd);
-		void			createServerSocket();
-		void			endConnection(int socketFd);
-		void			pollEvent();
-		void			readData(int senderFd);
-		void			removeFromPollFds(int socketFd);
-		void			parseData();
-		void			manageCommand(std::string& command);
+		void		acceptNewConnection();
+		void		addToPollFds(int socketFd);
+		void		createServerSocket();
+		void		endConnection(int socketFd);
+		void		pollEvent();
+		void		readData(int senderFd);
+		void		removeFromPollFds(int socketFd);
+		void		parseData();
+		void		manageCommand(std::string& command);
 		std::string	extractCommandName(std::string command);
+		void		processData(int senderFd);
+		void		sendData(int senderFd);
 
 		void	cap();
 		
