@@ -6,13 +6,13 @@
 /*   By: hepompid <hepompid@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/18 19:36:40 by hepompid          #+#    #+#             */
-/*   Updated: 2024/11/26 12:40:40 by hepompid         ###   ########.fr       */
+/*   Updated: 2024/11/26 13:03:43 by hepompid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "Server.hpp"
 
-void Server::addToPollFds(int socketFd)
+void Server::addToPollFds(int& socketFd)
 {
 	struct pollfd	newPollFd;
 
@@ -26,7 +26,7 @@ void Server::addToPollFds(int socketFd)
 	this->pollFds_.push_back(newPollFd);
 }
 
-void Server::removeFromPollFds(int socketFd)
+void Server::removeFromPollFds(int& socketFd)
 {
 	typedef std::vector<struct pollfd>::iterator iterator;
 	
@@ -53,7 +53,7 @@ void Server::acceptNewConnection()
 	std::cout << GREEN "New connection on fd " << clientFd << RESET << std::endl;
 }
 
-void Server::endConnection(int socketFd)
+void Server::endConnection(int& socketFd)
 {
 	close(socketFd);
 	

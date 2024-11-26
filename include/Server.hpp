@@ -6,7 +6,7 @@
 /*   By: hepompid <hepompid@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/18 16:08:53 by hepompid          #+#    #+#             */
-/*   Updated: 2024/11/26 13:01:11 by hepompid         ###   ########.fr       */
+/*   Updated: 2024/11/26 13:05:19 by hepompid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,18 +78,18 @@ class Server
 
 
 		void		acceptNewConnection();
-		void		addToPollFds(int socketFd);
+		void		addToPollFds(int& socketFd);
 		void		createServerSocket();
-		void		endConnection(int socketFd);
+		void		endConnection(int& socketFd);
 		void		pollEvent();
-		void		removeFromPollFds(int socketFd);
+		void		removeFromPollFds(int& socketFd);
 		
-		std::string	extractCommandName(std::string command);
+		std::string	extractCommandName(std::string& command);
 		void		manageCommand(std::string& command);
 		void		parseData();
-		void		processData(int senderFd);
-		void		readData(int senderFd);
-		void		sendData(int senderFd);
+		void		processData(int& senderFd);
+		void		readData(int& senderFd);
+		void		sendData(int& senderFd);
 
 		void		cap();
 		

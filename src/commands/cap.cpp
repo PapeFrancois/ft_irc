@@ -6,7 +6,7 @@
 /*   By: hepompid <hepompid@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/23 00:25:45 by hepompid          #+#    #+#             */
-/*   Updated: 2024/11/26 12:32:10 by hepompid         ###   ########.fr       */
+/*   Updated: 2024/11/26 13:05:33 by hepompid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,5 @@
 
 void Server::cap()
 {
-	std::cout << "entree cap" << std::endl;
 	this->replies_.push_back("CAP * LS :\r\n");
 }

@@ -6,13 +6,13 @@
 /*   By: hepompid <hepompid@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/19 18:29:26 by hepompid          #+#    #+#             */
-/*   Updated: 2024/11/26 12:42:21 by hepompid         ###   ########.fr       */
+/*   Updated: 2024/11/26 13:05:16 by hepompid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "Server.hpp"
 
-std::string Server::extractCommandName(std::string command)
+std::string Server::extractCommandName(std::string& command)
 {
 	std::string	commandName;
 	char		tempBuffer[BUFFERSIZE + 1];
@@ -71,7 +71,7 @@ void Server::parseData()
 	}
 }
 
-void Server::readData(int senderFd)
+void Server::readData(int& senderFd)
 {
 	int		bytesRead;
 
@@ -92,7 +92,7 @@ void Server::readData(int senderFd)
 	std::cout << "bytes read = " << bytesRead << std::endl;
 }
 
-void Server::sendData(int senderFd)
+void Server::sendData(int& senderFd)
 {
 	// std::cout << "replies size = " << this->replies_.size() << std::endl;
 	for (size_t i = 0; i < this->replies_.size(); i++)
@@ -108,7 +108,7 @@ void Server::sendData(int senderFd)
 	}
 }
 
-void Server::processData(int senderFd)
+void Server::processData(int& senderFd)
 {
 	readData(senderFd);
 
