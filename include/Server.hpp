@@ -6,7 +6,7 @@
 /*   By: hepompid <hepompid@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/18 16:08:53 by hepompid          #+#    #+#             */
-/*   Updated: 2024/11/26 12:40:33 by hepompid         ###   ########.fr       */
+/*   Updated: 2024/11/26 13:01:11 by hepompid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,34 +63,38 @@
 class Server
 {
 	private:
-		std::map<int, Client>		clients_;
-		std::vector<struct pollfd>	pollFds_;
 		const int					port_;
 		const std::string			password_;
+		bool						passOK_;
+		
+		std::vector<struct pollfd>	pollFds_;
 		int							serverFd_;
 		char						bufferRead_[BUFFERSIZE + 1];
-		char						bufferWrite_[BUFFERSIZE + 1];
 		std::vector<std::string>	commands_;
+		char						bufferWrite_[BUFFERSIZE + 1];
 		std::vector<std::string>	replies_;
-		bool						passOK_;
+		
+		std::map<int, Client>		clients_;
+
 
 		void		acceptNewConnection();
 		void		addToPollFds(int socketFd);
 		void		createServerSocket();
 		void		endConnection(int socketFd);
 		void		pollEvent();
-		void		readData(int senderFd);
 		void		removeFromPollFds(int socketFd);
-		void		parseData();
-		void		manageCommand(std::string& command);
+		
 		std::string	extractCommandName(std::string command);
+		void		manageCommand(std::string& command);
+		void		parseData();
 		void		processData(int senderFd);
+		void		readData(int senderFd);
 		void		sendData(int senderFd);
 
-		void	cap();
+		void		cap();
+		
 		
 	public:
-		
 		Server();
 		Server(const int& port, const std::string& password);
 		Server(const Server& other);
