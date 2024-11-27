@@ -6,7 +6,7 @@
 /*   By: hepompid <hepompid@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/18 19:36:40 by hepompid          #+#    #+#             */
-/*   Updated: 2024/11/26 13:03:43 by hepompid         ###   ########.fr       */
+/*   Updated: 2024/11/27 23:10:08 by hepompid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ void Server::removeFromPollFds(int& socketFd)
 
 void Server::acceptNewConnection()
 {
-	int	clientFd;
+	int		clientFd;
 
 	clientFd = accept(this->serverFd_, NULL, NULL);
 	if (clientFd == -1)
@@ -50,11 +50,16 @@ void Server::acceptNewConnection()
 		
 	addToPollFds(clientFd);
 	
+	Client	client(clientFd);
+	this->clients_[clientFd] = client;
+	
 	std::cout << GREEN "New connection on fd " << clientFd << RESET << std::endl;
 }
 
 void Server::endConnection(int& socketFd)
 {
+	this->clients_.erase(socketFd);
+	
 	close(socketFd);
 	
 	removeFromPollFds(socketFd);
@@ -111,6 +116,8 @@ void Server::createServerSocket()
 void Server::launchServer()
 {
 	int	status;
+
+	std::cout << "pass ok = " << this->passOK_ << std::endl;
 	
 	try
 	{

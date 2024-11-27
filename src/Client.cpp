@@ -6,16 +6,15 @@
 /*   By: hepompid <hepompid@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/18 16:25:27 by hepompid          #+#    #+#             */
-/*   Updated: 2024/11/18 20:34:54 by hepompid         ###   ########.fr       */
+/*   Updated: 2024/11/26 13:17:09 by hepompid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "Client.hpp"
 
-Client::Client() : nick_("noNick"), user_("noUser"), sockFd_(-1) {}
+Client::Client() : sockFd_(-1) {}
 
-Client::Client(std::string& nick, const std::string& user, const int& sockFd) :
-	nick_(nick), user_(user), sockFd_(sockFd) {}
+Client::Client(const int& sockFd) : sockFd_(sockFd) {}
 
 Client::Client(const Client& other) : user_("noUser"), sockFd_(-1)
 {
