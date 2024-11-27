@@ -6,7 +6,7 @@
 /*   By: hepompid <hepompid@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/18 16:08:53 by hepompid          #+#    #+#             */
-/*   Updated: 2024/11/27 23:28:33 by hepompid         ###   ########.fr       */
+/*   Updated: 2024/11/28 00:12:15 by hepompid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,6 @@ class Server
 	private:
 		const int					port_;
 		const std::string			password_;
-		int							passOK_;
 		
 		std::vector<struct pollfd>	pollFds_;
 		int							serverFd_;
@@ -86,15 +85,14 @@ class Server
 		
 		std::string	extractCommandName(std::string& command);
 		std::string	extractParams(std::string& command);
-		void		manageCommand(std::string& command);
+		void		manageCommand(Client& client, std::string& command);
 		void		parseData();
 		void		processData(int& senderFd);
 		void		readData(int& senderFd);
 		void		sendData(int& senderFd);
 
 		void		cap();
-		void		pass(std::string params);
-		void		error();
+		void		pass(Client& client, std::string params);
 				
 		
 	public:

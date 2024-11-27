@@ -6,7 +6,7 @@
 /*   By: hepompid <hepompid@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/19 18:29:26 by hepompid          #+#    #+#             */
-/*   Updated: 2024/11/27 23:24:49 by hepompid         ###   ########.fr       */
+/*   Updated: 2024/11/28 00:15:32 by hepompid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ std::string Server::extractParams(std::string& command)
 
 // ATTENTION : PLUS TARD, CHECKER CORRECTEMENT L'INPUT (CLIENT ET NC POUR TOUT BIEN PARSER)
 
-void Server::manageCommand(std::string& command)
+void Server::manageCommand(Client& client, std::string& command)
 {
 	std::string	commandName;
 	std::string	params;
@@ -58,14 +58,14 @@ void Server::manageCommand(std::string& command)
 	params = extractParams(command);
 	std::cout << YELLOW << "Params : " << params << RESET << std::endl;
 
-	std::cout << "pass ok = " << this->passOK_ << std::endl;
+	std::cout << "auth = " << client.getAuth() << std::endl;
 
 	if (command == "CAP LS 302\r\n")
 		cap();
 	else if (commandName == "PASS")
-		pass(params);
-	else if (this->passOK_ == 0 && commandName != "JOIN")
-		pass("");
+		pass(client, params);
+	else if (client.getAuth() == 0 && commandName != "JOIN")
+		pass(client, "");
 }
 
 void Server::parseData()
@@ -134,7 +134,7 @@ void Server::sendData(int& senderFd)
 		if (this->replies_[i] == ERR_PASSWDMISMATCH)
 		{
 			endConnection(senderFd);
-			std::cout << PURPLE << "Client " << senderFd << " failed auth" << RESET << std::endl;
+			std::cout << GREEN << "Client " << senderFd << " failed auth" << RESET << std::endl;
 			break;
 		}
 	}
@@ -145,7 +145,7 @@ void Server::processData(int& senderFd)
 	readData(senderFd);
 
 	for (size_t i = 0; i < this->commands_.size(); i++)
-		manageCommand(this->commands_[i]);
+		manageCommand(this->clients_[senderFd], this->commands_[i]);
 	this->commands_.clear();
 	
 	sendData(senderFd);

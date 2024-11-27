@@ -6,15 +6,15 @@
 /*   By: hepompid <hepompid@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/18 16:39:45 by hepompid          #+#    #+#             */
-/*   Updated: 2024/11/27 23:28:45 by hepompid         ###   ########.fr       */
+/*   Updated: 2024/11/28 00:05:44 by hepompid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "Server.hpp"
 
-Server::Server() : port_(6667), password_("1234"), passOK_(0) {}
+Server::Server() : port_(6667), password_("1234") {}
 
-Server::Server(const int& port, const std::string& password) : port_(port), password_(password), passOK_(0) {}
+Server::Server(const int& port, const std::string& password) : port_(port), password_(password) {}
 
 Server::Server(const Server& other) : port_(other.port_), password_(other.password_)
 {

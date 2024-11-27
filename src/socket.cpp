@@ -6,7 +6,7 @@
 /*   By: hepompid <hepompid@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/18 19:36:40 by hepompid          #+#    #+#             */
-/*   Updated: 2024/11/27 23:10:08 by hepompid         ###   ########.fr       */
+/*   Updated: 2024/11/28 00:14:03 by hepompid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -116,8 +116,6 @@ void Server::createServerSocket()
 void Server::launchServer()
 {
 	int	status;
-
-	std::cout << "pass ok = " << this->passOK_ << std::endl;
 	
 	try
 	{
