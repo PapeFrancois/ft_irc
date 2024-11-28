@@ -6,7 +6,7 @@
 /*   By: hepompid <hepompid@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/18 16:08:53 by hepompid          #+#    #+#             */
-/*   Updated: 2024/11/28 00:12:15 by hepompid         ###   ########.fr       */
+/*   Updated: 2024/11/28 00:21:42 by hepompid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,7 +91,7 @@ class Server
 		void		readData(int& senderFd);
 		void		sendData(int& senderFd);
 
-		void		cap();
+		void		cap(std::string& params);
 		void		pass(Client& client, std::string params);
 				
 		

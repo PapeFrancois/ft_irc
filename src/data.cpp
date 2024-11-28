@@ -6,7 +6,7 @@
 /*   By: hepompid <hepompid@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/19 18:29:26 by hepompid          #+#    #+#             */
-/*   Updated: 2024/11/28 00:15:32 by hepompid         ###   ########.fr       */
+/*   Updated: 2024/11/28 11:59:39 by hepompid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,11 +57,10 @@ void Server::manageCommand(Client& client, std::string& command)
 	std::cout << YELLOW << "Command name : " << commandName << RESET << std::endl;
 	params = extractParams(command);
 	std::cout << YELLOW << "Params : " << params << RESET << std::endl;
+	// std::cout << "auth = " << client.getAuth() << std::endl;
 
-	std::cout << "auth = " << client.getAuth() << std::endl;
-
-	if (command == "CAP LS 302\r\n")
-		cap();
+	if (commandName == "CAP")
+		cap(params);
 	else if (commandName == "PASS")
 		pass(client, params);
 	else if (client.getAuth() == 0 && commandName != "JOIN")
