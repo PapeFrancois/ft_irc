@@ -6,7 +6,7 @@
 /*   By: hepompid <hepompid@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/18 16:08:53 by hepompid          #+#    #+#             */
-/*   Updated: 2024/11/28 00:21:42 by hepompid         ###   ########.fr       */
+/*   Updated: 2024/12/03 19:13:27 by hepompid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,6 +72,7 @@ class Server
 		std::vector<std::string>	commands_;
 		char						bufferWrite_[BUFFERSIZE + 1];
 		std::vector<std::string>	replies_;
+		std::vector<bool>			status_;
 		
 		std::map<int, Client>		clients_;
 
@@ -93,6 +94,7 @@ class Server
 
 		void		cap(std::string& params);
 		void		pass(Client& client, std::string params);
+		void		nick(Client& client, std::string& nickname);
 				
 		
 	public:

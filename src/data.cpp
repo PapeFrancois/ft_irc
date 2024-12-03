@@ -6,7 +6,7 @@
 /*   By: hepompid <hepompid@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/19 18:29:26 by hepompid          #+#    #+#             */
-/*   Updated: 2024/11/28 11:59:39 by hepompid         ###   ########.fr       */
+/*   Updated: 2024/12/03 18:15:16 by hepompid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,7 @@ void Server::manageCommand(Client& client, std::string& command)
 		cap(params);
 	else if (commandName == "PASS")
 		pass(client, params);
-	else if (client.getAuth() == 0 && commandName != "JOIN")
+	else if (client.getPassOK() == 0 && commandName != "JOIN")
 		pass(client, "");
 }
 
@@ -130,7 +130,7 @@ void Server::sendData(int& senderFd)
 			endConnection(senderFd);
 			throw SendFailed();
 		}
-		if (this->replies_[i] == ERR_PASSWDMISMATCH)
+		if (this->status_[i] == 1)
 		{
 			endConnection(senderFd);
 			std::cout << GREEN << "Client " << senderFd << " failed auth" << RESET << std::endl;
@@ -149,4 +149,5 @@ void Server::processData(int& senderFd)
 	
 	sendData(senderFd);
 	this->replies_.clear();
+	this->status_.clear();
 }

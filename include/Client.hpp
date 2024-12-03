@@ -6,7 +6,7 @@
 /*   By: hepompid <hepompid@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/18 16:16:31 by hepompid          #+#    #+#             */
-/*   Updated: 2024/11/28 00:10:18 by hepompid         ###   ########.fr       */
+/*   Updated: 2024/12/03 18:18:23 by hepompid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,10 +19,11 @@
 class Client
 {
 	private:
-		std::string			nick_;
-		const std::string	user_;
-		const int			sockFd_;
-		int					auth_;
+		std::string	nickname_;
+		std::string	username_;
+		const int	sockFd_;
+		int			passOK_;
+		int			auth_;
 
 	public:
 		Client();
@@ -32,11 +33,15 @@ class Client
 
 		Client&	operator = (const Client& other);
 
-		const std::string&	getNick()	const;
-		const std::string&	getUser()	const;
-		const int&			getSockFd()	const;
-		const int&			getAuth() 	const;
+		const std::string&	getNickname()	const;
+		const std::string&	getUsername()	const;
+		const int&			getSockFd()		const;
+		const int&			getPassOK() 	const;
+		const int&			getAuth()		const;
 		
+		void				setPassOK(const int& status);
+		void				setNickname(const std::string& nickname);
+		void				setUsername(const std::string& username);
 		void				setAuth(const int& status);
 };
 

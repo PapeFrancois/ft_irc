@@ -10,6 +10,7 @@ SRCS =	Server.cpp \
 		\
 		cap.cpp \
 		pass.cpp \
+		nick.cpp \
 		\
 		main.cpp
 

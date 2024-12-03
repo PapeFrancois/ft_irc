@@ -6,17 +6,17 @@
 /*   By: hepompid <hepompid@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/18 16:25:27 by hepompid          #+#    #+#             */
-/*   Updated: 2024/11/28 00:11:14 by hepompid         ###   ########.fr       */
+/*   Updated: 2024/12/03 18:54:43 by hepompid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "Client.hpp"
 
-Client::Client() : sockFd_(-1), auth_(0) {}
+Client::Client() : sockFd_(-1), passOK_(0), auth_(0), nickname_("*") {}
 
-Client::Client(const int& sockFd) : sockFd_(sockFd), auth_(0) {}
+Client::Client(const int& sockFd) : sockFd_(sockFd), passOK_(0), auth_(0), nickname_("*") {}
 
-Client::Client(const Client& other) : user_("noUser"), sockFd_(-1)
+Client::Client(const Client& other) : sockFd_(-1)
 {
 	*this = other;
 }
@@ -25,18 +25,19 @@ Client::~Client() {}
 
 Client& Client::operator = (const Client& other)
 {
-	this->nick_ = other.nick_;
+	this->nickname_ = other.nickname_;
+	this->username_ = other.username_;
 	return *this;
 }
 
-const std::string& Client::getNick() const
+const std::string& Client::getNickname() const
 {
-	return this->nick_;
+	return this->nickname_;
 }
 
-const std::string& Client::getUser() const
+const std::string& Client::getUsername() const
 {
-	return this->user_;
+	return this->username_;
 }
 
 const int& Client::getSockFd() const
@@ -44,9 +45,29 @@ const int& Client::getSockFd() const
 	return this->sockFd_;
 }
 
+const int& Client::getPassOK() const
+{
+	return this->passOK_;
+}
+
 const int& Client::getAuth() const
 {
 	return this->auth_;
+}
+
+void Client::setPassOK(const int& status)
+{
+	this->passOK_ = status;
+}
+
+void Client::setNickname(const std::string& nickname)
+{
+	this->nickname_ = nickname;
+}
+
+void Client::setUsername(const std::string& username)
+{
+	this->username_ = username;
 }
 
 void Client::setAuth(const int& status)
