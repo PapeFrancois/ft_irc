@@ -6,15 +6,15 @@
 /*   By: hepompid <hepompid@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/18 16:25:27 by hepompid          #+#    #+#             */
-/*   Updated: 2024/12/03 18:54:43 by hepompid         ###   ########.fr       */
+/*   Updated: 2024/12/03 19:19:26 by hepompid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "Client.hpp"
 
-Client::Client() : sockFd_(-1), passOK_(0), auth_(0), nickname_("*") {}
+Client::Client() : nickname_("*"), sockFd_(-1), passOK_(0), auth_(0) {}
 
-Client::Client(const int& sockFd) : sockFd_(sockFd), passOK_(0), auth_(0), nickname_("*") {}
+Client::Client(const int& sockFd) : nickname_("*"), sockFd_(sockFd), passOK_(0), auth_(0) {}
 
 Client::Client(const Client& other) : sockFd_(-1)
 {

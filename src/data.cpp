@@ -6,7 +6,7 @@
 /*   By: hepompid <hepompid@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/19 18:29:26 by hepompid          #+#    #+#             */
-/*   Updated: 2024/12/03 18:15:16 by hepompid         ###   ########.fr       */
+/*   Updated: 2024/12/03 19:31:01 by hepompid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,6 +65,10 @@ void Server::manageCommand(Client& client, std::string& command)
 		pass(client, params);
 	else if (client.getPassOK() == 0 && commandName != "JOIN")
 		pass(client, "");
+	else if (commandName == "NICK")
+		nick(client, params);
+	else if (commandName == "USER")
+		user(client, params);
 }
 
 void Server::parseData()

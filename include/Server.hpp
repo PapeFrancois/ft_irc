@@ -6,7 +6,7 @@
 /*   By: hepompid <hepompid@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/18 16:08:53 by hepompid          #+#    #+#             */
-/*   Updated: 2024/12/03 19:13:27 by hepompid         ###   ########.fr       */
+/*   Updated: 2024/12/03 19:17:31 by hepompid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,6 +95,7 @@ class Server
 		void		cap(std::string& params);
 		void		pass(Client& client, std::string params);
 		void		nick(Client& client, std::string& nickname);
+		void		user(Client& client, std::string& params);
 				
 		
 	public:

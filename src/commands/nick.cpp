@@ -6,7 +6,7 @@
 /*   By: hepompid <hepompid@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/28 12:05:24 by hepompid          #+#    #+#             */
-/*   Updated: 2024/12/03 19:13:45 by hepompid         ###   ########.fr       */
+/*   Updated: 2024/12/03 19:35:57 by hepompid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 bool validNick(std::string& nickname)
 {
-	for (int i = 0; i < nickname.length(); i++)
+	for (size_t i = 0; i < nickname.length(); i++)
 	{
 		if (nickname[i] < '0')
 			return false;
@@ -45,7 +45,10 @@ void Server::nick(Client& client, std::string& nickname)
 	if (nickname == "")
 	{
 		this->replies_.push_back(ERR_NONICKNAMEGIVEN(client.getNickname()));
-		this->status_.push_back(0);
+		if (client.getAuth() == 0)
+			this->status_.push_back(1);
+		else
+			this->status_.push_back(0);
 	}
 	else if (validNick(nickname) == false)
 	{
