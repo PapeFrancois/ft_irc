@@ -6,7 +6,7 @@
 /*   By: hepompid <hepompid@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/18 16:08:53 by hepompid          #+#    #+#             */
-/*   Updated: 2024/12/03 19:17:31 by hepompid         ###   ########.fr       */
+/*   Updated: 2024/12/10 20:34:57 by hepompid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,9 @@
 # include <iostream>
 # include <string>
 # include <map>
+# include <vector>
+# include <cstring>
+# include <cstdlib>
 
 # include <netdb.h>
 # include <arpa/inet.h>
@@ -57,7 +60,9 @@
 #  define BACKLOG 10
 #  define TIMEOUT 2000
 #  define BUFFERSIZE 512
-#  define SERVER_NAME ":britney-spears "
+#  define SERVER_NAME "britney-spears"
+#  define SERVER_VERSION "1.0"
+#  define CREATION_DAY "a hundred years ago"
 # endif
 
 class Server
@@ -96,6 +101,7 @@ class Server
 		void		pass(Client& client, std::string params);
 		void		nick(Client& client, std::string& nickname);
 		void		user(Client& client, std::string& params);
+		void		pong(Client& client, std::string& params);
 				
 		
 	public:

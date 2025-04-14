@@ -6,7 +6,7 @@
 /*   By: hepompid <hepompid@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/18 19:36:40 by hepompid          #+#    #+#             */
-/*   Updated: 2024/11/28 00:14:03 by hepompid         ###   ########.fr       */
+/*   Updated: 2024/12/10 17:40:55 by hepompid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,9 +19,12 @@ void Server::addToPollFds(int& socketFd)
 	newPollFd.fd = socketFd;
 	
 	if (socketFd == this->serverFd_)
-		newPollFd.events = POLL_IN;
+		newPollFd.events = POLLIN;
 	else
-		newPollFd.events = POLL_IN | POLL_OUT;
+	{
+		newPollFd.events = POLLIN;
+		// newPollFd.events = POLLIN | POLLOUT;
+	}
 
 	this->pollFds_.push_back(newPollFd);
 }
@@ -71,7 +74,7 @@ void Server::pollEvent()
 	
 	for (size_t i = 0; i < size; i++)
 	{
-		if ((this->pollFds_[i].revents & POLL_IN) != 1)
+		if ((this->pollFds_[i].revents & POLLIN) != POLLIN)
 			continue;
 		
 		std::cout << BLUE_BG << "[" << this->pollFds_[i].fd << "] ready for lecture" << RESET << std::endl;
@@ -87,6 +90,14 @@ void Server::pollEvent()
 		{
 			throw;
 		}
+	}
+
+	for (size_t i = 0; i < size; i++)
+	{
+		if ((this->pollFds_[i].revents & POLLOUT) != POLLOUT)
+			continue ;
+
+		// std::cout << BLUE_BG << "[" << this->pollFds_[i].fd << "] expects a reply ASAP" << RESET << std::endl;
 	}
 }
 

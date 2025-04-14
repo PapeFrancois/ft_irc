@@ -6,7 +6,7 @@
 /*   By: hepompid <hepompid@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/28 12:05:24 by hepompid          #+#    #+#             */
-/*   Updated: 2024/12/03 19:35:57 by hepompid         ###   ########.fr       */
+/*   Updated: 2024/12/10 20:23:48 by hepompid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,5 +67,7 @@ void Server::nick(Client& client, std::string& nickname)
 			this->status_.push_back(0);
 	}
 	else
+	{
 		client.setNickname(nickname);
+	}
 }
