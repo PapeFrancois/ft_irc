@@ -6,7 +6,7 @@
 /*   By: hepompid <hepompid@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/19 18:29:26 by hepompid          #+#    #+#             */
-/*   Updated: 2024/12/10 17:37:09 by hepompid         ###   ########.fr       */
+/*   Updated: 2025/04/24 11:33:37 by hepompid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,9 +54,9 @@ void Server::manageCommand(Client& client, std::string& command)
 
 	std::cout << YELLOW << "Command parsed : " << command << RESET;
 	commandName = extractCommandName(command);
-	std::cout << YELLOW << "Command name : " << commandName << RESET << std::endl;
+	// std::cout << YELLOW << "Command name : " << commandName << RESET << std::endl;
 	params = extractParams(command);
-	std::cout << YELLOW << "Params : " << params << RESET << std::endl;
+	// std::cout << YELLOW << "Params : " << params << RESET << std::endl;
 	// std::cout << "auth = " << client.getAuth() << std::endl;
 
 	if (commandName == "CAP")
@@ -71,6 +71,8 @@ void Server::manageCommand(Client& client, std::string& command)
 		user(client, params);
 	else if (commandName == "PING")
 		pong(client, params);
+	else if (commandName == "QUIT")
+		quit();
 }
 
 void Server::parseData()
@@ -136,10 +138,13 @@ void Server::sendData(int& senderFd)
 			endConnection(senderFd);
 			throw SendFailed();
 		}
-		if (this->status_[i] == 1)
+		if (this->status_[i] != STATUS_OK)
 		{
+			if (this->status_[i] == STATUS_AUTHFAILED)
+				std::cout << GREEN << "Client " << senderFd << " failed auth" << RESET << std::endl;
+			else
+				std::cout << GREEN << "Client " << getClientFromFd(senderFd).getNickname() << " left server" << RESET << std::endl;
 			endConnection(senderFd);
-			std::cout << GREEN << "Client " << senderFd << " failed auth" << RESET << std::endl;
 			break;
 		}
 	}

@@ -6,7 +6,7 @@
 /*   By: hepompid <hepompid@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/10 17:30:52 by hepompid          #+#    #+#             */
-/*   Updated: 2024/12/10 17:39:36 by hepompid         ###   ########.fr       */
+/*   Updated: 2025/04/24 10:34:16 by hepompid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ void Server::pong(Client& client, std::string& params)
 	}
 	else
 	{
-		this->replies_.push_back("PONG " + params + "\r\n");
+		this->replies_.push_back(std::string("PONG ") + SERVER_NAME + " " + params + "\r\n");
 		this->status_.push_back(0);
 	}
 }

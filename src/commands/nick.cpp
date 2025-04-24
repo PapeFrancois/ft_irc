@@ -6,7 +6,7 @@
 /*   By: hepompid <hepompid@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/28 12:05:24 by hepompid          #+#    #+#             */
-/*   Updated: 2024/12/10 20:23:48 by hepompid         ###   ########.fr       */
+/*   Updated: 2025/04/24 11:25:07 by hepompid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,28 +46,29 @@ void Server::nick(Client& client, std::string& nickname)
 	{
 		this->replies_.push_back(ERR_NONICKNAMEGIVEN(client.getNickname()));
 		if (client.getAuth() == 0)
-			this->status_.push_back(1);
+			this->status_.push_back(STATUS_AUTHFAILED);
 		else
-			this->status_.push_back(0);
+			this->status_.push_back(STATUS_OK);
 	}
 	else if (validNick(nickname) == false)
 	{
 		this->replies_.push_back(ERR_ERRONEUSNICKNAME(client.getNickname(), nickname));
 		if (client.getAuth() == 0)
-			this->status_.push_back(1);
+			this->status_.push_back(STATUS_AUTHFAILED);
 		else
-			this->status_.push_back(0);
+			this->status_.push_back(STATUS_OK);
 	}
 	else if (uniqueNick(this->clients_, nickname) == false)
 	{
 		this->replies_.push_back(ERR_NICKNAMEINUSE(client.getNickname(), nickname));
 		if (client.getAuth() == 0)
-			this->status_.push_back(1);
+			this->status_.push_back(STATUS_AUTHFAILED);
 		else
-			this->status_.push_back(0);
+			this->status_.push_back(STATUS_OK);
 	}
 	else
 	{
 		client.setNickname(nickname);
+		std::cout << PURPLE_BG << "client nickname set to " << client.getNickname() << RESET << std::endl;
 	}
 }

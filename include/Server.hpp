@@ -6,7 +6,7 @@
 /*   By: hepompid <hepompid@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/18 16:08:53 by hepompid          #+#    #+#             */
-/*   Updated: 2025/04/24 09:49:17 by hepompid         ###   ########.fr       */
+/*   Updated: 2025/04/24 11:34:02 by hepompid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,13 @@
 #  define CREATION_DAY "a hundred years ago"
 # endif
 
+# ifndef SERVER_STATUS
+#  define SERVER_STATUS
+#  define STATUS_OK 0
+#  define STATUS_AUTHFAILED 1
+#  define STATUS_QUIT 2
+# endif
+
 class Server
 {
 	private:
@@ -52,7 +59,7 @@ class Server
 		std::vector<std::string>	commands_;
 		char						bufferWrite_[BUFFERSIZE + 1];
 		std::vector<std::string>	replies_;
-		std::vector<bool>			status_;
+		std::vector<int>			status_;
 		
 		std::map<int, Client>		clients_;
 
@@ -77,6 +84,7 @@ class Server
 		void		nick(Client& client, std::string& nickname);
 		void		user(Client& client, std::string& params);
 		void		pong(Client& client, std::string& params);
+		void		quit();
 				
 		
 	public:
@@ -89,6 +97,7 @@ class Server
 
 		const std::string&	getPassword() const;
 		const int&			getPort() const;
+		const Client&		getClientFromFd(int& fd) const;
 
 		void	launchServer();
 

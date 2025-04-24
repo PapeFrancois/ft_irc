@@ -1,22 +1,19 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   cap.cpp                                            :+:      :+:    :+:   */
+/*   quit.cpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: hepompid <hepompid@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/11/23 00:25:45 by hepompid          #+#    #+#             */
-/*   Updated: 2025/04/24 11:00:03 by hepompid         ###   ########.fr       */
+/*   Created: 2025/04/24 10:46:57 by hepompid          #+#    #+#             */
+/*   Updated: 2025/04/24 10:59:54 by hepompid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "Server.hpp"
 
-void Server::cap(std::string& params)
+void Server::quit()
 {
-	if (params == "LS 302")
-	{
-		this->replies_.push_back("CAP * LS :\r\n");
-		this->status_.push_back(STATUS_OK);
-	}
+    this->replies_.push_back("ERROR Connection ended from client\r\n");
+    this->status_.push_back(STATUS_QUIT);
 }

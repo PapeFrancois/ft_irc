@@ -13,6 +13,7 @@ SRCS =	Server.cpp \
 		nick.cpp \
 		user.cpp \
 		pong.cpp \
+		quit.cpp \
 		\
 		main.cpp
 

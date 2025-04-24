@@ -6,7 +6,7 @@
 /*   By: hepompid <hepompid@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/18 16:39:45 by hepompid          #+#    #+#             */
-/*   Updated: 2024/11/28 00:05:44 by hepompid         ###   ########.fr       */
+/*   Updated: 2025/04/24 11:32:47 by hepompid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,11 @@ const std::string& Server::getPassword() const
 const int& Server::getPort() const
 {
 	return this->port_;
+}
+
+const Client& Server::getClientFromFd(int& fd) const
+{
+	return this->clients_.find(fd)->second;
 }
 
 const char* Server::RecvFailed::what() const throw()
