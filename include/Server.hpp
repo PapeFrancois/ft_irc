@@ -6,7 +6,7 @@
 /*   By: hepompid <hepompid@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/18 16:08:53 by hepompid          #+#    #+#             */
-/*   Updated: 2025/04/24 11:34:02 by hepompid         ###   ########.fr       */
+/*   Updated: 2025/04/25 15:56:13 by hepompid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,9 +55,9 @@ class Server
 		
 		std::vector<struct pollfd>	pollFds_;
 		int							serverFd_;
-		char						bufferRead_[BUFFERSIZE + 1];
+		
+		std::map<int, std::string>	bufferRead_;
 		std::vector<std::string>	commands_;
-		char						bufferWrite_[BUFFERSIZE + 1];
 		std::vector<std::string>	replies_;
 		std::vector<int>			status_;
 		
@@ -74,7 +74,7 @@ class Server
 		std::string	extractCommandName(std::string& command);
 		std::string	extractParams(std::string& command);
 		void		manageCommand(Client& client, std::string& command);
-		void		parseData();
+		void		parseData(int& senderFd);
 		void		processData(int& senderFd);
 		void		readData(int& senderFd);
 		void		sendData(int& senderFd);
@@ -85,6 +85,7 @@ class Server
 		void		user(Client& client, std::string& params);
 		void		pong(Client& client, std::string& params);
 		void		quit();
+		void		privmsg(Client& client, std::string& params);
 				
 		
 	public:
@@ -97,7 +98,6 @@ class Server
 
 		const std::string&	getPassword() const;
 		const int&			getPort() const;
-		const Client&		getClientFromFd(int& fd) const;
 
 		void	launchServer();
 

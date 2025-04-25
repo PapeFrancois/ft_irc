@@ -6,7 +6,7 @@
 /*   By: hepompid <hepompid@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/19 18:29:26 by hepompid          #+#    #+#             */
-/*   Updated: 2025/04/24 11:33:37 by hepompid         ###   ########.fr       */
+/*   Updated: 2025/04/25 15:58:08 by hepompid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,50 +14,56 @@
 
 std::string Server::extractCommandName(std::string& command)
 {
-	std::string	commandName;
-	char		tempBuffer[BUFFERSIZE + 1];
+	int	start;
+	int	end;
+	
+	start = 0;
+	while (command[start] == ' ')
+		start++;
+	
+	end = start;
+	while (command[end] != ' ' && command[end] != '\r')
+		end++;
 
-	std::memset(tempBuffer, 0, sizeof(tempBuffer));
-	for (int i = 0; command[i] != '\r'; i++)
-	{
-		if (command[i] == ' ')
-			break;
-		tempBuffer[i] = command[i];
-	}
-	commandName = tempBuffer;
-	return commandName;
+	return command.substr(start, end - start);
 }
 
 std::string Server::extractParams(std::string& command)
 {
-	std::string	params;
-	char		tempBuffer[BUFFERSIZE + 1];
-	int			j;
+	int			start;
+	int			end;
 	
-	std::memset(tempBuffer, 0, sizeof(tempBuffer));
-	j = 0;
-	for (int i = command.find(' ') + 1; command[i] != '\r'; i++)
-	{
-		tempBuffer[j] = command[i];
-		j++;
-	}
-	params = tempBuffer;
-	return params;
+	start = 0;
+	while (command[start] == ' ')
+		start++;
+	while (command[start] != ' ' && command[start] != '\r')
+		start++;
+	if (command[start] == '\r')
+		return "";
+	while (command[start] == ' ')
+		start++;
+		
+	end = start;
+	while (command[end] != '\r')
+		end++;
+
+	return command.substr(start, end - start);
+
 }
 
-// ATTENTION : PLUS TARD, CHECKER CORRECTEMENT L'INPUT (CLIENT ET NC POUR TOUT BIEN PARSER)
+
 
 void Server::manageCommand(Client& client, std::string& command)
 {
 	std::string	commandName;
 	std::string	params;
 
-	std::cout << YELLOW << "Command parsed : " << command << RESET;
+	std::cout << YELLOW << "Command parsed : " << command << RESET << std::endl;
 	commandName = extractCommandName(command);
-	// std::cout << YELLOW << "Command name : " << commandName << RESET << std::endl;
+	std::cout << YELLOW << "Command name : " << commandName << RESET << std::endl;
 	params = extractParams(command);
-	// std::cout << YELLOW << "Params : " << params << RESET << std::endl;
-	// std::cout << "auth = " << client.getAuth() << std::endl;
+	std::cout << YELLOW << "Params : " << params << RESET << std::endl;
+	std::cout << "auth = " << client.getAuth() << std::endl;
 
 	if (commandName == "CAP")
 		cap(params);
@@ -73,41 +79,72 @@ void Server::manageCommand(Client& client, std::string& command)
 		pong(client, params);
 	else if (commandName == "QUIT")
 		quit();
+	else if (commandName == "PRIVMSG")
+		privmsg(client, params);
 }
 
-void Server::parseData()
-{
-	char	tempBuffer[BUFFERSIZE + 1];
-	int		j;
+// void Server::parseData()
+// {
+// 	char	tempBuffer[BUFFERSIZE + 1];
+// 	int		j;
 	
-	std::memset(tempBuffer, 0, sizeof(tempBuffer));
-	j = 0;
-	for (int i = 0; this->bufferRead_[i]; i++)
+// 	std::memset(tempBuffer, 0, sizeof(tempBuffer));
+// 	j = 0;
+// 	for (int i = 0; this->bufferRead_[i]; i++)
+// 	{
+// 		// std::cout << (int)this->bufferRead_[i] << std::endl;
+// 		tempBuffer[j] = this->bufferRead_[i];
+// 		if (this->bufferRead_[i] == '\n' && this->bufferRead_[i - 1] == '\r')
+// 		{
+// 			this->commands_.push_back(tempBuffer);
+// 			std::memset(tempBuffer, 0, sizeof(tempBuffer));
+// 			j = -1;
+// 		}
+// 		j++;
+// 	}
+// 	if (j >= 2 && (tempBuffer[j - 1] != '\n' || tempBuffer[j - 2] != '\r'))
+// 	{
+// 		tempBuffer[j - 1] = '\n';
+// 		tempBuffer[j - 2] = '\r';
+// 		this->commands_.push_back(tempBuffer);
+// 	}
+// }
+
+void Server::parseData(int& senderFd)
+{
+	int	bufferLength;
+	
+	for (int i = 0; this->bufferRead_[senderFd][i]; i++)
 	{
-		// std::cout << (int)this->bufferRead_[i] << std::endl;
-		tempBuffer[j] = this->bufferRead_[i];
-		if (this->bufferRead_[i] == '\n' && this->bufferRead_[i - 1] == '\r')
+		// si on trouve \r\n
+		if (i != 0 && this->bufferRead_[senderFd][i] == '\n' && this->bufferRead_[senderFd][i - 1] == '\r')
 		{
-			this->commands_.push_back(tempBuffer);
-			std::memset(tempBuffer, 0, sizeof(tempBuffer));
-			j = -1;
+			// push de la commande
+			this->commands_.push_back(this->bufferRead_[senderFd].substr(0, i));
+			std::cout << RED_BG << "command pushed " << this->commands_[0] << RESET << std::endl;
+			this->bufferRead_[senderFd].clear();
+			return ;
 		}
-		j++;
 	}
-	if (j >= 2 && (tempBuffer[j - 1] != '\n' || tempBuffer[j - 2] != '\r'))
+	
+	bufferLength = this->bufferRead_[senderFd].length();
+	if (bufferLength == BUFFERSIZE)
 	{
-		tempBuffer[j - 1] = '\n';
-		tempBuffer[j - 2] = '\r';
-		this->commands_.push_back(tempBuffer);
+		this->bufferRead_[senderFd][bufferLength - 1] = '\n';
+		this->bufferRead_[senderFd][bufferLength - 2] = '\r';
+		this->commands_.push_back(this->bufferRead_[senderFd]);
+		this->bufferRead_[senderFd].clear();
 	}
 }
 
 void Server::readData(int& senderFd)
 {
 	int		bytesRead;
+	char	buffer[BUFFERSIZE + 1];
 
-	std::memset(this->bufferRead_, 0, sizeof(this->bufferRead_));
-	bytesRead = recv(senderFd, this->bufferRead_, BUFFERSIZE, 0);
+	std::memset(buffer, 0, sizeof(buffer));
+	bytesRead = recv(senderFd, buffer, BUFFERSIZE, 0);
+	this->bufferRead_[senderFd] += buffer;
 	if (bytesRead <= 0)
 	{
 		endConnection(senderFd);
@@ -118,22 +155,28 @@ void Server::readData(int& senderFd)
 		return ;
 	}
 	
-	std::cout << YELLOW << "Buffer received with recv : " << this->bufferRead_ << RESET;
-	parseData();
+	std::cout << YELLOW << "Buffer received with recv : " << this->bufferRead_[senderFd] << RESET;
+
+	for (int i = 0; this->bufferRead_[senderFd][i]; i++)
+		std::cout << (int)this->bufferRead_[senderFd][i] << " ";
+	std::cout << std::endl;
+	
 	std::cout << "bytes read = " << bytesRead << std::endl;
 }
 
 void Server::sendData(int& senderFd)
 {
+	char buffer[BUFFERSIZE + 1];
+
 	// std::cout << "replies size = " << this->replies_.size() << std::endl;
 	for (size_t i = 0; i < this->replies_.size(); i++)
 	{
-		std::memset(this->bufferWrite_, 0, sizeof(this->bufferWrite_));
-		std::strcpy(this->bufferWrite_, this->replies_[i].c_str());
+		std::memset(buffer, 0, sizeof(buffer));
+		std::strcpy(buffer, this->replies_[i].c_str());
 		
-		std::cout << YELLOW << "Message to send : " << this->bufferWrite_ << RESET;
+		std::cout << YELLOW << "Message to send : " << buffer << RESET;
 		
-		if (send(senderFd, bufferWrite_, BUFFERSIZE, 0) == -1)
+		if (send(senderFd, buffer, BUFFERSIZE, 0) == -1)
 		{
 			endConnection(senderFd);
 			throw SendFailed();
@@ -143,7 +186,7 @@ void Server::sendData(int& senderFd)
 			if (this->status_[i] == STATUS_AUTHFAILED)
 				std::cout << GREEN << "Client " << senderFd << " failed auth" << RESET << std::endl;
 			else
-				std::cout << GREEN << "Client " << getClientFromFd(senderFd).getNickname() << " left server" << RESET << std::endl;
+				std::cout << GREEN << "Client " << this->clients_[senderFd].getNickname() << " left server" << RESET << std::endl;
 			endConnection(senderFd);
 			break;
 		}
@@ -153,6 +196,8 @@ void Server::sendData(int& senderFd)
 void Server::processData(int& senderFd)
 {
 	readData(senderFd);
+
+	parseData(senderFd);
 
 	for (size_t i = 0; i < this->commands_.size(); i++)
 		manageCommand(this->clients_[senderFd], this->commands_[i]);
