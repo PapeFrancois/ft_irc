@@ -6,7 +6,7 @@
 /*   By: hepompid <hepompid@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/19 18:29:26 by hepompid          #+#    #+#             */
-/*   Updated: 2025/04/25 17:06:57 by hepompid         ###   ########.fr       */
+/*   Updated: 2025/04/25 17:14:06 by hepompid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,7 @@ void Server::manageCommand(Client& client, std::string& command)
 	std::cout << YELLOW << "Command name : " << commandName << RESET << std::endl;
 	params = extractParams(command);
 	std::cout << YELLOW << "Params : " << params << RESET << std::endl;
-	std::cout << "auth = " << client.getAuth() << std::endl;
+	std::cout << RED << "auth = " << client.getAuth() << RESET << std::endl;
 
 	if (commandName == "CAP")
 		cap(params);
@@ -82,33 +82,6 @@ void Server::manageCommand(Client& client, std::string& command)
 	else if (commandName == "PRIVMSG")
 		privmsg(client, params);
 }
-
-// void Server::parseData()
-// {
-// 	char	tempBuffer[BUFFERSIZE + 1];
-// 	int		j;
-	
-// 	std::memset(tempBuffer, 0, sizeof(tempBuffer));
-// 	j = 0;
-// 	for (int i = 0; this->bufferRead_[i]; i++)
-// 	{
-// 		// std::cout << (int)this->bufferRead_[i] << std::endl;
-// 		tempBuffer[j] = this->bufferRead_[i];
-// 		if (this->bufferRead_[i] == '\n' && this->bufferRead_[i - 1] == '\r')
-// 		{
-// 			this->commands_.push_back(tempBuffer);
-// 			std::memset(tempBuffer, 0, sizeof(tempBuffer));
-// 			j = -1;
-// 		}
-// 		j++;
-// 	}
-// 	if (j >= 2 && (tempBuffer[j - 1] != '\n' || tempBuffer[j - 2] != '\r'))
-// 	{
-// 		tempBuffer[j - 1] = '\n';
-// 		tempBuffer[j - 2] = '\r';
-// 		this->commands_.push_back(tempBuffer);
-// 	}
-// }
 
 void Server::parseData(int& senderFd)
 {
@@ -164,8 +137,7 @@ void Server::readData(int& senderFd)
 		return ;
 	}
 	
-	std::cout << CYAN_BG << "Buffer received :" << RESET << std::endl;
-	std::cout << CYAN << this->bufferRead_[senderFd] << RESET;
+	std::cout << CYAN << "Buffer received" << std::endl << this->bufferRead_[senderFd] << RESET;
 
 	for (int i = 0; this->bufferRead_[senderFd][i]; i++)
 	{
@@ -189,8 +161,7 @@ void Server::sendData(int& senderFd)
 		std::memset(buffer, 0, sizeof(buffer));
 		std::strcpy(buffer, this->replies_[i].c_str());
 		
-		std::cout << CYAN_BG << "Buffer to send :" << RESET << std::endl;
-		std::cout << CYAN << buffer << RESET;
+		std::cout << CYAN << "Buffer to send" << std::endl << buffer << RESET;
 		
 		if (send(senderFd, buffer, BUFFERSIZE, 0) == -1)
 		{
