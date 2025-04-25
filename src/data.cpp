@@ -6,7 +6,7 @@
 /*   By: hepompid <hepompid@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/19 18:29:26 by hepompid          #+#    #+#             */
-/*   Updated: 2025/04/25 15:58:08 by hepompid         ###   ########.fr       */
+/*   Updated: 2025/04/25 17:06:57 by hepompid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -116,14 +116,23 @@ void Server::parseData(int& senderFd)
 	
 	for (int i = 0; this->bufferRead_[senderFd][i]; i++)
 	{
-		// si on trouve \r\n
 		if (i != 0 && this->bufferRead_[senderFd][i] == '\n' && this->bufferRead_[senderFd][i - 1] == '\r')
 		{
-			// push de la commande
 			this->commands_.push_back(this->bufferRead_[senderFd].substr(0, i));
-			std::cout << RED_BG << "command pushed " << this->commands_[0] << RESET << std::endl;
-			this->bufferRead_[senderFd].clear();
-			return ;
+			
+			
+			bufferLength = this->bufferRead_[senderFd].length();
+			if (i < bufferLength - 1)
+			{
+				this->bufferRead_[senderFd] = this->bufferRead_[senderFd].substr(i + 1, bufferLength);
+				i = 0;
+			}
+			else
+			{
+				this->bufferRead_[senderFd].clear();
+				return ;
+			}
+
 		}
 	}
 	
@@ -155,10 +164,16 @@ void Server::readData(int& senderFd)
 		return ;
 	}
 	
-	std::cout << YELLOW << "Buffer received with recv : " << this->bufferRead_[senderFd] << RESET;
+	std::cout << CYAN_BG << "Buffer received :" << RESET << std::endl;
+	std::cout << CYAN << this->bufferRead_[senderFd] << RESET;
 
 	for (int i = 0; this->bufferRead_[senderFd][i]; i++)
-		std::cout << (int)this->bufferRead_[senderFd][i] << " ";
+	{
+		if (this->bufferRead_[senderFd][i] == '\r' || this->bufferRead_[senderFd][i] == '\n')
+			std::cout << RED << (int)this->bufferRead_[senderFd][i] << RESET << " ";
+		else
+			std::cout << (int)this->bufferRead_[senderFd][i] << " ";
+	}
 	std::cout << std::endl;
 	
 	std::cout << "bytes read = " << bytesRead << std::endl;
@@ -174,7 +189,8 @@ void Server::sendData(int& senderFd)
 		std::memset(buffer, 0, sizeof(buffer));
 		std::strcpy(buffer, this->replies_[i].c_str());
 		
-		std::cout << YELLOW << "Message to send : " << buffer << RESET;
+		std::cout << CYAN_BG << "Buffer to send :" << RESET << std::endl;
+		std::cout << CYAN << buffer << RESET;
 		
 		if (send(senderFd, buffer, BUFFERSIZE, 0) == -1)
 		{
