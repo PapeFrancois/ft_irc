@@ -6,7 +6,7 @@
 /*   By: hepompid <hepompid@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/28 12:05:24 by hepompid          #+#    #+#             */
-/*   Updated: 2025/04/29 16:07:09 by hepompid         ###   ########.fr       */
+/*   Updated: 2025/04/29 16:41:55 by hepompid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,13 +28,27 @@ bool validNick(std::string& nickname)
 	return true;
 }
 
+std::string tolower(const std::string &nickname)
+{
+	std::string tolower;
+
+	for (int i = 0; nickname[i]; i++)
+	{
+		if (nickname[i] >= 'A' && nickname[i] <= 'Z')
+			tolower += nickname[i] + 32;
+		else
+			tolower += nickname[i];
+	}
+	return tolower;
+}
+
 bool uniqueNick(std::map<int, Client>& clients, std::string& nickname)
 {
 	typedef std::map<int, Client>::iterator iterator;
 
 	for (iterator it = clients.begin(); it != clients.end(); it++)
 	{
-		if (it->second.getNickname() == nickname)
+		if (tolower(it->second.getNickname()) == tolower(nickname))
 			return false;
 	}
 	return true;
@@ -61,14 +75,20 @@ void Server::nick(Client& client, std::string& nickname)
 	else if (validNick(nickname) == false)
 	{
 		this->replies_.push_back(ERR_ERRONEUSNICKNAME(client.getNickname(), nickname));
-		this->status_.push_back(STATUS_OK);
+		if (client.getAuth() == 0)
+			this->status_.push_back(STATUS_AUTHFAILED);
+		else
+			this->status_.push_back(STATUS_OK);
 	}
 
 	// si le nickname est deja pris
 	else if (uniqueNick(this->clients_, nickname) == false)
 	{
 		this->replies_.push_back(ERR_NICKNAMEINUSE(client.getNickname(), nickname));
-		this->status_.push_back(STATUS_OK);
+		if (client.getAuth() == 0)
+			this->status_.push_back(STATUS_AUTHFAILED);
+		else
+			this->status_.push_back(STATUS_OK);
 	}
 
 	// nickname accepte
