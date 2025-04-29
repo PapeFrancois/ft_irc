@@ -6,7 +6,7 @@
 /*   By: hepompid <hepompid@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/03 19:16:21 by hepompid          #+#    #+#             */
-/*   Updated: 2025/04/24 11:04:59 by hepompid         ###   ########.fr       */
+/*   Updated: 2025/04/29 16:13:46 by hepompid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,38 +17,35 @@ std::string getUsername(std::string& params)
 	std::string	username;
 	int			spacePosition;
 
-	spacePosition = 0;
-	for (int i = 0; params[i]; i++)
-	{
-		if (params[i] == ' ')
-		{
-			spacePosition = i;
-			break;
-		}
-	}
+	spacePosition = params.find(' ');
 	username = params.substr(0, spacePosition);
 	return username;
 }
 
 void Server::user(Client& client, std::string& params)
 {
-	std::string username;
-	
+	// si tentative de modification d'username 
 	if (client.getAuth() == 1)
 	{
 		this->replies_.push_back(ERR_ALREADYREGISTERED(client.getNickname()));
 		this->status_.push_back(STATUS_OK);
 	}
+
+	// si pas d'username
 	else if (params == "")
 	{
 		this->replies_.push_back(ERR_NEEDMOREPARAMS(client.getNickname(), "USER"));
 		this->status_.push_back(STATUS_AUTHFAILED);
 	}
+	
 	else
+		client.setUsername(getUsername(params));
+		
+	// si le client a un nickname, valide l'authentification
+	if (client.getNickname() != "*" && client.getAuth() == 0)
 	{
-		username = getUsername(params);
-		client.setUsername(username);
-		this->replies_.push_back(RPL_WELCOME(client.getNickname()));
+		client.setAuth(1);
+		this->replies_.push_back(RPL_WELCOME(client.getNickname()) + RPL_YOURHOST(client.getNickname(), SERVER_NAME, SERVER_VERSION) + RPL_CREATED(client.getNickname(), CREATION_DAY) + RPL_MYINFO(client.getNickname(), SERVER_NAME, SERVER_VERSION));
 		this->status_.push_back(STATUS_OK);
 	}
 }
