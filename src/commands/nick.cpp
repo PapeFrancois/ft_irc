@@ -6,7 +6,7 @@
 /*   By: hepompid <hepompid@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/28 12:05:24 by hepompid          #+#    #+#             */
-/*   Updated: 2025/04/29 16:41:55 by hepompid         ###   ########.fr       */
+/*   Updated: 2025/04/29 17:22:16 by hepompid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,7 +111,7 @@ void Server::nick(Client& client, std::string& nickname)
 			this->status_.push_back(STATUS_OK);
 		}
 
-		std::cout << PURPLE_BG << "client nickname set to " << client.getNickname() << RESET << std::endl;
+		// std::cout << PURPLE_BG << "client nickname set to " << client.getNickname() << RESET << std::endl;
 	}
 
 }

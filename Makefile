@@ -4,6 +4,7 @@
 
 SRCS =	Server.cpp \
 		Client.cpp \
+		Channel.cpp \
 		\
 		socket.cpp \
 		data.cpp \
@@ -14,6 +15,8 @@ SRCS =	Server.cpp \
 		user.cpp \
 		pong.cpp \
 		quit.cpp \
+		privmsg.cpp \
+		join.cpp \
 		\
 		main.cpp
 
