@@ -6,7 +6,7 @@
 /*   By: hepompid <hepompid@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/28 12:05:24 by hepompid          #+#    #+#             */
-/*   Updated: 2025/04/24 11:25:07 by hepompid         ###   ########.fr       */
+/*   Updated: 2025/04/29 16:07:09 by hepompid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,33 +42,56 @@ bool uniqueNick(std::map<int, Client>& clients, std::string& nickname)
 
 void Server::nick(Client& client, std::string& nickname)
 {
-	if (nickname == "")
+	
+	// si aucun nickname n'est donne lors de l'authentification
+	if (nickname == "" && client.getAuth() == 0)
 	{
 		this->replies_.push_back(ERR_NONICKNAMEGIVEN(client.getNickname()));
-		if (client.getAuth() == 0)
-			this->status_.push_back(STATUS_AUTHFAILED);
-		else
-			this->status_.push_back(STATUS_OK);
+		this->status_.push_back(STATUS_OK);
 	}
+
+	// si commande nick seule et client authentifie
+	else if (nickname == "" && client.getAuth() == 1)
+	{
+		this->replies_.push_back(client.getNickname() + "\r\n");
+		this->status_.push_back(STATUS_OK);
+	}
+
+	// si le nickname n'est pas valide
 	else if (validNick(nickname) == false)
 	{
 		this->replies_.push_back(ERR_ERRONEUSNICKNAME(client.getNickname(), nickname));
-		if (client.getAuth() == 0)
-			this->status_.push_back(STATUS_AUTHFAILED);
-		else
-			this->status_.push_back(STATUS_OK);
+		this->status_.push_back(STATUS_OK);
 	}
+
+	// si le nickname est deja pris
 	else if (uniqueNick(this->clients_, nickname) == false)
 	{
 		this->replies_.push_back(ERR_NICKNAMEINUSE(client.getNickname(), nickname));
-		if (client.getAuth() == 0)
-			this->status_.push_back(STATUS_AUTHFAILED);
-		else
-			this->status_.push_back(STATUS_OK);
+		this->status_.push_back(STATUS_OK);
 	}
+
+	// nickname accepte
 	else
 	{
 		client.setNickname(nickname);
+		
+		// si un username est deja rempli, valide l'authentification
+		if (client.getAuth() == 0 && client.getUsername() != "")
+		{
+			client.setAuth(1);
+			this->replies_.push_back(RPL_WELCOME(client.getNickname()) + RPL_YOURHOST(client.getNickname(), SERVER_NAME, SERVER_VERSION) + RPL_CREATED(client.getNickname(), CREATION_DAY) + RPL_MYINFO(client.getNickname(), SERVER_NAME, SERVER_VERSION));
+			this->status_.push_back(STATUS_OK);
+		}
+		
+		// changement de nickname post auth
+		else if (client.getAuth() == 1)
+		{
+			this->replies_.push_back(SERVER_NAME + std::string(" ") + client.getNickname() + " client 127.0.0.1 " + nickname + "\r\n");
+			this->status_.push_back(STATUS_OK);
+		}
+
 		std::cout << PURPLE_BG << "client nickname set to " << client.getNickname() << RESET << std::endl;
 	}
+
 }
