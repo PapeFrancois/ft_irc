@@ -6,7 +6,7 @@
 /*   By: hepompid <hepompid@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/18 16:08:53 by hepompid          #+#    #+#             */
-/*   Updated: 2025/04/25 15:56:13 by hepompid         ###   ########.fr       */
+/*   Updated: 2025/04/29 12:44:07 by hepompid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,6 +98,8 @@ class Server
 
 		const std::string&	getPassword() const;
 		const int&			getPort() const;
+		
+		void	printClients() const;
 
 		void	launchServer();
 
