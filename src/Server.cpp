@@ -6,7 +6,7 @@
 /*   By: hepompid <hepompid@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/18 16:39:45 by hepompid          #+#    #+#             */
-/*   Updated: 2025/04/24 12:16:15 by hepompid         ###   ########.fr       */
+/*   Updated: 2025/04/29 12:47:48 by hepompid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,16 @@ const std::string& Server::getPassword() const
 const int& Server::getPort() const
 {
 	return this->port_;
+}
+
+void Server::printClients() const
+{
+	typedef	std::map<int, Client>::const_iterator it;
+	
+	if (this->clients_.empty())
+		std::cout << "no client registered" << std::endl;
+	for (it it = this->clients_.begin(); it != this->clients_.end(); it++)
+		std::cout << it->second.getNickname() << std::endl;
 }
 
 const char* Server::RecvFailed::what() const throw()
