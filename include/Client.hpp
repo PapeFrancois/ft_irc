@@ -6,7 +6,7 @@
 /*   By: hepompid <hepompid@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/18 16:16:31 by hepompid          #+#    #+#             */
-/*   Updated: 2024/12/03 18:18:23 by hepompid         ###   ########.fr       */
+/*   Updated: 2025/04/29 12:57:45 by hepompid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,8 @@
 
 # include <iostream>
 # include <string>
+
+# include "ansiCodes.hpp"
 
 class Client
 {
