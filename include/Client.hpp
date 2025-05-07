@@ -6,7 +6,7 @@
 /*   By: hepompid <hepompid@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/18 16:16:31 by hepompid          #+#    #+#             */
-/*   Updated: 2025/04/29 12:57:45 by hepompid         ###   ########.fr       */
+/*   Updated: 2025/05/07 10:42:12 by hepompid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,8 +42,8 @@ class Client
 		const int&			getAuth()		const;
 		
 		void				setPassOK(const int& status);
-		void				setNickname(const std::string& nickname);
-		void				setUsername(const std::string& username);
+		void				setNickname(const std::string& newNickname);
+		void				setUsername(const std::string& newUsername);
 		void				setAuth(const int& status);
 };
 

@@ -6,7 +6,7 @@
 /*   By: hepompid <hepompid@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/18 16:25:27 by hepompid          #+#    #+#             */
-/*   Updated: 2025/04/29 13:54:57 by hepompid         ###   ########.fr       */
+/*   Updated: 2025/05/07 10:42:52 by hepompid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,14 +71,14 @@ void Client::setPassOK(const int& status)
 	this->passOK_ = status;
 }
 
-void Client::setNickname(const std::string& nickname)
+void Client::setNickname(const std::string& newNickname)
 {
-	this->nickname_ = nickname;
+	this->nickname_ = newNickname;
 }
 
-void Client::setUsername(const std::string& username)
+void Client::setUsername(const std::string& newUsername)
 {
-	this->username_ = username;
+	this->username_ = newUsername;
 }
 
 void Client::setAuth(const int& status)

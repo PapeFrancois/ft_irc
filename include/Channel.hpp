@@ -6,7 +6,7 @@
 /*   By: hepompid <hepompid@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/29 17:20:07 by hepompid          #+#    #+#             */
-/*   Updated: 2025/05/07 10:17:51 by hepompid         ###   ########.fr       */
+/*   Updated: 2025/05/07 10:43:07 by hepompid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,11 +31,12 @@ class Channel
 		std::vector<std::string>	operators_;		// nick des operators
 		std::vector<std::string>	invitedUsers_;	// nick des users
 		
-		bool						iMode_; // 0
-		bool						tMode_; // 0
+		bool						iMode_;
+		bool						tMode_;
 		
 	public:
 		Channel();
+		Channel(const std::string& name);
 		Channel(const Channel &other);
 		~Channel();
 
@@ -50,9 +51,9 @@ class Channel
 
 		void				setTopic(const std::string& newTopic);
 		void				setKey(const std::string& newKey);
-		void				setLimitOfUsers(const std::string& newLimitOfUsers);
-		void				setIMode(const bool iMode);
-		void				setTMode(const bool TMode);
+		void				setLimitOfUsers(const int& newLimitOfUsers);
+		void				setIMode(const bool& newIMode);
+		void				setTMode(const bool& newTMode);
 
 		void				printMembers() const;
 		void				printOperators() const;
