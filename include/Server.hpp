@@ -6,7 +6,7 @@
 /*   By: hepompid <hepompid@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/18 16:08:53 by hepompid          #+#    #+#             */
-/*   Updated: 2025/04/29 12:44:07 by hepompid         ###   ########.fr       */
+/*   Updated: 2025/05/07 10:20:09 by hepompid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,6 +62,7 @@ class Server
 		std::vector<int>			status_;
 		
 		std::map<int, Client>		clients_;
+		std::vector<std::string>	channels_;
 
 
 		void		acceptNewConnection();
@@ -85,6 +86,7 @@ class Server
 		void		user(Client& client, std::string& params);
 		void		pong(Client& client, std::string& params);
 		void		quit();
+		// void		join(Client& client, );
 		void		privmsg(Client& client, std::string& params);
 				
 		
@@ -99,9 +101,9 @@ class Server
 		const std::string&	getPassword() const;
 		const int&			getPort() const;
 		
-		void	printClients() const;
+		void				printClients() const;
 
-		void	launchServer();
+		void				launchServer();
 
 		class SocketFailed : public std::exception
 		{
