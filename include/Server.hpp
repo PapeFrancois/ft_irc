@@ -6,7 +6,7 @@
 /*   By: hepompid <hepompid@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/18 16:08:53 by hepompid          #+#    #+#             */
-/*   Updated: 2025/05/13 17:48:50 by hepompid         ###   ########.fr       */
+/*   Updated: 2025/05/13 19:10:10 by hepompid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,8 @@
 # include <unistd.h>
 
 # include "Client.hpp"
+# include "Channel.hpp"
+
 # include "reply.hpp"
 # include "ansiCodes.hpp"
 

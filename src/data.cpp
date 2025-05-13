@@ -6,7 +6,7 @@
 /*   By: hepompid <hepompid@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/19 18:29:26 by hepompid          #+#    #+#             */
-/*   Updated: 2025/04/25 17:14:06 by hepompid         ###   ########.fr       */
+/*   Updated: 2025/05/13 19:27:43 by hepompid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,6 @@ std::string Server::extractParams(std::string& command)
 		end++;
 
 	return command.substr(start, end - start);
-
 }
 
 
@@ -81,6 +80,8 @@ void Server::manageCommand(Client& client, std::string& command)
 		quit();
 	else if (commandName == "PRIVMSG")
 		privmsg(client, params);
+	else if (commandName == "JOIN")
+		join(client, params);
 }
 
 void Server::parseData(int& senderFd)
@@ -166,7 +167,7 @@ void Server::sendData(int& senderFd)
 		if (send(senderFd, buffer, BUFFERSIZE, 0) == -1)
 		{
 			endConnection(senderFd);
-			throw SendFailed();
+			std::cout << RED << "Error: Send failed for fd " << senderFd << RESET << std::endl;
 		}
 		if (this->status_[i] != STATUS_OK)
 		{
