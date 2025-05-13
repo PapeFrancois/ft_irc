@@ -6,7 +6,7 @@
 /*   By: hepompid <hepompid@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/18 19:36:40 by hepompid          #+#    #+#             */
-/*   Updated: 2024/12/10 17:40:55 by hepompid         ###   ########.fr       */
+/*   Updated: 2025/05/13 17:52:20 by hepompid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,6 +104,7 @@ void Server::pollEvent()
 void Server::createServerSocket()
 {
 	struct sockaddr_in	sa;
+	int					opt;
 
 	sa.sin_family = AF_INET;
 	sa.sin_addr.s_addr = htonl(INADDR_LOOPBACK);
@@ -113,6 +114,10 @@ void Server::createServerSocket()
 	if (this->serverFd_ == -1)
 		throw SocketFailed();
 	
+	opt = 1;
+	if (setsockopt(this->serverFd_, SOL_SOCKET, SO_REUSEADDR, &opt, sizeof(opt)) == -1)
+		throw SocketOptionFailed();
+		
 	if (bind(this->serverFd_, (sockaddr *)&sa, sizeof(sa)) == -1)
 		throw BindFailed();
 
@@ -134,6 +139,8 @@ void Server::launchServer()
 	}
 	catch (const std::exception& e)
 	{
+		if (this->serverFd_ != -1)
+			close(this->serverFd_);
 		throw;
 	}
 

@@ -6,7 +6,7 @@
 /*   By: hepompid <hepompid@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/18 16:08:53 by hepompid          #+#    #+#             */
-/*   Updated: 2025/05/07 10:20:09 by hepompid         ###   ########.fr       */
+/*   Updated: 2025/05/13 17:48:50 by hepompid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,7 +86,7 @@ class Server
 		void		user(Client& client, std::string& params);
 		void		pong(Client& client, std::string& params);
 		void		quit();
-		// void		join(Client& client, );
+		void		join(Client& client, std::string& params);
 		void		privmsg(Client& client, std::string& params);
 				
 		
@@ -106,6 +106,12 @@ class Server
 		void				launchServer();
 
 		class SocketFailed : public std::exception
+		{
+			public:
+				virtual const char* what() const throw();
+		};
+
+		class SocketOptionFailed : public std::exception
 		{
 			public:
 				virtual const char* what() const throw();

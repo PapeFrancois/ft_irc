@@ -6,7 +6,7 @@
 /*   By: hepompid <hepompid@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/18 16:39:45 by hepompid          #+#    #+#             */
-/*   Updated: 2025/04/29 12:47:48 by hepompid         ###   ########.fr       */
+/*   Updated: 2025/05/13 17:49:14 by hepompid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,6 +60,11 @@ const char* Server::RecvFailed::what() const throw()
 const char* Server::SocketFailed::what() const throw()
 {
 	return ("Socket system call failed");
+}
+
+const char* Server::SocketOptionFailed::what() const throw()
+{
+	return ("Setsockopt system call failed");
 }
 
 const char* Server::BindFailed::what() const throw()
