@@ -6,18 +6,18 @@
 /*   By: hepompid <hepompid@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/18 16:25:27 by hepompid          #+#    #+#             */
-/*   Updated: 2025/05/07 10:42:52 by hepompid         ###   ########.fr       */
+/*   Updated: 2025/05/15 11:58:26 by hepompid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "Client.hpp"
 
-Client::Client() : nickname_("*"), sockFd_(-1), passOK_(0), auth_(0)
+Client::Client() : nickname_("*"), sockFd_(-1), passOK_(0), auth_(0), cap_(0)
 {
 	// std::cout << GREEN_BG << "Client created at " << this << RESET << std::endl;
 }
 
-Client::Client(const int& sockFd) : nickname_("*"), sockFd_(sockFd), passOK_(0), auth_(0)
+Client::Client(const int& sockFd) : nickname_("*"), sockFd_(sockFd), passOK_(0), auth_(0), cap_(0)
 {
 	// std::cout << GREEN_BG << "Client created at " << this << RESET << std::endl;
 }
@@ -38,6 +38,8 @@ Client& Client::operator = (const Client& other)
 	this->nickname_ = other.nickname_;
 	this->username_ = other.username_;
 	this->auth_ = other.auth_;
+	this->sockFd_ = other.sockFd_;
+	this->cap_ = other.cap_;
 	return *this;
 }
 
@@ -66,6 +68,11 @@ const int& Client::getAuth() const
 	return this->auth_;
 }
 
+const bool& Client::getCap() const
+{
+	return this->cap_;
+}
+
 void Client::setPassOK(const int& status)
 {
 	this->passOK_ = status;
@@ -84,4 +91,9 @@ void Client::setUsername(const std::string& newUsername)
 void Client::setAuth(const int& status)
 {
 	this->auth_ = status;
+}
+
+void Client::setCap(const bool& cap)
+{
+	this->cap_ = cap;
 }
