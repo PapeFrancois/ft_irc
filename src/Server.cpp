@@ -6,7 +6,7 @@
 /*   By: hepompid <hepompid@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/18 16:39:45 by hepompid          #+#    #+#             */
-/*   Updated: 2025/05/13 17:49:14 by hepompid         ###   ########.fr       */
+/*   Updated: 2025/05/14 15:23:33 by hepompid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ void Server::printClients() const
 	
 	if (this->clients_.empty())
 		std::cout << "no client registered" << std::endl;
-	for (it it = this->clients_.begin(); it != this->clients_.end(); it++)
+	for (it it = this->fdCli_.begin(); it != this->fdCli_.end(); it++)
 		std::cout << it->second.getNickname() << std::endl;
 }
 

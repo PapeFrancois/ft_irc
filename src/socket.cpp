@@ -6,7 +6,7 @@
 /*   By: hepompid <hepompid@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/18 19:36:40 by hepompid          #+#    #+#             */
-/*   Updated: 2025/05/13 17:52:20 by hepompid         ###   ########.fr       */
+/*   Updated: 2025/05/14 15:29:08 by hepompid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,14 +54,15 @@ void Server::acceptNewConnection()
 	addToPollFds(clientFd);
 	
 	Client	client(clientFd);
-	this->clients_[clientFd] = client;
+	this->fdCli_[clientFd] = client;
 	
 	std::cout << GREEN "New connection on fd " << clientFd << RESET << std::endl;
 }
 
 void Server::endConnection(int& socketFd)
 {
-	this->clients_.erase(socketFd);
+	this->clients_.erase(this->fdCli_[socketFd].getNickname());
+	this->fdCli_.erase(socketFd);
 	
 	close(socketFd);
 	
