@@ -6,7 +6,7 @@
 /*   By: hepompid <hepompid@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/10 17:30:52 by hepompid          #+#    #+#             */
-/*   Updated: 2025/05/13 18:47:35 by hepompid         ###   ########.fr       */
+/*   Updated: 2025/05/15 13:09:05 by hepompid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,9 @@ void Server::pong(Client& client, std::string& params)
 	}
 	else
 	{
-		this->replies_.push_back(std::string("PONG ") + SERVER_NAME + " " + params + "\r\n");
+		this->replies_.push_back(std::string("PONG ") + params + "\r\n");
+		// this->replies_.push_back(":britney-spears PONG localhost localhost\r\n");
+
 		this->status_.push_back(STATUS_OK);
 	}
 }
