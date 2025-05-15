@@ -6,7 +6,7 @@
 /*   By: hepompid <hepompid@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/29 17:20:07 by hepompid          #+#    #+#             */
-/*   Updated: 2025/05/07 10:43:07 by hepompid         ###   ########.fr       */
+/*   Updated: 2025/05/15 10:18:14 by hepompid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,8 @@ class Channel
 		const std::string 			name_;
 		std::string 				topic_;
 		std::string					key_;
-		int							limitOfUsers_;
+		int							numberOfMembers_;
+		int							limitOfMembers_;
 		
 		std::vector<std::string>	members_; 		// nick des members
 		std::vector<std::string>	operators_;		// nick des operators
@@ -36,7 +37,7 @@ class Channel
 		
 	public:
 		Channel();
-		Channel(const std::string& name);
+		Channel(const std::string& name, const std::string& creator);
 		Channel(const Channel &other);
 		~Channel();
 
@@ -45,13 +46,13 @@ class Channel
 		const std::string&	getName() const;
 		const std::string&	getTopic() const;
 		const std::string&	getKey() const;
-		const int&			getLimitOfUsers() const;
+		const int&			getLimitOfMembers() const;
 		const bool&			getIMode() const;
 		const bool&			getTMode() const;
 
 		void				setTopic(const std::string& newTopic);
 		void				setKey(const std::string& newKey);
-		void				setLimitOfUsers(const int& newLimitOfUsers);
+		void				setLimitOfMembers(const int& newLimitOfUsers);
 		void				setIMode(const bool& newIMode);
 		void				setTMode(const bool& newTMode);
 
@@ -64,11 +65,7 @@ class Channel
 		void				addOperator(const std::string& userNickname);
 		void				removeOperator(const std::string& userNickname);
 		void				addInvitedUser(const std::string& userNickname);
-		void				removeInvitedUser(const std::string& userNickname);
-
-		
-
-		
+		void				removeInvitedUser(const std::string& userNickname);		
 };
 
 #endif

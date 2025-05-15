@@ -6,15 +6,20 @@
 /*   By: hepompid <hepompid@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/07 09:58:38 by hepompid          #+#    #+#             */
-/*   Updated: 2025/05/07 11:06:37 by hepompid         ###   ########.fr       */
+/*   Updated: 2025/05/15 10:17:55 by hepompid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "Channel.hpp"
 
-Channel::Channel() : name_("@yoo"), limitOfUsers_(0), iMode_(0), tMode_(0) {}
+Channel::Channel() : name_("@yoo"), numberOfMembers_(0), limitOfMembers_(0), iMode_(0), tMode_(0) {}
 
-Channel::Channel(const std::string& name) : name_(name), limitOfUsers_(0), iMode_(0), tMode_(0) {}
+Channel::Channel(const std::string& name, const std::string& creator) : 
+	name_(name), numberOfMembers_(1), limitOfMembers_(0), iMode_(0), tMode_(0)
+{
+	this->operators_.push_back(creator);
+	this->members_.push_back(creator);
+}
 
 Channel::Channel(const Channel& other) : name_(other.name_)
 {
@@ -27,7 +32,8 @@ Channel& Channel::operator = (const Channel& other)
 {
 	this->topic_ = other.topic_;
 	this->key_ = other.key_;
-	this->limitOfUsers_ = other.limitOfUsers_;
+	this->numberOfMembers_ = other.numberOfMembers_;
+	this->limitOfMembers_ = other.limitOfMembers_;
 	this->members_ = other.members_;
 	this->operators_ = other.operators_;
 	this->invitedUsers_ = other.invitedUsers_;
@@ -51,9 +57,9 @@ const std::string& Channel::getKey() const
 	return this->key_;
 }
 
-const int& Channel::getLimitOfUsers() const
+const int& Channel::getLimitOfMembers() const
 {
-	return this->limitOfUsers_;
+	return this->limitOfMembers_;
 }
 
 const bool& Channel::getIMode() const
@@ -76,9 +82,9 @@ void Channel::setKey(const std::string& newKey)
 	this->key_ = newKey;
 }
 
-void Channel::setLimitOfUsers(const int& newLimitOfUsers)
+void Channel::setLimitOfMembers(const int& newLimitOfUsers)
 {
-	this->limitOfUsers_ = newLimitOfUsers;
+	this->limitOfMembers_ = newLimitOfUsers;
 }
 
 void Channel::setIMode(const bool& newIMode)
