@@ -6,7 +6,7 @@
 /*   By: hepompid <hepompid@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/25 20:44:43 by hepompid          #+#    #+#             */
-/*   Updated: 2025/05/13 19:41:15 by hepompid         ###   ########.fr       */
+/*   Updated: 2025/05/19 18:39:43 by hepompid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,11 +15,10 @@
 
 typedef std::string str;
 
-# define RPL_WELCOME(client) ("001 " + str(client) + " :Salut ma couille\r\n")
-# define RPL_YOURHOST(client, serverName, version) ("002 " + str(client) + " :Your host is " + str(serverName) + " running in version " + str(version) + "\r\n")
-# define RPL_CREATED(client, dateTime) ("003 " + str(client) + " :This server was created " + str(dateTime) + "\r\n")
-# define RPL_MYINFO(client, serverName, version) ("004 " + str(client) + " :" + str(serverName) + " " + str(version) + "\r\n")
-
+# define RPL_WELCOME(name, client) (":" + str(name) + " 001 " + str(client) + " :Salut ma couille\r\n")
+# define RPL_YOURHOST(name, client, version) (":" + str(name) + " 002 " + str(client) + " :Your host is " + str(name) + ", running in version " + str(version) + "\r\n")
+# define RPL_CREATED(name, client, time) (":" + str(name) + " 003 " + str(client) + " :This server was created " + str(time) + "\r\n")
+# define RPL_MYINFO(name, client, version) (":" + str(name) + " 004 " + str(client) + " :" + str(name) + " " + str(version) + "\r\n")
 
 # define ERR_NOSUCHNICK(client, target) ("401 " + str(client) + " " + str(target) + " :No such nick\r\n")
 # define ERR_CANNOTSENDTOCHAN(client, channel) ("404 " + str(client) + " " + str(channel) + " :Cannot send to channel\r\n")
@@ -38,6 +37,6 @@ typedef std::string str;
 
 # define PRIVMSG(client, target, message) (":" + str(client) + " PRIVMSG " + str(target) + " :" + str(message) + "\r\n")
 # define QUIT_MSG ":ERROR Connection ended from client\r\n"
-// # define NICK_CHANGE(oldNick, newNick) (":" + str(oldNick) + "!hepompid@127.0.0.1 " + " NICK :" + str(newNick) + "\r\n")
+# define NICK_CHANGE(oldNick, newNick) (":" + str(oldNick) + " NICK :" + str(newNick) + "\r\n")
 
 #endif
