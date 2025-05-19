@@ -6,7 +6,7 @@
 /*   By: hepompid <hepompid@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/03 19:16:21 by hepompid          #+#    #+#             */
-/*   Updated: 2025/05/19 18:32:20 by hepompid         ###   ########.fr       */
+/*   Updated: 2025/05/19 19:04:06 by hepompid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,14 +27,14 @@ void Server::user(Client& client, std::string& params)
 	// si tentative de modification d'username 
 	if (client.getAuth() == 1)
 	{
-		this->replies_.push_back(ERR_ALREADYREGISTERED(client.getNickname()));
+		this->replies_.push_back(ERR_ALREADYREGISTERED(SERVER_NAME, client.getNickname()));
 		this->status_.push_back(STATUS_OK);
 	}
 
 	// si pas d'username
 	else if (params == "")
 	{
-		this->replies_.push_back(ERR_NEEDMOREPARAMS(client.getNickname(), "USER"));
+		this->replies_.push_back(ERR_NEEDMOREPARAMS(SERVER_NAME, client.getNickname(), "USER"));
 		this->status_.push_back(STATUS_AUTHFAILED);
 	}
 	

@@ -6,7 +6,7 @@
 /*   By: hepompid <hepompid@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/10 17:30:52 by hepompid          #+#    #+#             */
-/*   Updated: 2025/05/19 18:31:36 by hepompid         ###   ########.fr       */
+/*   Updated: 2025/05/19 19:03:07 by hepompid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ void Server::pong(Client& client, std::string& params)
 {
 	if (params == "")
 	{
-		this->replies_.push_back(ERR_NEEDMOREPARAMS(client.getNickname(), "PONG"));
+		this->replies_.push_back(ERR_NEEDMOREPARAMS(SERVER_NAME, client.getNickname(), "PONG"));
 		this->status_.push_back(STATUS_OK);
 	}
 	else

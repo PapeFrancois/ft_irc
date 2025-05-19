@@ -6,7 +6,7 @@
 /*   By: hepompid <hepompid@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/28 12:05:24 by hepompid          #+#    #+#             */
-/*   Updated: 2025/05/19 18:33:10 by hepompid         ###   ########.fr       */
+/*   Updated: 2025/05/19 19:02:42 by hepompid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,7 @@ void Server::nick(Client& client, std::string& nickname)
 	// si aucun nickname n'est donne lors de l'authentification
 	if (nickname == "" && client.getAuth() == 0)
 	{
-		this->replies_.push_back(ERR_NONICKNAMEGIVEN(client.getNickname()));
+		this->replies_.push_back(ERR_NONICKNAMEGIVEN(SERVER_NAME, client.getNickname()));
 		this->status_.push_back(STATUS_OK);
 	}
 
@@ -74,7 +74,7 @@ void Server::nick(Client& client, std::string& nickname)
 	// si le nickname n'est pas valide
 	else if (validNick(nickname) == false)
 	{
-		this->replies_.push_back(ERR_ERRONEUSNICKNAME(client.getNickname(), nickname));
+		this->replies_.push_back(ERR_ERRONEUSNICKNAME(SERVER_NAME, client.getNickname(), nickname));
 		if (client.getAuth() == 0)
 			this->status_.push_back(STATUS_AUTHFAILED);
 		else
@@ -84,7 +84,7 @@ void Server::nick(Client& client, std::string& nickname)
 	// si le nickname est deja pris
 	else if (uniqueNick(this->fdCli_, nickname) == false)
 	{
-		this->replies_.push_back(ERR_NICKNAMEINUSE(client.getNickname(), nickname));
+		this->replies_.push_back(ERR_NICKNAMEINUSE(SERVER_NAME, client.getNickname(), nickname));
 		if (client.getAuth() == 0)
 			this->status_.push_back(STATUS_AUTHFAILED);
 		else
@@ -97,7 +97,7 @@ void Server::nick(Client& client, std::string& nickname)
 		// changement de nickname post auth
 		if (client.getAuth() == 1)
 		{
-			this->replies_.push_back(NICK_CHANGE(client.getNickname(), nickname));
+			this->replies_.push_back(NICK_CHANGE(SERVER_NAME, client.getNickname(), nickname));
 			this->status_.push_back(STATUS_OK);
 		}
 		

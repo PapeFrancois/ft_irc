@@ -6,7 +6,7 @@
 /*   By: hepompid <hepompid@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/24 12:01:29 by hepompid          #+#    #+#             */
-/*   Updated: 2025/05/15 10:36:03 by hepompid         ###   ########.fr       */
+/*   Updated: 2025/05/19 19:03:50 by hepompid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,7 +109,7 @@ void Server::privmsg(Client& client, std::string& params)
 	// target mais pas de message
 	if (message.empty())
 	{
-		this->replies_.push_back(ERR_NOTEXTTOSEND(client.getNickname()));
+		this->replies_.push_back(ERR_NOTEXTTOSEND(SERVER_NAME, client.getNickname()));
 		this->status_.push_back(STATUS_OK);
 	}
 
@@ -119,7 +119,7 @@ void Server::privmsg(Client& client, std::string& params)
 		// l'user n'existe pas
 		if (this->clients_.find(target) == this->clients_.end())
 		{
-			this->replies_.push_back(ERR_NOSUCHNICK(client.getNickname(), target));
+			this->replies_.push_back(ERR_NOSUCHNICK(SERVER_NAME, client.getNickname(), target));
 			this->status_.push_back(STATUS_OK);
 		}
 		// envoi du message a l'user
@@ -144,7 +144,7 @@ void Server::privmsg(Client& client, std::string& params)
 			&& (this->channels_[target].getIMode() == true
 				|| this->channels_[target].getKey() != ""))
 		{
-			this->replies_.push_back(ERR_CANNOTSENDTOCHAN(client.getNickname(), target));
+			this->replies_.push_back(ERR_CANNOTSENDTOCHAN(SERVER_NAME, client.getNickname(), target));
 			this->status_.push_back(STATUS_OK);
 		}
 	}
