@@ -6,7 +6,7 @@
 /*   By: hepompid <hepompid@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/19 18:29:26 by hepompid          #+#    #+#             */
-/*   Updated: 2025/05/13 19:27:43 by hepompid         ###   ########.fr       */
+/*   Updated: 2025/05/19 18:42:56 by hepompid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,11 +64,9 @@ void Server::manageCommand(Client& client, std::string& command)
 	std::cout << YELLOW << "Params : " << params << RESET << std::endl;
 	std::cout << RED << "auth = " << client.getAuth() << RESET << std::endl;
 
-	if (commandName == "CAP")
-		cap(params);
-	else if (commandName == "PASS")
+	if (commandName == "PASS")
 		pass(client, params);
-	else if (client.getPassOK() == 0)
+	else if (client.getPassOK() == 0 && commandName != "CAP")
 		pass(client, "");
 	else if (commandName == "NICK")
 		nick(client, params);
@@ -130,11 +128,11 @@ void Server::readData(int& senderFd)
 	this->bufferRead_[senderFd] += buffer;
 	if (bytesRead <= 0)
 	{
+		if (bytesRead == 0)
+			std::cout << GREEN << "Client " << senderFd << " disconnected from server" << RESET << std::endl;
 		endConnection(senderFd);
 		if (bytesRead == -1)
 			throw RecvFailed();
-		else if (bytesRead == 0)
-			std::cout << GREEN << "Client " << senderFd << " disconnected from server" << RESET << std::endl;
 		return ;
 	}
 	
@@ -154,9 +152,10 @@ void Server::readData(int& senderFd)
 
 void Server::sendData(int& senderFd)
 {
-	char buffer[BUFFERSIZE + 1];
+	char		buffer[BUFFERSIZE + 1];
+	int			bytesSent;
+	std::string	bufferStr;
 
-	// std::cout << "replies size = " << this->replies_.size() << std::endl;
 	for (size_t i = 0; i < this->replies_.size(); i++)
 	{
 		std::memset(buffer, 0, sizeof(buffer));
@@ -164,7 +163,22 @@ void Server::sendData(int& senderFd)
 		
 		std::cout << CYAN << "Buffer to send" << std::endl << buffer << RESET;
 		
-		if (send(senderFd, buffer, BUFFERSIZE, 0) == -1)
+		bufferStr = buffer;
+		bytesSent = send(senderFd, buffer, bufferStr.length(), 0);
+		
+		for (int i = 0; buffer[i]; i++)
+		{
+			if (buffer[i] == '\r' || buffer[i] == '\n')
+				std::cout << RED << (int)buffer[i] << RESET << " ";
+			else
+				std::cout << (int)buffer[i] << " ";
+		}
+		std::cout << std::endl;
+		
+		std::cout << "bytes sent = " << bytesSent << std::endl;
+		
+
+		if (bytesSent == -1)
 		{
 			endConnection(senderFd);
 			std::cout << RED << "Error: Send failed for fd " << senderFd << RESET << std::endl;
@@ -174,7 +188,7 @@ void Server::sendData(int& senderFd)
 			if (this->status_[i] == STATUS_AUTHFAILED)
 				std::cout << GREEN << "Client " << senderFd << " failed auth" << RESET << std::endl;
 			else
-				std::cout << GREEN << "Client " << this->clients_[senderFd].getNickname() << " left server" << RESET << std::endl;
+				std::cout << GREEN << "Client " << this->fdCli_[senderFd].getNickname() << " left server" << RESET << std::endl;
 			endConnection(senderFd);
 			break;
 		}
@@ -188,7 +202,7 @@ void Server::processData(int& senderFd)
 	parseData(senderFd);
 
 	for (size_t i = 0; i < this->commands_.size(); i++)
-		manageCommand(this->clients_[senderFd], this->commands_[i]);
+		manageCommand(this->fdCli_[senderFd], this->commands_[i]);
 	this->commands_.clear();
 	
 	sendData(senderFd);
