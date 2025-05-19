@@ -9,7 +9,6 @@ SRCS =	Server.cpp \
 		socket.cpp \
 		data.cpp \
 		\
-		cap.cpp \
 		pass.cpp \
 		nick.cpp \
 		user.cpp \
