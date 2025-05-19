@@ -6,7 +6,7 @@
 /*   By: hepompid <hepompid@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/28 12:05:24 by hepompid          #+#    #+#             */
-/*   Updated: 2025/05/15 13:02:37 by hepompid         ###   ########.fr       */
+/*   Updated: 2025/05/19 18:33:10 by hepompid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,9 +97,7 @@ void Server::nick(Client& client, std::string& nickname)
 		// changement de nickname post auth
 		if (client.getAuth() == 1)
 		{
-			// this->replies_.push_back(NICK_CHANGE(client.getNickname(), nickname));
 			this->replies_.push_back(NICK_CHANGE(client.getNickname(), nickname));
-
 			this->status_.push_back(STATUS_OK);
 		}
 		
@@ -108,10 +106,9 @@ void Server::nick(Client& client, std::string& nickname)
 		// si un username est deja rempli, valide l'authentification sauf si on attend cap end
 		if (client.getAuth() == 0 && client.getUsername() != "" && client.getCap() == 0)
 		{
-			std::cout << BLUE << "nick" << RESET << std::endl;
 			client.setAuth(1);
 			this->clients_[client.getNickname()] = client;
-			this->replies_.push_back(RPL_WELCOME(client.getNickname()) + RPL_YOURHOST(client.getNickname(), SERVER_NAME, SERVER_VERSION) + RPL_CREATED(client.getNickname(), CREATION_DAY) + RPL_MYINFO(client.getNickname(), SERVER_NAME, SERVER_VERSION));
+			this->replies_.push_back(RPL_WELCOME(SERVER_NAME, client.getNickname()) + RPL_YOURHOST(SERVER_NAME, client.getNickname(), SERVER_VERSION) + RPL_CREATED(SERVER_NAME, client.getNickname(), CREATION_DAY) + RPL_MYINFO(SERVER_NAME, client.getNickname(), SERVER_VERSION));
 			this->status_.push_back(STATUS_OK);
 		}
 		
