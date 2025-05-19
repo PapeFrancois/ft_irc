@@ -6,7 +6,7 @@
 /*   By: hepompid <hepompid@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/18 19:36:40 by hepompid          #+#    #+#             */
-/*   Updated: 2025/05/14 15:29:08 by hepompid         ###   ########.fr       */
+/*   Updated: 2025/05/19 18:37:18 by hepompid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,6 @@ void Server::endConnection(int& socketFd)
 	this->fdCli_.erase(socketFd);
 	
 	close(socketFd);
-	
 	removeFromPollFds(socketFd);
 }
 
@@ -150,8 +149,8 @@ void Server::launchServer()
 		status = poll(&(this->pollFds_[0]), this->pollFds_.size(), TIMEOUT);
 		if (status == -1)
 			throw PollFailed();
-		else if (status == 0)
-			std::cout << "Waiting..." << std::endl;
+		// else if (status == 0)
+		// 	std::cout << "Waiting..." << std::endl;
 		else
 		{
 			try
