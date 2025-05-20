@@ -6,7 +6,7 @@
 /*   By: hepompid <hepompid@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/19 18:29:26 by hepompid          #+#    #+#             */
-/*   Updated: 2025/05/20 14:47:49 by hepompid         ###   ########.fr       */
+/*   Updated: 2025/05/20 15:05:05 by hepompid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -148,7 +148,7 @@ void Server::readData(int& senderFd)
 	std::cout << "bytes read = " << bytesRead << std::endl;
 }
 
-void Server::sendData(int& senderFd)
+void Server::sendData()
 {
 	char		buffer[BUFFERSIZE + 1];
 	int			bytesSent;
@@ -171,7 +171,7 @@ void Server::sendData(int& senderFd)
 		std::cout << CYAN << "Buffer to send" << std::endl << buffer << RESET;
 		
 		bufferStr = buffer;
-		bytesSent = send(senderFd, buffer, bufferStr.length(), 0);
+		bytesSent = send(this->replies_[i].targetFd, buffer, bufferStr.length(), 0);
 		
 		for (int i = 0; buffer[i]; i++)
 		{
@@ -187,16 +187,16 @@ void Server::sendData(int& senderFd)
 
 		if (bytesSent == -1)
 		{
-			endConnection(senderFd);
-			std::cout << RED << "Error: Send failed for fd " << senderFd << RESET << std::endl;
+			endConnection(this->replies_[i].targetFd);
+			std::cout << RED << "Error: Send failed for fd " << this->replies_[i].targetFd << RESET << std::endl;
 		}
 		if (this->replies_[i].status != STATUS_OK)
 		{
 			if (this->replies_[i].status == STATUS_AUTHFAILED)
-				std::cout << GREEN << "Client " << senderFd << " failed auth" << RESET << std::endl;
+				std::cout << GREEN << "Client " << this->replies_[i].targetFd << " failed auth" << RESET << std::endl;
 			else
-				std::cout << GREEN << "Client " << this->fdCli_[senderFd].getNickname() << " left server" << RESET << std::endl;
-			endConnection(senderFd);
+				std::cout << GREEN << "Client " << this->fdCli_[this->replies_[i].targetFd].getNickname() << " left server" << RESET << std::endl;
+			endConnection(this->replies_[i].targetFd);
 			break;
 		}
 	}
@@ -212,7 +212,7 @@ void Server::processData(int& senderFd)
 		manageCommand(this->fdCli_[senderFd], this->commands_[i]);
 	this->commands_.clear();
 	
-	sendData(senderFd);
+	sendData();
 	this->replies_.clear();
 	// this->status_.clear();
 }
