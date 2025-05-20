@@ -6,7 +6,7 @@
 /*   By: hepompid <hepompid@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/18 16:39:45 by hepompid          #+#    #+#             */
-/*   Updated: 2025/05/20 14:44:27 by hepompid         ###   ########.fr       */
+/*   Updated: 2025/05/20 15:20:39 by hepompid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,13 +63,6 @@ void Server::printClients() const
 void Server::validateAuth(Client& client)
 {
 	client.setAuth(1);
-	// this->replies_.push_back(RPL_WELCOME(SERVER_NAME, client.getNickname()) + RPL_YOURHOST(SERVER_NAME, client.getNickname(), SERVER_VERSION) + RPL_CREATED(SERVER_NAME, client.getNickname(), CREATION_DAY) + RPL_MYINFO(SERVER_NAME, client.getNickname(), SERVER_VERSION));
-	// this->status_.push_back(STATUS_OK);
-	// this->replies_.push_back(RPL_MOTDSTART(SERVER_NAME, client.getNickname()) + RPL_MOTD1(SERVER_NAME, client.getNickname()));
-	// this->status_.push_back(STATUS_OK);
-	// this->replies_.push_back(RPL_MOTD2 + RPL_ENDOFMOTD(SERVER_NAME, client.getNickname()));
-	// this->status_.push_back(STATUS_OK);
-
 	this->replies_.push_back(setReply(RPL_WELCOME(SERVER_NAME, client.getNickname()) + RPL_YOURHOST(SERVER_NAME, client.getNickname(), SERVER_VERSION) + RPL_CREATED(SERVER_NAME, client.getNickname(), CREATION_DAY) + RPL_MYINFO(SERVER_NAME, client.getNickname(), SERVER_VERSION), STATUS_OK, client.getSockFd()));
 	this->replies_.push_back(setReply(RPL_MOTDSTART(SERVER_NAME, client.getNickname()) + RPL_MOTD1(SERVER_NAME, client.getNickname()), STATUS_OK, client.getSockFd()));
 	this->replies_.push_back(setReply(RPL_MOTD2 + RPL_ENDOFMOTD(SERVER_NAME, client.getNickname()), STATUS_OK, client.getSockFd()));

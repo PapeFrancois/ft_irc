@@ -6,7 +6,7 @@
 /*   By: hepompid <hepompid@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/19 18:29:26 by hepompid          #+#    #+#             */
-/*   Updated: 2025/05/20 15:05:05 by hepompid         ###   ########.fr       */
+/*   Updated: 2025/05/20 15:20:18 by hepompid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -214,5 +214,4 @@ void Server::processData(int& senderFd)
 	
 	sendData();
 	this->replies_.clear();
-	// this->status_.clear();
 }
