@@ -6,7 +6,7 @@
 /*   By: hepompid <hepompid@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/25 20:44:43 by hepompid          #+#    #+#             */
-/*   Updated: 2025/05/19 19:07:48 by hepompid         ###   ########.fr       */
+/*   Updated: 2025/05/20 11:37:24 by hepompid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,22 @@ typedef std::string str;
 # define RPL_YOURHOST(name, client, version) (":" + str(name) + " 002 " + str(client) + " :Your host is " + str(name) + ", running in version " + str(version) + "\r\n")
 # define RPL_CREATED(name, client, time) (":" + str(name) + " 003 " + str(client) + " :This server was created " + str(time) + "\r\n")
 # define RPL_MYINFO(name, client, version) (":" + str(name) + " 004 " + str(client) + " :" + str(name) + " " + str(version) + "\r\n")
+
+# define RPL_MOTD1(name, client) (":" + str(name) + " 372 " + str(client) + ":-\n\
+  _          _ _                                                    \n\
+ | |        (_) |                                                   \n\
+ | |__  _ __ _| |_ _ __   ___ _   _   ___ _ __   ___  __ _ _ __ ___ \n\
+ | '_ \\| '__| | __| '_ \\ / _ \\ | | | / __| '_ \\ / _ \\/ _` | '__/ __|\n\
+ | |_) | |  | | |_| | | |  __/ |_| | \\__ \\ |_) |  __/ (_| | |  \\__ \\\n")
+
+ # define RPL_MOTD2 "\
+ |_.__/|_|  |_|\\__|_| |_|\\___|\\__, | |___/ .__/ \\___|\\__,_|_|  |___/\n\
+                               __/ |     | |                        \n\
+                              |___/      |_|                        \r\n"
+
+
+# define RPL_MOTDSTART(name, client) (":" + str(name) + " 375 " + str(client) + " :- " + str(name) + " Message of the day -\r\n")
+# define RPL_ENDOFMOTD(name, client) (":" + str(name) + " 376 " + str(client) + " :End of /MOTD command.\r\n")
 
 # define ERR_NOSUCHNICK(name, client, target) (":" + str(name) + " 401 " + str(client) + " " + str(target) + " :No such nick\r\n")
 # define ERR_CANNOTSENDTOCHAN(name, client, channel) (":" + str(name) + " 404 " + str(client) + " " + str(channel) + " :Cannot send to channel\r\n")

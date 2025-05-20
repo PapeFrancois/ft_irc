@@ -6,7 +6,7 @@
 /*   By: hepompid <hepompid@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/03 19:16:21 by hepompid          #+#    #+#             */
-/*   Updated: 2025/05/19 19:04:06 by hepompid         ###   ########.fr       */
+/*   Updated: 2025/05/20 11:35:39 by hepompid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,9 +44,6 @@ void Server::user(Client& client, std::string& params)
 	// si le client a un nickname, valide l'authentification sauf si on attend capend
 	if (client.getNickname() != "*" && client.getAuth() == 0 && client.getCap() == 0)
 	{
-		client.setAuth(1);
-		this->clients_[client.getNickname()] = client;
-		this->replies_.push_back(RPL_WELCOME(SERVER_NAME, client.getNickname()) + RPL_YOURHOST(SERVER_NAME, client.getNickname(), SERVER_VERSION) + RPL_CREATED(SERVER_NAME, client.getNickname(), CREATION_DAY) + RPL_MYINFO(SERVER_NAME, client.getNickname(), SERVER_VERSION));
-		this->status_.push_back(STATUS_OK);
+		validateAuth(client);
 	}
 }

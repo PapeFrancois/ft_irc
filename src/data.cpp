@@ -6,7 +6,7 @@
 /*   By: hepompid <hepompid@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/19 18:29:26 by hepompid          #+#    #+#             */
-/*   Updated: 2025/05/19 18:42:56 by hepompid         ###   ########.fr       */
+/*   Updated: 2025/05/20 11:32:31 by hepompid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,8 +49,6 @@ std::string Server::extractParams(std::string& command)
 
 	return command.substr(start, end - start);
 }
-
-
 
 void Server::manageCommand(Client& client, std::string& command)
 {
@@ -158,6 +156,15 @@ void Server::sendData(int& senderFd)
 
 	for (size_t i = 0; i < this->replies_.size(); i++)
 	{
+		if (this->replies_[i].length() >= BUFFERSIZE)
+		{
+			this->replies_[i][BUFFERSIZE - 1] = '\r';
+			this->replies_[i][BUFFERSIZE] = '\n';
+			this->replies_[i][BUFFERSIZE + 1] = 0;
+		}
+
+		std::cout << "length reply = " << this->replies_[i].length() << std::endl;
+		
 		std::memset(buffer, 0, sizeof(buffer));
 		std::strcpy(buffer, this->replies_[i].c_str());
 		
