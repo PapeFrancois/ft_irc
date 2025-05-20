@@ -6,7 +6,7 @@
 /*   By: hepompid <hepompid@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/18 19:36:40 by hepompid          #+#    #+#             */
-/*   Updated: 2025/05/19 18:37:18 by hepompid         ###   ########.fr       */
+/*   Updated: 2025/05/20 12:21:00 by hepompid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,6 @@ void Server::acceptNewConnection()
 
 void Server::endConnection(int& socketFd)
 {
-	this->clients_.erase(this->fdCli_[socketFd].getNickname());
 	this->fdCli_.erase(socketFd);
 	
 	close(socketFd);
