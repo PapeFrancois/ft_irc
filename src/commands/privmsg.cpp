@@ -6,7 +6,7 @@
 /*   By: hepompid <hepompid@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/24 12:01:29 by hepompid          #+#    #+#             */
-/*   Updated: 2025/05/20 14:51:36 by hepompid         ###   ########.fr       */
+/*   Updated: 2025/05/20 15:09:32 by hepompid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,8 +99,7 @@ void Server::privmsg(Client& client, std::string& params)
     std::string target;
 	int			targetFd;
     std::string message;
-	std::string	reply;
-    char		buffer[BUFFERSIZE + 1];
+    // char		buffer[BUFFERSIZE + 1];
 
     target = extractTarget(params);
     message = extractMessage(params);
@@ -130,14 +129,17 @@ void Server::privmsg(Client& client, std::string& params)
 		// envoi du message a l'user
 		else
 		{
-			std::memset(buffer, 0, sizeof(buffer));
-			std::strcpy(buffer, PRIVMSG(client.getNickname(), target, message).c_str());
+			// std::memset(buffer, 0, sizeof(buffer));
+			// std::strcpy(buffer, PRIVMSG(client.getNickname(), target, message).c_str());
+			// targetFd = getClientFromNick(target)->getSockFd();
+			// if (send(targetFd, buffer, BUFFERSIZE, 0) == -1)
+			// {
+			// 	endConnection(targetFd);
+			// 	std::cout << RED << "Error: Send failed for fd " << targetFd << RESET << std::endl;
+			// }
+
 			targetFd = getClientFromNick(target)->getSockFd();
-			if (send(targetFd, buffer, BUFFERSIZE, 0) == -1)
-			{
-				endConnection(targetFd);
-				std::cout << RED << "Error: Send failed for fd " << targetFd << RESET << std::endl;
-			}
+			this->replies_.push_back(setReply(PRIVMSG(client.getNickname(), target, message), STATUS_OK, targetFd));
 		}
 	}
 
