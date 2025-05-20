@@ -6,7 +6,7 @@
 /*   By: hepompid <hepompid@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/19 18:29:26 by hepompid          #+#    #+#             */
-/*   Updated: 2025/05/20 11:32:31 by hepompid         ###   ########.fr       */
+/*   Updated: 2025/05/20 14:47:49 by hepompid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,7 +73,7 @@ void Server::manageCommand(Client& client, std::string& command)
 	else if (commandName == "PING")
 		pong(client, params);
 	else if (commandName == "QUIT")
-		quit();
+		quit(client);
 	else if (commandName == "PRIVMSG")
 		privmsg(client, params);
 	else if (commandName == "JOIN")
@@ -156,17 +156,17 @@ void Server::sendData(int& senderFd)
 
 	for (size_t i = 0; i < this->replies_.size(); i++)
 	{
-		if (this->replies_[i].length() >= BUFFERSIZE)
+		if (this->replies_[i].message.length() >= BUFFERSIZE)
 		{
-			this->replies_[i][BUFFERSIZE - 1] = '\r';
-			this->replies_[i][BUFFERSIZE] = '\n';
-			this->replies_[i][BUFFERSIZE + 1] = 0;
+			this->replies_[i].message[BUFFERSIZE - 1] = '\r';
+			this->replies_[i].message[BUFFERSIZE] = '\n';
+			this->replies_[i].message[BUFFERSIZE + 1] = 0;
 		}
 
-		std::cout << "length reply = " << this->replies_[i].length() << std::endl;
+		std::cout << "length reply = " << this->replies_[i].message.length() << std::endl;
 		
 		std::memset(buffer, 0, sizeof(buffer));
-		std::strcpy(buffer, this->replies_[i].c_str());
+		std::strcpy(buffer, this->replies_[i].message.c_str());
 		
 		std::cout << CYAN << "Buffer to send" << std::endl << buffer << RESET;
 		
@@ -190,9 +190,9 @@ void Server::sendData(int& senderFd)
 			endConnection(senderFd);
 			std::cout << RED << "Error: Send failed for fd " << senderFd << RESET << std::endl;
 		}
-		if (this->status_[i] != STATUS_OK)
+		if (this->replies_[i].status != STATUS_OK)
 		{
-			if (this->status_[i] == STATUS_AUTHFAILED)
+			if (this->replies_[i].status == STATUS_AUTHFAILED)
 				std::cout << GREEN << "Client " << senderFd << " failed auth" << RESET << std::endl;
 			else
 				std::cout << GREEN << "Client " << this->fdCli_[senderFd].getNickname() << " left server" << RESET << std::endl;
@@ -214,5 +214,5 @@ void Server::processData(int& senderFd)
 	
 	sendData(senderFd);
 	this->replies_.clear();
-	this->status_.clear();
+	// this->status_.clear();
 }

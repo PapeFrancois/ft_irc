@@ -6,7 +6,7 @@
 /*   By: hepompid <hepompid@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/25 20:44:43 by hepompid          #+#    #+#             */
-/*   Updated: 2025/05/20 11:37:24 by hepompid         ###   ########.fr       */
+/*   Updated: 2025/05/20 14:52:35 by hepompid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ typedef std::string str;
 # define RPL_CREATED(name, client, time) (":" + str(name) + " 003 " + str(client) + " :This server was created " + str(time) + "\r\n")
 # define RPL_MYINFO(name, client, version) (":" + str(name) + " 004 " + str(client) + " :" + str(name) + " " + str(version) + "\r\n")
 
-# define RPL_MOTD1(name, client) (":" + str(name) + " 372 " + str(client) + ":-\n\
+# define RPL_MOTD1(name, client) (":" + str(name) + " 372 " + str(client) + " :-\n\
   _          _ _                                                    \n\
  | |        (_) |                                                   \n\
  | |__  _ __ _| |_ _ __   ___ _   _   ___ _ __   ___  __ _ _ __ ___ \n\
@@ -52,7 +52,8 @@ typedef std::string str;
 
 
 # define PRIVMSG(client, target, message) (":" + str(client) + " PRIVMSG " + str(target) + " :" + str(message) + "\r\n")
-# define QUIT_MSG(client) ("Connection ended from client" + str(client) "\r\n")
+# define QUIT_MSG(client) ("Connection ended from client " + str(client) + "\r\n")
 # define NICK_CHANGE(name, oldNick, newNick) (":" + str(name) + " " + str(oldNick) + " NICK :" + str(newNick) + "\r\n")
+# define PONG_MSG(name) (":" + str(name) + " PONG " + params + "\r\n")
 
 #endif

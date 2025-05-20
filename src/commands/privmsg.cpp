@@ -6,7 +6,7 @@
 /*   By: hepompid <hepompid@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/24 12:01:29 by hepompid          #+#    #+#             */
-/*   Updated: 2025/05/19 19:03:50 by hepompid         ###   ########.fr       */
+/*   Updated: 2025/05/20 14:51:36 by hepompid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,25 +109,30 @@ void Server::privmsg(Client& client, std::string& params)
 	// target mais pas de message
 	if (message.empty())
 	{
-		this->replies_.push_back(ERR_NOTEXTTOSEND(SERVER_NAME, client.getNickname()));
-		this->status_.push_back(STATUS_OK);
+		// this->replies_.push_back(ERR_NOTEXTTOSEND(SERVER_NAME, client.getNickname()));
+		// this->status_.push_back(STATUS_OK);
+		
+		this->replies_.push_back(setReply(ERR_NOTEXTTOSEND(SERVER_NAME, client.getNickname()), STATUS_OK, client.getSockFd()));
 	}
 
 	// target est un user
 	else if (message[0] != '#')
 	{
 		// l'user n'existe pas
-		if (this->clients_.find(target) == this->clients_.end())
+		if (!getClientFromNick(target))
 		{
-			this->replies_.push_back(ERR_NOSUCHNICK(SERVER_NAME, client.getNickname(), target));
-			this->status_.push_back(STATUS_OK);
+			// this->replies_.push_back(ERR_NOSUCHNICK(SERVER_NAME, client.getNickname(), target));
+			// this->status_.push_back(STATUS_OK);
+
+			this->replies_.push_back(setReply(ERR_NOSUCHNICK(SERVER_NAME, client.getNickname(), target), STATUS_OK, client.getSockFd()));
+
 		}
 		// envoi du message a l'user
 		else
 		{
 			std::memset(buffer, 0, sizeof(buffer));
 			std::strcpy(buffer, PRIVMSG(client.getNickname(), target, message).c_str());
-			targetFd = this->clients_[target].getSockFd();
+			targetFd = getClientFromNick(target)->getSockFd();
 			if (send(targetFd, buffer, BUFFERSIZE, 0) == -1)
 			{
 				endConnection(targetFd);
@@ -144,8 +149,10 @@ void Server::privmsg(Client& client, std::string& params)
 			&& (this->channels_[target].getIMode() == true
 				|| this->channels_[target].getKey() != ""))
 		{
-			this->replies_.push_back(ERR_CANNOTSENDTOCHAN(SERVER_NAME, client.getNickname(), target));
-			this->status_.push_back(STATUS_OK);
+			// this->replies_.push_back(ERR_CANNOTSENDTOCHAN(SERVER_NAME, client.getNickname(), target));
+			// this->status_.push_back(STATUS_OK);
+
+			this->replies_.push_back(setReply(ERR_CANNOTSENDTOCHAN(SERVER_NAME, client.getNickname(), target), STATUS_OK, client.getSockFd()));
 		}
 	}
 
