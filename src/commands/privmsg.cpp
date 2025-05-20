@@ -6,7 +6,7 @@
 /*   By: hepompid <hepompid@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/24 12:01:29 by hepompid          #+#    #+#             */
-/*   Updated: 2025/05/20 15:19:35 by hepompid         ###   ########.fr       */
+/*   Updated: 2025/05/20 15:34:51 by hepompid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,8 @@ std::string extractMessage(std::string& params)
 	if (!params[start])
 		return "";
 	while (params[start] == ' ')
+		start++;
+	if (params[start] == ':')
 		start++;
 		
 	end = start;
