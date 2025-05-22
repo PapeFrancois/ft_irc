@@ -6,7 +6,7 @@
 /*   By: hepompid <hepompid@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/25 20:44:43 by hepompid          #+#    #+#             */
-/*   Updated: 2025/05/22 15:56:06 by hepompid         ###   ########.fr       */
+/*   Updated: 2025/05/22 17:51:00 by hepompid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,11 +49,15 @@ typedef std::string str;
 # define ERR_INVITEONLYCHAN(name, client, channel) (":" + str(name) + " 473 " + str(client) + " " + str(channel) + " :Cannot join channel (+i)\r\n")
 # define ERR_BADCHANNELKEY(name, client, channel) (":" + str(name) + " 475 " + str(client) + " " + str(channel) + " :Cannot join channel (+k)\r\n")
 # define ERR_BADCHANMASK(name, channel) (":" + str(name) + " 476 " + str(channel) + " :Bad Channel Mask\r\n")
+# define RPL_NAMREPLY(name, client, channel, members) (":" + str(name) + " 353 " + str(client) + " = " + str(channel) + " :" + str(members) + "\r\n")
+# define RPL_ENDOFNAMES(name, client, channel) (":" + str(name) + " 366 " + str(client) + " " + str(channel) + " :End of /NAMES list.\r\n")
 
 
 # define PRIVMSG(client, target, message) (":" + str(client) + " PRIVMSG " + str(target) + " :" + str(message) + "\r\n")
 # define QUIT_MSG(client) ("Connection ended from client " + str(client) + "\r\n")
 # define NICK_CHANGE(oldNick, newNick) (":" + str(oldNick) + " NICK :" + str(newNick) + "\r\n")
 # define PONG_MSG(name) (":" + str(name) + " PONG " + params + "\r\n")
+# define JOIN_MSG(client, channel) (":" + str(client) + " JOIN :" + str(channel) + "\r\n")
+
 
 #endif

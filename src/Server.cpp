@@ -6,7 +6,7 @@
 /*   By: hepompid <hepompid@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/18 16:39:45 by hepompid          #+#    #+#             */
-/*   Updated: 2025/05/20 15:20:39 by hepompid         ###   ########.fr       */
+/*   Updated: 2025/05/20 16:40:32 by hepompid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,6 +90,20 @@ replies Server::setReply(const std::string& message, const int& status, const in
 	reply.targetFd = targetFd;
 
 	return reply;
+}
+
+void Server::createChannel(const std::string& name, Client* creator)
+{
+	Channel channel(name, creator);
+	
+	this->channels_[name] = channel;
+
+	
+}
+
+void Server::deleteChannel(const std::string& name)
+{
+	this->channels_.erase(name);
 }
 
 

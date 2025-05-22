@@ -6,7 +6,7 @@
 /*   By: hepompid <hepompid@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/29 17:20:07 by hepompid          #+#    #+#             */
-/*   Updated: 2025/05/15 10:18:14 by hepompid         ###   ########.fr       */
+/*   Updated: 2025/05/22 18:03:34 by hepompid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@
 # include <vector>
 
 # include "ansiCodes.hpp"
+# include "Client.hpp"
 
 class Channel
 {
@@ -28,16 +29,16 @@ class Channel
 		int							numberOfMembers_;
 		int							limitOfMembers_;
 		
-		std::vector<std::string>	members_; 		// nick des members
-		std::vector<std::string>	operators_;		// nick des operators
-		std::vector<std::string>	invitedUsers_;	// nick des users
+		std::vector<Client*>	members_;
+		std::vector<Client*>	operators_;
+		std::vector<Client*>	invitedUsers_;
 		
 		bool						iMode_;
 		bool						tMode_;
 		
 	public:
 		Channel();
-		Channel(const std::string& name, const std::string& creator);
+		Channel(const std::string& name, Client* creator);
 		Channel(const Channel &other);
 		~Channel();
 
@@ -45,8 +46,9 @@ class Channel
 
 		const std::string&	getName() const;
 		const std::string&	getTopic() const;
-		const std::string&	getKey() const;
+		const int&			getNumberOfMembers() const;
 		const int&			getLimitOfMembers() const;
+		const std::string&	getKey() const;
 		const bool&			getIMode() const;
 		const bool&			getTMode() const;
 
@@ -55,17 +57,22 @@ class Channel
 		void				setLimitOfMembers(const int& newLimitOfUsers);
 		void				setIMode(const bool& newIMode);
 		void				setTMode(const bool& newTMode);
-
+		
 		void				printMembers() const;
 		void				printOperators() const;
 		void				printInvitedUsers() const;
-
-		void				addMember(const std::string& userNickname);
-		void				removeMember(const std::string& userNickname);
-		void				addOperator(const std::string& userNickname);
-		void				removeOperator(const std::string& userNickname);
-		void				addInvitedUser(const std::string& userNickname);
-		void				removeInvitedUser(const std::string& userNickname);		
+		
+		void				addMember(Client* user);
+		void				removeMember(Client* user);
+		void				addOperator(Client* user);
+		void				removeOperator(Client* user);
+		void				addInvitedUser(Client* user);
+		void				removeInvitedUser(Client* user);
+		
+		bool				userIsInvited(Client* user) const;
+		std::vector<int>	getMembersFd() const;
+		std::string			getMembersNickList() const;
+		bool				isOper(Client* user) const;
 };
 
 #endif
