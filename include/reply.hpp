@@ -6,7 +6,7 @@
 /*   By: hepompid <hepompid@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/25 20:44:43 by hepompid          #+#    #+#             */
-/*   Updated: 2025/05/20 14:52:35 by hepompid         ###   ########.fr       */
+/*   Updated: 2025/05/22 15:56:06 by hepompid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,7 @@ typedef std::string str;
 
 # define PRIVMSG(client, target, message) (":" + str(client) + " PRIVMSG " + str(target) + " :" + str(message) + "\r\n")
 # define QUIT_MSG(client) ("Connection ended from client " + str(client) + "\r\n")
-# define NICK_CHANGE(name, oldNick, newNick) (":" + str(name) + " " + str(oldNick) + " NICK :" + str(newNick) + "\r\n")
+# define NICK_CHANGE(oldNick, newNick) (":" + str(oldNick) + " NICK :" + str(newNick) + "\r\n")
 # define PONG_MSG(name) (":" + str(name) + " PONG " + params + "\r\n")
 
 #endif
