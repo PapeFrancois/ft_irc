@@ -6,7 +6,7 @@
 /*   By: hepompid <hepompid@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/29 17:14:13 by hepompid          #+#    #+#             */
-/*   Updated: 2025/05/22 18:55:29 by hepompid         ###   ########.fr       */
+/*   Updated: 2025/05/22 19:11:01 by hepompid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -118,7 +118,9 @@ void Server::join(Client& client, std::string& params)
 	
 		membersFd = this->channels_[channelName].getMembersFd();
 		for (int i = 0; membersFd[i]; i++)
-		this->replies_.push_back(setReply(JOIN_MSG(client.getNickname(), channelName), STATUS_OK, membersFd[i]));
+			this->replies_.push_back(setReply(JOIN_MSG(client.getNickname(), channelName), STATUS_OK, membersFd[i]));
+		if (this->channels_[channelName].getTopic() != "")
+			this->replies_.push_back(setReply(RPL_TOPIC(SERVER_NAME, client.getNickname(), channelName, this->channels_[channelName].getTopic()), STATUS_OK, client.getSockFd()));
 		this->replies_.push_back(setReply(RPL_NAMREPLY(SERVER_NAME, client.getNickname(), channelName, this->channels_[channelName].getMembersNickList()), STATUS_OK, client.getSockFd()));
 		this->replies_.push_back(setReply(RPL_ENDOFNAMES(SERVER_NAME, client.getNickname(), channelName), STATUS_OK, client.getSockFd()));
 

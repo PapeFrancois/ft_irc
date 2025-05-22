@@ -6,7 +6,7 @@
 /*   By: hepompid <hepompid@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/25 20:44:43 by hepompid          #+#    #+#             */
-/*   Updated: 2025/05/22 17:51:00 by hepompid         ###   ########.fr       */
+/*   Updated: 2025/05/22 19:07:50 by hepompid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,10 @@ typedef std::string str;
 # define RPL_YOURHOST(name, client, version) (":" + str(name) + " 002 " + str(client) + " :Your host is " + str(name) + ", running in version " + str(version) + "\r\n")
 # define RPL_CREATED(name, client, time) (":" + str(name) + " 003 " + str(client) + " :This server was created " + str(time) + "\r\n")
 # define RPL_MYINFO(name, client, version) (":" + str(name) + " 004 " + str(client) + " :" + str(name) + " " + str(version) + "\r\n")
+
+# define RPL_TOPIC(name, client, channel, topic) (":" + str(name) + " 332 " + str(client) + " " + str(channel) + " :" + str(topic) + "\r\n")
+# define RPL_NAMREPLY(name, client, channel, members) (":" + str(name) + " 353 " + str(client) + " = " + str(channel) + " :" + str(members) + "\r\n")
+# define RPL_ENDOFNAMES(name, client, channel) (":" + str(name) + " 366 " + str(client) + " " + str(channel) + " :End of /NAMES list.\r\n")
 
 # define RPL_MOTD1(name, client) (":" + str(name) + " 372 " + str(client) + " :-\n\
   _          _ _                                                    \n\
@@ -49,8 +53,6 @@ typedef std::string str;
 # define ERR_INVITEONLYCHAN(name, client, channel) (":" + str(name) + " 473 " + str(client) + " " + str(channel) + " :Cannot join channel (+i)\r\n")
 # define ERR_BADCHANNELKEY(name, client, channel) (":" + str(name) + " 475 " + str(client) + " " + str(channel) + " :Cannot join channel (+k)\r\n")
 # define ERR_BADCHANMASK(name, channel) (":" + str(name) + " 476 " + str(channel) + " :Bad Channel Mask\r\n")
-# define RPL_NAMREPLY(name, client, channel, members) (":" + str(name) + " 353 " + str(client) + " = " + str(channel) + " :" + str(members) + "\r\n")
-# define RPL_ENDOFNAMES(name, client, channel) (":" + str(name) + " 366 " + str(client) + " " + str(channel) + " :End of /NAMES list.\r\n")
 
 
 # define PRIVMSG(client, target, message) (":" + str(client) + " PRIVMSG " + str(target) + " :" + str(message) + "\r\n")
