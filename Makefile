@@ -16,6 +16,8 @@ SRCS =	Server.cpp \
 		quit.cpp \
 		privmsg.cpp \
 		join.cpp \
+		part.cpp \
+		mode.cpp \
 		\
 		main.cpp
 

@@ -6,7 +6,7 @@
 /*   By: hepompid <hepompid@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/19 18:29:26 by hepompid          #+#    #+#             */
-/*   Updated: 2025/05/20 15:20:18 by hepompid         ###   ########.fr       */
+/*   Updated: 2025/05/23 12:23:47 by hepompid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,6 +78,11 @@ void Server::manageCommand(Client& client, std::string& command)
 		privmsg(client, params);
 	else if (commandName == "JOIN")
 		join(client, params);
+	else if (commandName == "PART")
+		part(client, params);
+	else if (commandName == "MODE")
+		mode(client, params);
+	
 }
 
 void Server::parseData(int& senderFd)

@@ -6,7 +6,7 @@
 /*   By: hepompid <hepompid@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/07 09:58:38 by hepompid          #+#    #+#             */
-/*   Updated: 2025/05/22 18:54:59 by hepompid         ###   ########.fr       */
+/*   Updated: 2025/05/23 14:10:50 by hepompid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -140,14 +140,22 @@ void Channel::addMember(Client* user)
 
 void Channel::removeMember(Client* user)
 {
-	typedef	std::vector<Client*>::iterator it;
+	typedef	std::vector<Client*>::iterator ite;
 	
-	for (it it = this->members_.begin(); it != this->members_.end(); it++)
+	ite	it;
+	
+	it = this->members_.begin();
+	while (it != this->members_.end())
 	{
 		if ((*it)->getNickname() == user->getNickname())
 			this->members_.erase(it);
+		else
+			it++;
 	}
 	this->numberOfMembers_--;
+	
+	if (isOper(user))
+		removeOperator(user);
 }
 
 void Channel::addOperator(Client* user)
@@ -157,12 +165,17 @@ void Channel::addOperator(Client* user)
 
 void Channel::removeOperator(Client* user)
 {
-	typedef	std::vector<Client*>::iterator it;
+	typedef	std::vector<Client*>::iterator ite;
 	
-	for (it it = this->operators_.begin(); it != this->operators_.end(); it++)
+	ite	it;
+
+	it = this->operators_.begin();
+	while (it != this->operators_.end())
 	{
 		if ((*it)->getNickname() == user->getNickname())
 			this->operators_.erase(it);
+		else
+			it++;
 	}
 }
 
@@ -173,12 +186,17 @@ void Channel::addInvitedUser(Client* user)
 
 void Channel::removeInvitedUser(Client* user)
 {
-	typedef	std::vector<Client*>::iterator it;
+	typedef	std::vector<Client*>::iterator ite;
+
+	ite	it;
 	
-	for (it it = this->invitedUsers_.begin(); it != this->invitedUsers_.end(); it++)
+	it = this->invitedUsers_.begin();
+	while (it != this->invitedUsers_.end())
 	{
 		if ((*it)->getNickname() == user->getNickname())
 			this->invitedUsers_.erase(it);
+		else
+			it++;
 	}
 }
 
@@ -223,6 +241,16 @@ bool Channel::isOper(Client* client) const
 	typedef std::vector<Client*>::const_iterator it;
 
 	for (it it = this->operators_.begin(); it != this->operators_.end(); it++)
+		if (*it == client)
+			return true;
+	return false;
+}
+
+bool Channel::isMember(Client* client) const
+{
+	typedef std::vector<Client*>::const_iterator it;
+
+	for (it it = this->members_.begin(); it != this->members_.end(); it++)
 		if (*it == client)
 			return true;
 	return false;

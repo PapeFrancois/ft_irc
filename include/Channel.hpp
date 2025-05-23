@@ -6,7 +6,7 @@
 /*   By: hepompid <hepompid@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/29 17:20:07 by hepompid          #+#    #+#             */
-/*   Updated: 2025/05/22 18:03:34 by hepompid         ###   ########.fr       */
+/*   Updated: 2025/05/22 19:29:47 by hepompid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,6 +73,7 @@ class Channel
 		std::vector<int>	getMembersFd() const;
 		std::string			getMembersNickList() const;
 		bool				isOper(Client* user) const;
+		bool				isMember(Client *user) const;
 };
 
 #endif

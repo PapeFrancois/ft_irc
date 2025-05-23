@@ -6,13 +6,13 @@
 /*   By: hepompid <hepompid@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/29 17:14:13 by hepompid          #+#    #+#             */
-/*   Updated: 2025/05/22 19:11:01 by hepompid         ###   ########.fr       */
+/*   Updated: 2025/05/23 14:13:52 by hepompid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "Server.hpp"
 
-std::string extractChannelName(std::string& params)
+static std::string extractChannelName(std::string& params)
 {
 	int	spacePos;
 
@@ -64,9 +64,18 @@ bool validName(const std::string& name)
 
 void Server::join(Client& client, std::string& params)
 {
+	typedef std::vector<int>::iterator	it;
+	
 	std::string			channelName;
 	std::string			key;
 	std::vector<int>	membersFd;
+
+	// pas de params donnes
+	if (params == "")
+	{
+		this->replies_.push_back(setReply(ERR_NEEDMOREPARAMS(SERVER_NAME, client.getNickname(), "JOIN"), STATUS_OK, client.getSockFd()));
+		return;
+	}
 
 	channelName = extractChannelName(params);
 	key = extractKey(params);
@@ -84,7 +93,7 @@ void Server::join(Client& client, std::string& params)
 	if (this->channels_.find(channelName) == this->channels_.end())
 	{
 		createChannel(channelName, &client);
-		this->replies_.push_back(setReply(JOIN_MSG(client.getNickname(), channelName), STATUS_OK, client.getSockFd()));
+		this->replies_.push_back(setReply(JOIN_MSG(client.getNickname(), client.getUsername(), SERVER_HOST, channelName), STATUS_OK, client.getSockFd()));
 		this->replies_.push_back(setReply(RPL_NAMREPLY(SERVER_NAME, client.getNickname(), channelName, this->channels_[channelName].getMembersNickList()), STATUS_OK, client.getSockFd()));
 		this->replies_.push_back(setReply(RPL_ENDOFNAMES(SERVER_NAME, client.getNickname(), channelName), STATUS_OK, client.getSockFd()));
 	}
@@ -113,16 +122,19 @@ void Server::join(Client& client, std::string& params)
 			return ;
 		}
 
+		// si l'user est invite, le retirer de la liste d'invites
+		if (this->channels_[channelName].getIMode() && this->channels_[channelName].userIsInvited(&client))
+			this->channels_[channelName].removeInvitedUser(&client);
+
 		// l'user rejoint le channel
 		this->channels_[channelName].addMember(&client);
 	
 		membersFd = this->channels_[channelName].getMembersFd();
-		for (int i = 0; membersFd[i]; i++)
-			this->replies_.push_back(setReply(JOIN_MSG(client.getNickname(), channelName), STATUS_OK, membersFd[i]));
+		for (it it = membersFd.begin(); it != membersFd.end(); it++)
+			this->replies_.push_back(setReply(JOIN_MSG(client.getNickname(), client.getUsername(), SERVER_HOST, channelName), STATUS_OK, *it));
 		if (this->channels_[channelName].getTopic() != "")
 			this->replies_.push_back(setReply(RPL_TOPIC(SERVER_NAME, client.getNickname(), channelName, this->channels_[channelName].getTopic()), STATUS_OK, client.getSockFd()));
 		this->replies_.push_back(setReply(RPL_NAMREPLY(SERVER_NAME, client.getNickname(), channelName, this->channels_[channelName].getMembersNickList()), STATUS_OK, client.getSockFd()));
 		this->replies_.push_back(setReply(RPL_ENDOFNAMES(SERVER_NAME, client.getNickname(), channelName), STATUS_OK, client.getSockFd()));
-
 	}
 }
