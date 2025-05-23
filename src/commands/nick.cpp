@@ -6,7 +6,7 @@
 /*   By: hepompid <hepompid@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/28 12:05:24 by hepompid          #+#    #+#             */
-/*   Updated: 2025/05/22 15:56:11 by hepompid         ###   ########.fr       */
+/*   Updated: 2025/05/23 12:27:56 by hepompid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,7 +86,7 @@ void Server::nick(Client& client, std::string& nickname)
 	{
 		// changement de nickname post auth
 		if (client.getAuth() == 1)
-			this->replies_.push_back(setReply(NICK_CHANGE(client.getNickname(), nickname), STATUS_OK, client.getSockFd()));
+			this->replies_.push_back(setReply(NICK_CHANGE(client.getNickname(), client.getUsername(), SERVER_HOST, nickname), STATUS_OK, client.getSockFd()));
 		
 		client.setNickname(nickname);
 		

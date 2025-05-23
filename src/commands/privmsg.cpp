@@ -6,7 +6,7 @@
 /*   By: hepompid <hepompid@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/24 12:01:29 by hepompid          #+#    #+#             */
-/*   Updated: 2025/05/20 15:34:51 by hepompid         ###   ########.fr       */
+/*   Updated: 2025/05/23 12:28:25 by hepompid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -120,7 +120,7 @@ void Server::privmsg(Client& client, std::string& params)
 		else
 		{
 			targetFd = getClientFromNick(target)->getSockFd();
-			this->replies_.push_back(setReply(PRIVMSG(client.getNickname(), target, message), STATUS_OK, targetFd));
+			this->replies_.push_back(setReply(PRIVMSG(client.getNickname(), client.getUsername(), SERVER_HOST, target, message), STATUS_OK, targetFd));
 		}
 	}
 
