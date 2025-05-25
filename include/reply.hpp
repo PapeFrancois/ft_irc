@@ -6,7 +6,7 @@
 /*   By: hepompid <hepompid@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/25 20:44:43 by hepompid          #+#    #+#             */
-/*   Updated: 2025/05/25 12:54:51 by hepompid         ###   ########.fr       */
+/*   Updated: 2025/05/25 15:48:53 by hepompid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ typedef std::string str;
 # define RPL_MYINFO(name, client, version) (":" + str(name) + " 004 " + str(client) + " :" + str(name) + " " + str(version) + "\r\n")
 
 # define RPL_CHANNELMODEIS(name, client, channel, modes) (":" + str(name) + " 324 " + str(client) + " " + str(channel) + " " + str(modes) + "\r\n")
-# define RPL_TOPIC(name, client, channel, topic) (":" + str(name) + " 332 " + str(client) + " " + str(channel) + " :" + str(topic) + "\r\n")
+# define RPL_TOPIC(name, client, channel, topic) (":" + str(name) + " 332 " + str(client) + " " + str(channel) + " " + str(topic) + "\r\n")
 # define RPL_INVITING(name, client, target, channel) (":" + str(name) + " 341 " + str(client) + " " + str(target) + " " + str(channel) + "\r\n")
 # define RPL_NAMREPLY(name, client, channel, members) (":" + str(name) + " 353 " + str(client) + " = " + str(channel) + " :" + str(members) + "\r\n")
 # define RPL_ENDOFNAMES(name, client, channel) (":" + str(name) + " 366 " + str(client) + " " + str(channel) + " :End of /NAMES list.\r\n")
@@ -71,5 +71,10 @@ typedef std::string str;
 # define PART_MSG(client, user, host, channel) (":" + str(client) + "!" + str(user) + "@" + str(host) + " PART " + str(channel) + "\r\n")
 # define KICK_MSG(client, user, host, channel, target, message) (":" + str(client) + "!" + str(user) + "@" + str(host) + " KICK " + str(channel) + " " + str(target) + " " + str(message) + "\r\n")
 # define INVITE_MSG(client, user, host, target, channel) (":" + str(client) + "!" + str(user) + "@" + str(host) + " INVITE " + str(target) + " :" + str(channel) + "\r\n")
+# define TOPIC_MSG(client, user, host, channel, topic) (":" + str(client) + "!" + str(user) + "@" + str(host) + " TOPIC " + str(channel) + " " + str(topic) + "\r\n")
+
+
+# define PRINT_NICK(client, user, host) (":" + str(client) + "!" + str(user) + "@" + str(host) + " NICK :" + str(client) + "\r\n")
+# define PRINT_TOPIC(client, user, host, topic) (":" + str(client) + "!" + str(user) + "@" + str(host) + " TOPIC :" + str(topic) + "\r\n")
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: hepompid <hepompid@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/28 12:05:24 by hepompid          #+#    #+#             */
-/*   Updated: 2025/05/23 12:27:56 by hepompid         ###   ########.fr       */
+/*   Updated: 2025/05/25 15:33:50 by hepompid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,7 @@ void Server::nick(Client& client, std::string& nickname)
 
 	// si commande nick seule et client authentifie
 	else if (nickname == "" && client.getAuth() == 1)
-		this->replies_.push_back(setReply(client.getNickname() + "\r\n", STATUS_OK, client.getSockFd()));
+		this->replies_.push_back(setReply(PRINT_NICK(client.getNickname(), client.getUsername(), SERVER_HOST), STATUS_OK, client.getSockFd()));
 
 	// si le nickname n'est pas valide
 	else if (validNick(nickname) == false)
@@ -94,5 +94,4 @@ void Server::nick(Client& client, std::string& nickname)
 		if (client.getAuth() == 0 && client.getUsername() != "" && client.getCap() == 0)
 			validateAuth(client);
 	}
-
 }

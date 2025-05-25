@@ -20,6 +20,7 @@ SRCS =	Server.cpp \
 		mode.cpp \
 		kick.cpp \
 		invite.cpp \
+		topic.cpp \
 		\
 		main.cpp
 
