@@ -6,7 +6,7 @@
 /*   By: hepompid <hepompid@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/24 12:01:29 by hepompid          #+#    #+#             */
-/*   Updated: 2025/05/25 12:20:46 by hepompid         ###   ########.fr       */
+/*   Updated: 2025/05/25 12:48:09 by hepompid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,8 +93,7 @@ void Server::privmsg(Client& client, std::string& params)
 	// le channel n'existe pas
 	if (this->channels_.find(target) == this->channels_.end())
 	{
-		std::cout << RED_BG << "ici" << RESET << std::endl;
-		this->replies_.push_back(setReply(ERR_NOSUCHNICK(SERVER_NAME, client.getNickname(), target), STATUS_OK, client.getSockFd()));
+		this->replies_.push_back(setReply(ERR_NOSUCHCHANNEL(SERVER_NAME, client.getNickname(), target), STATUS_OK, client.getSockFd()));
 		return;
 	}
 	
