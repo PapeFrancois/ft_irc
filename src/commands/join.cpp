@@ -6,7 +6,7 @@
 /*   By: hepompid <hepompid@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/29 17:14:13 by hepompid          #+#    #+#             */
-/*   Updated: 2025/05/23 14:13:52 by hepompid         ###   ########.fr       */
+/*   Updated: 2025/05/25 11:03:01 by hepompid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -129,9 +129,12 @@ void Server::join(Client& client, std::string& params)
 		// l'user rejoint le channel
 		this->channels_[channelName].addMember(&client);
 	
+		// envoie JOIN_MSG a tous les membres du channel
 		membersFd = this->channels_[channelName].getMembersFd();
 		for (it it = membersFd.begin(); it != membersFd.end(); it++)
 			this->replies_.push_back(setReply(JOIN_MSG(client.getNickname(), client.getUsername(), SERVER_HOST, channelName), STATUS_OK, *it));
+		
+		// envoie les messages relatifs a l'arrivee dans un channel a l'user qui vient de JOIN
 		if (this->channels_[channelName].getTopic() != "")
 			this->replies_.push_back(setReply(RPL_TOPIC(SERVER_NAME, client.getNickname(), channelName, this->channels_[channelName].getTopic()), STATUS_OK, client.getSockFd()));
 		this->replies_.push_back(setReply(RPL_NAMREPLY(SERVER_NAME, client.getNickname(), channelName, this->channels_[channelName].getMembersNickList()), STATUS_OK, client.getSockFd()));
