@@ -6,7 +6,7 @@
 /*   By: hepompid <hepompid@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/18 16:39:45 by hepompid          #+#    #+#             */
-/*   Updated: 2025/05/20 16:40:32 by hepompid         ###   ########.fr       */
+/*   Updated: 2025/05/26 09:58:54 by hepompid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,6 +92,41 @@ replies Server::setReply(const std::string& message, const int& status, const in
 	return reply;
 }
 
+serverOperators Server::setServerOperator(const std::string& name, const std::string& password, const std::string& host)
+{
+	serverOperators	serverOperator;
+
+	serverOperator.name = name;
+	serverOperator.password = password;
+	serverOperator.host = host;
+
+	return serverOperator;
+}
+
+bool Server::hostMatchesUsername(const std::string& username, const std::string& host)
+{
+	typedef std::vector<serverOperators>::iterator	it;
+
+	std::cout << PURPLE_BG << "username = " << username << " host = " << host << RESET << std::endl;
+
+	for (it it = this->serverOperators_.begin(); it != this->serverOperators_.end(); it++)
+		if (it->name == username && it->host == host)
+			return true;
+	return false;
+}
+
+bool Server::passwordMatchesUsername(const std::string& username, const std::string& password)
+{
+	typedef std::vector<serverOperators>::iterator	it;
+
+	std::cout << PURPLE_BG << "username = " << username << " passwd = " << password << RESET << std::endl;
+	
+	for (it it = this->serverOperators_.begin(); it != this->serverOperators_.end(); it++)
+		if (it->name == username && it->password == password)
+			return true;
+	return false;
+}
+
 void Server::createChannel(const std::string& name, Client* creator)
 {
 	Channel channel(name, creator);
@@ -108,6 +143,11 @@ void Server::deleteChannel(const std::string& name)
 
 
 // ######### EXCEPTIONS #########
+
+const char* Server::OpenFailed::what() const throw()
+{
+	return "open failed";
+}
 
 const char* Server::RecvFailed::what() const throw()
 {

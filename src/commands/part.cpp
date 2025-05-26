@@ -6,7 +6,7 @@
 /*   By: hepompid <hepompid@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/22 19:15:10 by hepompid          #+#    #+#             */
-/*   Updated: 2025/05/23 12:30:12 by hepompid         ###   ########.fr       */
+/*   Updated: 2025/05/26 10:12:38 by hepompid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,10 +52,5 @@ void Server::part(Client& client, std::string& channelName)
 	
 	// s'il y a d'autres membres dans le channel
 	else
-	{
-		std::cout << RED_BG << "segfault 1" << RESET << std::endl;
 		this->channels_[channelName].removeMember(&client);
-	}
-
-	std::cout << RED_BG << "segfault fin" << RESET << std::endl;
 }

@@ -6,7 +6,7 @@
 /*   By: hepompid <hepompid@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/18 16:16:31 by hepompid          #+#    #+#             */
-/*   Updated: 2025/05/15 11:58:36 by hepompid         ###   ########.fr       */
+/*   Updated: 2025/05/26 09:37:43 by hepompid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,11 +26,12 @@ class Client
 		int			sockFd_;
 		int			passOK_;
 		int			auth_;
-		bool		cap_;
+		bool		isOper_;
+		std::string	ipAddress_;
 
 	public:
 		Client();
-		Client(const int& sockFd);
+		Client(const int& sockFd, const std::string& ipAddress);
 		Client(const Client& other);
 		~Client();
 
@@ -41,13 +42,15 @@ class Client
 		const int&			getSockFd()		const;
 		const int&			getPassOK() 	const;
 		const int&			getAuth()		const;
-		const bool&			getCap()		const;
+		const bool&			getIsOper()		const;
+		const std::string&	getIpAddress()	const;
+		
 		
 		void				setPassOK(const int& status);
 		void				setNickname(const std::string& newNickname);
 		void				setUsername(const std::string& newUsername);
 		void				setAuth(const int& status);
-		void				setCap(const bool& cap);
+		void				setIsOper(const bool& isOper);
 };
 
 #endif
