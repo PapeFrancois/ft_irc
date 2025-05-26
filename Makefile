@@ -23,6 +23,7 @@ SRCS =	Server.cpp \
 		invite.cpp \
 		topic.cpp \
 		oper.cpp \
+		kill.cpp \
 		\
 		main.cpp
 

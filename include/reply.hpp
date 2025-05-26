@@ -6,7 +6,7 @@
 /*   By: hepompid <hepompid@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/25 20:44:43 by hepompid          #+#    #+#             */
-/*   Updated: 2025/05/26 14:45:39 by hepompid         ###   ########.fr       */
+/*   Updated: 2025/05/26 14:50:14 by hepompid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,6 +62,7 @@ typedef std::string str;
 # define ERR_INVITEONLYCHAN(name, client, channel) (":" + str(name) + " 473 " + str(client) + " " + str(channel) + " :Cannot join channel (+i)\r\n")
 # define ERR_BADCHANNELKEY(name, client, channel) (":" + str(name) + " 475 " + str(client) + " " + str(channel) + " :Cannot join channel (+k)\r\n")
 # define ERR_BADCHANMASK(name, channel) (":" + str(name) + " 476 " + str(channel) + " :Bad Channel Mask\r\n")
+# define ERR_NOPRIVILEGES(name, client) (":" + str(name) + " 481 " + str(client) + " :Permission Denied- You're not an IRC operator\r\n")
 # define ERR_CHANOPRIVSNEEDED(name, client, channel) (":" + str(name) + " 482 " + str(client) + " " + str(channel) + " :You're not channel operator\r\n")
 # define ERR_NOOPERHOST(name, client) (":" + str(name) + " 491 " + str(client) + " :No Oper block for your host\r\n")
 

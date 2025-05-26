@@ -6,7 +6,7 @@
 /*   By: hepompid <hepompid@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/19 18:29:26 by hepompid          #+#    #+#             */
-/*   Updated: 2025/05/26 14:43:19 by hepompid         ###   ########.fr       */
+/*   Updated: 2025/05/26 14:59:28 by hepompid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,6 +90,8 @@ void Server::manageCommand(Client& client, std::string& command)
 		topic(client, params);
 	else if (commandName == "OPER")
 		oper(client, params);
+	else if (commandName == "KILL")
+		kill(client, params);
 		
 }
 
