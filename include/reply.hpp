@@ -6,7 +6,7 @@
 /*   By: hepompid <hepompid@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/25 20:44:43 by hepompid          #+#    #+#             */
-/*   Updated: 2025/05/26 14:50:14 by hepompid         ###   ########.fr       */
+/*   Updated: 2025/05/26 16:37:25 by hepompid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 
 typedef std::string str;
 
-# define RPL_WELCOME(name, client) (":" + str(name) + " 001 " + str(client) + " :Salut ma couille\r\n")
+# define RPL_WELCOME(name, client) (":" + str(name) + " 001 " + str(client) + " :It's britney bitch\r\n")
 # define RPL_YOURHOST(name, client, version) (":" + str(name) + " 002 " + str(client) + " :Your host is " + str(name) + ", running in version " + str(version) + "\r\n")
 # define RPL_CREATED(name, client, time) (":" + str(name) + " 003 " + str(client) + " :This server was created " + str(time) + "\r\n")
 # define RPL_MYINFO(name, client, version) (":" + str(name) + " 004 " + str(client) + " :" + str(name) + " " + str(version) + "\r\n")
@@ -27,21 +27,21 @@ typedef std::string str;
 # define RPL_ENDOFNAMES(name, client, channel) (":" + str(name) + " 366 " + str(client) + " " + str(channel) + " :End of /NAMES list.\r\n")
 # define RPL_ENDOFBANLIST(name, client, channel) (":" + str(name) + " 368 " + str(client) + " " + str(channel) + " :End of Channel Ban List\r\n")
 
-# define RPL_MOTD1(name, client) (":" + str(name) + " 372 " + str(client) + " :-\n\
-  _          _ _                                                    \n\
- | |        (_) |                                                   \n\
- | |__  _ __ _| |_ _ __   ___ _   _   ___ _ __   ___  __ _ _ __ ___ \n\
- | '_ \\| '__| | __| '_ \\ / _ \\ | | | / __| '_ \\ / _ \\/ _` | '__/ __|\n\
- | |_) | |  | | |_| | | |  __/ |_| | \\__ \\ |_) |  __/ (_| | |  \\__ \\\n")
+# define RPL_MOTD1(name, client) (":" + str(name) + " 372 " + str(client) + " :\n\
+-  _          _ _                                                    \n\
+- | |        (_) |                                                   \n\
+- | |__  _ __ _| |_ _ __   ___ _   _   ___ _ __   ___  __ _ _ __ ___ \n\
+- | '_ \\| '__| | __| '_ \\ / _ \\ | | | / __| '_ \\ / _ \\/ _` | '__/ __|\n\
+- | |_) | |  | | |_| | | |  __/ |_| | \\__ \\ |_) |  __/ (_| | |  \\__ \\\n")
 
  # define RPL_MOTD2 "\
- |_.__/|_|  |_|\\__|_| |_|\\___|\\__, | |___/ .__/ \\___|\\__,_|_|  |___/\n\
-                               __/ |     | |                        \n\
-                              |___/      |_|                        \r\n"
+- |_.__/|_|  |_|\\__|_| |_|\\___|\\__, | |___/ .__/ \\___|\\__,_|_|  |___/\n\
+-                               __/ |     | |                        \n\
+-                              |___/      |_|                        \r\n"
 
 
 # define RPL_MOTDSTART(name, client) (":" + str(name) + " 375 " + str(client) + " :- " + str(name) + " Message of the day -\r\n")
-# define RPL_ENDOFMOTD(name, client) (":" + str(name) + " 376 " + str(client) + " :End of /MOTD command.\r\n")
+# define RPL_ENDOFMOTD(name, client) (":" + str(name) + " 376 " + str(client) + " :- End of /MOTD command.\r\n")
 # define RPL_YOUREOPER(name, client) (":" + str(name) + " 381 " + str(client) + " :You are now an IRC operator\r\n")
 
 
