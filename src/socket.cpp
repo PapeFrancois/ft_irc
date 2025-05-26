@@ -6,7 +6,7 @@
 /*   By: hepompid <hepompid@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/18 19:36:40 by hepompid          #+#    #+#             */
-/*   Updated: 2025/05/20 12:21:00 by hepompid         ###   ########.fr       */
+/*   Updated: 2025/05/26 09:57:34 by hepompid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,15 +45,22 @@ void Server::removeFromPollFds(int& socketFd)
 
 void Server::acceptNewConnection()
 {
-	int		clientFd;
+	struct sockaddr_in	clientAddr;
+	socklen_t			clientLen;
+	int					clientFd;
+	std::string			clientIp;
 
-	clientFd = accept(this->serverFd_, NULL, NULL);
+	clientLen = sizeof(clientAddr);
+	clientFd = accept(this->serverFd_, (struct sockaddr *)&clientAddr, &clientLen);
+
+	clientIp = inet_ntoa(clientAddr.sin_addr);
+
 	if (clientFd == -1)
 		throw AcceptFailed();
 		
 	addToPollFds(clientFd);
 	
-	Client	client(clientFd);
+	Client	client(clientFd, clientIp);
 	this->fdCli_[clientFd] = client;
 	
 	std::cout << GREEN "New connection on fd " << clientFd << RESET << std::endl;

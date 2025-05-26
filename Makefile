@@ -6,6 +6,7 @@ SRCS =	Server.cpp \
 		Client.cpp \
 		Channel.cpp \
 		\
+		initOper.cpp \
 		socket.cpp \
 		data.cpp \
 		\
@@ -21,6 +22,7 @@ SRCS =	Server.cpp \
 		kick.cpp \
 		invite.cpp \
 		topic.cpp \
+		oper.cpp \
 		\
 		main.cpp
 

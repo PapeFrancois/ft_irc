@@ -6,7 +6,7 @@
 /*   By: hepompid <hepompid@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/18 16:06:33 by hepompid          #+#    #+#             */
-/*   Updated: 2024/11/19 19:10:37 by hepompid         ###   ########.fr       */
+/*   Updated: 2025/05/25 17:09:16 by hepompid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,10 +50,11 @@ int main(int argc, char** argv)
 	
 	Server server(port, argv[2]);
 
-	// std::cout << server.getPort() << std::endl << server.getPassword() << std::endl;
+	
 
 	try
 	{
+		server.initOperList();
 		server.launchServer();
 	}
 	catch(const std::exception& e)

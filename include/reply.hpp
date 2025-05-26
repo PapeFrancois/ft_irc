@@ -6,7 +6,7 @@
 /*   By: hepompid <hepompid@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/25 20:44:43 by hepompid          #+#    #+#             */
-/*   Updated: 2025/05/25 15:48:53 by hepompid         ###   ########.fr       */
+/*   Updated: 2025/05/26 09:46:40 by hepompid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,7 @@ typedef std::string str;
 
 # define RPL_MOTDSTART(name, client) (":" + str(name) + " 375 " + str(client) + " :- " + str(name) + " Message of the day -\r\n")
 # define RPL_ENDOFMOTD(name, client) (":" + str(name) + " 376 " + str(client) + " :End of /MOTD command.\r\n")
+# define RPL_YOUREOPER(name, client) (":" + str(name) + " 381 " + str(client) + " :You are now an IRC operator\r\n")
 
 # define ERR_NOSUCHNICK(name, client, target) (":" + str(name) + " 401 " + str(client) + " " + str(target) + " :No such nick\r\n")
 # define ERR_NOSUCHCHANNEL(name, client, channel) (":" + str(name) + " 403 " + str(client) + " " + str(channel) + " :No such channel\r\n")
@@ -61,6 +62,8 @@ typedef std::string str;
 # define ERR_BADCHANNELKEY(name, client, channel) (":" + str(name) + " 475 " + str(client) + " " + str(channel) + " :Cannot join channel (+k)\r\n")
 # define ERR_BADCHANMASK(name, channel) (":" + str(name) + " 476 " + str(channel) + " :Bad Channel Mask\r\n")
 # define ERR_CHANOPRIVSNEEDED(name, client, channel) (":" + str(name) + " 482 " + str(client) + " " + str(channel) + " :You're not channel operator\r\n")
+# define ERR_NOOPERHOST(name, client) (":" + str(name) + " 491 " + str(client) + " :No Oper block for your host\r\n")
+
 
 
 # define PRIVMSG(client, user, host, target, message) (":" + str(client) + "!" + str(user) + "@" + str(host) + " PRIVMSG " + str(target) + " :" + str(message) + "\r\n")

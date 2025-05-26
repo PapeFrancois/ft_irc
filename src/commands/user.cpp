@@ -6,7 +6,7 @@
 /*   By: hepompid <hepompid@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/03 19:16:21 by hepompid          #+#    #+#             */
-/*   Updated: 2025/05/20 15:20:07 by hepompid         ###   ########.fr       */
+/*   Updated: 2025/05/25 17:10:05 by hepompid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ void Server::user(Client& client, std::string& params)
 	else
 		client.setUsername(getUsername(params));
 		
-	// si le client a un nickname, valide l'authentification sauf si on attend capend
-	if (client.getNickname() != "*" && client.getAuth() == 0 && client.getCap() == 0)
+	// si le client a un nickname, valide l'authentification
+	if (client.getNickname() != "*" && client.getAuth() == 0)
 		validateAuth(client);
 }

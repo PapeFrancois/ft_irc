@@ -6,7 +6,7 @@
 /*   By: hepompid <hepompid@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/28 12:05:24 by hepompid          #+#    #+#             */
-/*   Updated: 2025/05/25 15:33:50 by hepompid         ###   ########.fr       */
+/*   Updated: 2025/05/25 17:09:55 by hepompid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,6 +54,8 @@ bool uniqueNick(std::map<int, Client>& clients, std::string& nickname)
 
 void Server::nick(Client& client, std::string& nickname)
 {
+	typedef std::map<int, Client>::iterator	it;
+	
 	
 	// si aucun nickname n'est donne lors de l'authentification
 	if (nickname == "" && client.getAuth() == 0)
@@ -86,12 +88,15 @@ void Server::nick(Client& client, std::string& nickname)
 	{
 		// changement de nickname post auth
 		if (client.getAuth() == 1)
-			this->replies_.push_back(setReply(NICK_CHANGE(client.getNickname(), client.getUsername(), SERVER_HOST, nickname), STATUS_OK, client.getSockFd()));
+		{
+			for (it it = fdCli_.begin(); it != fdCli_.end(); it++)
+				this->replies_.push_back(setReply(NICK_CHANGE(client.getNickname(), client.getUsername(), SERVER_HOST, nickname), STATUS_OK, it->first));
+		}
 		
 		client.setNickname(nickname);
 		
-		// si un username est deja rempli, valide l'authentification sauf si on attend cap end
-		if (client.getAuth() == 0 && client.getUsername() != "" && client.getCap() == 0)
+		// si un username est deja rempli, valide l'authentification
+		if (client.getAuth() == 0 && client.getUsername() != "")
 			validateAuth(client);
 	}
 }

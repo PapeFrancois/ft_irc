@@ -6,7 +6,7 @@
 /*   By: hepompid <hepompid@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/19 18:29:26 by hepompid          #+#    #+#             */
-/*   Updated: 2025/05/25 15:44:57 by hepompid         ###   ########.fr       */
+/*   Updated: 2025/05/26 09:49:24 by hepompid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,8 +88,9 @@ void Server::manageCommand(Client& client, std::string& command)
 		invite(client, params);
 	else if (commandName == "TOPIC")
 		topic(client, params);
+	else if (commandName == "OPER")
+		oper(client, params);
 		
-	
 }
 
 void Server::parseData(int& senderFd)
