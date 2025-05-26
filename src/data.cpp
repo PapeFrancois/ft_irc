@@ -6,7 +6,7 @@
 /*   By: hepompid <hepompid@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/19 18:29:26 by hepompid          #+#    #+#             */
-/*   Updated: 2025/05/26 14:59:28 by hepompid         ###   ########.fr       */
+/*   Updated: 2025/05/26 16:24:47 by hepompid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,12 +55,12 @@ void Server::manageCommand(Client& client, std::string& command)
 	std::string	commandName;
 	std::string	params;
 
-	std::cout << YELLOW << "Command parsed : " << command << RESET << std::endl;
+	// std::cout << YELLOW << "Command parsed : " << command << RESET << std::endl;
 	commandName = extractCommandName(command);
-	std::cout << YELLOW << "Command name : " << commandName << RESET << std::endl;
+	// std::cout << YELLOW << "Command name : " << commandName << RESET << std::endl;
 	params = extractParams(command);
-	std::cout << YELLOW << "Params : " << params << RESET << std::endl;
-	std::cout << RED << "auth = " << client.getAuth() << RESET << std::endl;
+	// std::cout << YELLOW << "Params : " << params << RESET << std::endl;
+	// std::cout << RED << "auth = " << client.getAuth() << RESET << std::endl;
 
 	if (commandName == "PASS")
 		pass(client, params);
@@ -149,7 +149,7 @@ void Server::readData(int& senderFd)
 		return ;
 	}
 	
-	std::cout << CYAN << "Buffer received" << std::endl << this->bufferRead_[senderFd] << RESET;
+	std::cout << CYAN << this->bufferRead_[senderFd] << RESET;
 
 	for (int i = 0; this->bufferRead_[senderFd][i]; i++)
 	{
@@ -160,7 +160,7 @@ void Server::readData(int& senderFd)
 	}
 	std::cout << std::endl;
 	
-	std::cout << "bytes read = " << bytesRead << std::endl;
+	std::cout << "bytes read = " << bytesRead << std::endl << std::endl;
 }
 
 void Server::sendData()
@@ -178,13 +178,13 @@ void Server::sendData()
 			this->replies_[i].message[BUFFERSIZE + 1] = 0;
 		}
 
-		std::cout << "length reply = " << this->replies_[i].message.length() << std::endl;
+		// std::cout << "length reply = " << this->replies_[i].message.length() << std::endl;
 		
 		std::memset(buffer, 0, sizeof(buffer));
 		std::strcpy(buffer, this->replies_[i].message.c_str());
 		
-		std::cout << BLUE_BG << "[" << this->replies_[i].targetFd << "]" << RESET << std::endl;
-		std::cout << CYAN << "Buffer to send" << std::endl << buffer << RESET;
+		std::cout << YELLOW_BG << "[" << this->replies_[i].targetFd << "] is going to receive the following buffer" << RESET << std::endl << std::endl;
+		std::cout << CYAN << buffer << RESET;
 		
 		bufferStr = buffer;
 		bytesSent = send(this->replies_[i].targetFd, buffer, bufferStr.length(), 0);
@@ -199,7 +199,7 @@ void Server::sendData()
 		// }
 		// std::cout << std::endl;
 		
-		std::cout << "bytes sent = " << bytesSent << std::endl;
+		std::cout << "bytes sent = " << bytesSent << std::endl << std::endl;
 		
 
 		if (bytesSent == -1)
