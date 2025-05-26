@@ -6,7 +6,7 @@
 /*   By: hepompid <hepompid@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/18 16:39:45 by hepompid          #+#    #+#             */
-/*   Updated: 2025/05/26 09:58:54 by hepompid         ###   ########.fr       */
+/*   Updated: 2025/05/26 15:11:22 by hepompid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,8 +107,6 @@ bool Server::hostMatchesUsername(const std::string& username, const std::string&
 {
 	typedef std::vector<serverOperators>::iterator	it;
 
-	std::cout << PURPLE_BG << "username = " << username << " host = " << host << RESET << std::endl;
-
 	for (it it = this->serverOperators_.begin(); it != this->serverOperators_.end(); it++)
 		if (it->name == username && it->host == host)
 			return true;
@@ -118,8 +116,6 @@ bool Server::hostMatchesUsername(const std::string& username, const std::string&
 bool Server::passwordMatchesUsername(const std::string& username, const std::string& password)
 {
 	typedef std::vector<serverOperators>::iterator	it;
-
-	std::cout << PURPLE_BG << "username = " << username << " passwd = " << password << RESET << std::endl;
 	
 	for (it it = this->serverOperators_.begin(); it != this->serverOperators_.end(); it++)
 		if (it->name == username && it->password == password)

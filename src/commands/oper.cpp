@@ -6,7 +6,7 @@
 /*   By: hepompid <hepompid@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/25 16:13:00 by hepompid          #+#    #+#             */
-/*   Updated: 2025/05/26 10:03:38 by hepompid         ###   ########.fr       */
+/*   Updated: 2025/05/26 15:09:31 by hepompid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,14 +61,14 @@ void Server::oper(Client& client, std::string& params)
 	}
 
 	// pas d'entree associe a ce name, ou mauvais host
-	if (!hostMatchesUsername(client.getUsername(), client.getIpAddress()))
+	if (!hostMatchesUsername(name, client.getIpAddress()))
 	{
 		this->replies_.push_back(setReply(ERR_NOOPERHOST(SERVER_NAME, client.getNickname()), STATUS_OK, client.getSockFd()));
 		return;
 	}
 
 	// mauvais mdp
-	if (!passwordMatchesUsername(client.getUsername(), password))
+	if (!passwordMatchesUsername(name, password))
 	{
 		this->replies_.push_back(setReply(ERR_PASSWDMISMATCH(SERVER_NAME, client.getNickname()), STATUS_OK, client.getSockFd()));
 		return;
