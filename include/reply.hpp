@@ -6,7 +6,7 @@
 /*   By: hepompid <hepompid@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/25 20:44:43 by hepompid          #+#    #+#             */
-/*   Updated: 2025/05/26 09:46:40 by hepompid         ###   ########.fr       */
+/*   Updated: 2025/05/26 14:45:39 by hepompid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,7 @@ typedef std::string str;
 # define RPL_ENDOFMOTD(name, client) (":" + str(name) + " 376 " + str(client) + " :End of /MOTD command.\r\n")
 # define RPL_YOUREOPER(name, client) (":" + str(name) + " 381 " + str(client) + " :You are now an IRC operator\r\n")
 
+
 # define ERR_NOSUCHNICK(name, client, target) (":" + str(name) + " 401 " + str(client) + " " + str(target) + " :No such nick\r\n")
 # define ERR_NOSUCHCHANNEL(name, client, channel) (":" + str(name) + " 403 " + str(client) + " " + str(channel) + " :No such channel\r\n")
 # define ERR_CANNOTSENDTOCHAN(name, client, channel) (":" + str(name) + " 404 " + str(client) + " " + str(channel) + " :Cannot send to channel\r\n")
@@ -65,9 +66,8 @@ typedef std::string str;
 # define ERR_NOOPERHOST(name, client) (":" + str(name) + " 491 " + str(client) + " :No Oper block for your host\r\n")
 
 
-
 # define PRIVMSG(client, user, host, target, message) (":" + str(client) + "!" + str(user) + "@" + str(host) + " PRIVMSG " + str(target) + " :" + str(message) + "\r\n")
-# define QUIT_MSG(client) ("Connection ended from client " + str(client) + "\r\n")
+# define QUIT_MSG(client, user, host, reason) (":" + str(client) + "!" + str(user) + "@" + str(host) + " QUIT " + str(reason) + "\r\n")
 # define NICK_CHANGE(oldNick, user, host, newNick) (":" + str(oldNick) + "!" + str(user) + "@" + str(host) + " NICK :" + str(newNick) + "\r\n")
 # define PONG_MSG(name) (":" + str(name) + " PONG " + params + "\r\n")
 # define JOIN_MSG(client, user, host, channel) (":" + str(client) + "!" + str(user) + "@" + str(host) + " JOIN :" + str(channel) + "\r\n")

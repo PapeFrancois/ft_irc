@@ -6,7 +6,7 @@
 /*   By: hepompid <hepompid@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/19 18:29:26 by hepompid          #+#    #+#             */
-/*   Updated: 2025/05/26 09:49:24 by hepompid         ###   ########.fr       */
+/*   Updated: 2025/05/26 14:43:19 by hepompid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,7 +73,7 @@ void Server::manageCommand(Client& client, std::string& command)
 	else if (commandName == "PING")
 		pong(client, params);
 	else if (commandName == "QUIT")
-		quit(client);
+		quit(client, params);
 	else if (commandName == "PRIVMSG")
 		privmsg(client, params);
 	else if (commandName == "JOIN")
@@ -181,19 +181,21 @@ void Server::sendData()
 		std::memset(buffer, 0, sizeof(buffer));
 		std::strcpy(buffer, this->replies_[i].message.c_str());
 		
+		std::cout << BLUE_BG << "[" << this->replies_[i].targetFd << "]" << RESET << std::endl;
 		std::cout << CYAN << "Buffer to send" << std::endl << buffer << RESET;
 		
 		bufferStr = buffer;
 		bytesSent = send(this->replies_[i].targetFd, buffer, bufferStr.length(), 0);
 		
-		for (int i = 0; buffer[i]; i++)
-		{
-			if (buffer[i] == '\r' || buffer[i] == '\n')
-				std::cout << RED << (int)buffer[i] << RESET << " ";
-			else
-				std::cout << (int)buffer[i] << " ";
-		}
-		std::cout << std::endl;
+		// // afficher le buffer en raw
+		// for (int i = 0; buffer[i]; i++)
+		// {
+		// 	if (buffer[i] == '\r' || buffer[i] == '\n')
+		// 		std::cout << RED << (int)buffer[i] << RESET << " ";
+		// 	else
+		// 		std::cout << (int)buffer[i] << " ";
+		// }
+		// std::cout << std::endl;
 		
 		std::cout << "bytes sent = " << bytesSent << std::endl;
 		
