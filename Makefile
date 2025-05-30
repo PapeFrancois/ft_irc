@@ -28,6 +28,10 @@ SRCS =	Server.cpp \
 		main.cpp
 
 
+# BOT
+SRCS_BOT = bot.cpp
+
+
 ###### VARIABLES ####################################
 
 
@@ -35,7 +39,7 @@ CC = c++
 
 CFLAGS = -Wall -Wextra -Werror -std=c++98 -MMD -Iinclude
 
-VPATH = src/:src/commands/
+VPATH = src/:src/commands/:bot/
 
 BIN = bin
 
@@ -44,6 +48,14 @@ OBJS = $(addprefix $(BIN)/, $(notdir $(SRCS:.cpp=.o)))
 DEPS = $(OBJS:.o=.d)
 
 NAME = ircserv
+
+
+# BOT
+OBJS_BOT = $(addprefix $(BIN)/, $(notdir $(SRCS_BOT:.cpp=.o)))
+
+DEPS_BOT = $(OBJS_BOT:.o=.d)
+
+NAME_BOT = britneyboT
 
 
 ###### RULES #######################################
@@ -68,6 +80,13 @@ fclean: clean
 
 re: fclean all
 
--include $(DEPS)
+
+# BOT
+bot: $(BIN) $(OBJS_BOT)
+	$(CC) $(OBJS_BOT) -o $(NAME_BOT)
+
+
+
+-include $(DEPS) $(DEPS_BOT)
 
 .PHONY: all clean fclean re
