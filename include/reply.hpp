@@ -6,7 +6,7 @@
 /*   By: hepompid <hepompid@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/25 20:44:43 by hepompid          #+#    #+#             */
-/*   Updated: 2025/05/26 16:37:25 by hepompid         ###   ########.fr       */
+/*   Updated: 2025/05/30 14:53:20 by hepompid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,15 +67,16 @@ typedef std::string str;
 # define ERR_NOOPERHOST(name, client) (":" + str(name) + " 491 " + str(client) + " :No Oper block for your host\r\n")
 
 
-# define PRIVMSG(client, user, host, target, message) (":" + str(client) + "!" + str(user) + "@" + str(host) + " PRIVMSG " + str(target) + " :" + str(message) + "\r\n")
+# define PRIVMSG(client, user, host, target, message) (":" + str(client) + "!" + str(user) + "@" + str(host) + " PRIVMSG " + str(target) + " " + str(message) + "\r\n")
 # define QUIT_MSG(client, user, host, reason) (":" + str(client) + "!" + str(user) + "@" + str(host) + " QUIT " + str(reason) + "\r\n")
 # define NICK_CHANGE(oldNick, user, host, newNick) (":" + str(oldNick) + "!" + str(user) + "@" + str(host) + " NICK :" + str(newNick) + "\r\n")
-# define PONG_MSG(name) (":" + str(name) + " PONG " + params + "\r\n")
+# define PONG_MSG(name, token) (":" + str(name) + " PONG " + token + "\r\n")
 # define JOIN_MSG(client, user, host, channel) (":" + str(client) + "!" + str(user) + "@" + str(host) + " JOIN :" + str(channel) + "\r\n")
-# define PART_MSG(client, user, host, channel) (":" + str(client) + "!" + str(user) + "@" + str(host) + " PART " + str(channel) + "\r\n")
+# define PART_MSG(client, user, host, channel, reason) (":" + str(client) + "!" + str(user) + "@" + str(host) + " PART " + str(channel) + " " + reason + "\r\n")
 # define KICK_MSG(client, user, host, channel, target, message) (":" + str(client) + "!" + str(user) + "@" + str(host) + " KICK " + str(channel) + " " + str(target) + " " + str(message) + "\r\n")
 # define INVITE_MSG(client, user, host, target, channel) (":" + str(client) + "!" + str(user) + "@" + str(host) + " INVITE " + str(target) + " :" + str(channel) + "\r\n")
 # define TOPIC_MSG(client, user, host, channel, topic) (":" + str(client) + "!" + str(user) + "@" + str(host) + " TOPIC " + str(channel) + " " + str(topic) + "\r\n")
+# define MODE_MSG(client, user, host, channel, mode) (":" + str(client) + "!" + str(user) + "@" + str(host) + " MODE " + str(channel) + " " + str(mode) + "\r\n")
 
 
 # define PRINT_NICK(client, user, host) (":" + str(client) + "!" + str(user) + "@" + str(host) + " NICK :" + str(client) + "\r\n")

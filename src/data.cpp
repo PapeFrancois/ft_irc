@@ -6,93 +6,89 @@
 /*   By: hepompid <hepompid@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/19 18:29:26 by hepompid          #+#    #+#             */
-/*   Updated: 2025/05/26 16:24:47 by hepompid         ###   ########.fr       */
+/*   Updated: 2025/05/30 14:46:34 by hepompid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "Server.hpp"
 
-std::string Server::extractCommandName(std::string& command)
+std::vector<std::string> parseCommand(std::string& command)
 {
-	int	start;
-	int	end;
-	
-	start = 0;
-	while (command[start] == ' ')
-		start++;
-	
-	end = start;
-	while (command[end] != ' ' && command[end] != '\r')
-		end++;
+	std::vector<std::string>	commandArgs;
+	size_t						start;
+    
+	std::cout << "command = " << command << std::endl;
 
-	return command.substr(start, end - start);
-}
+	for (size_t i = 0; i < command.length(); i++)
+	{
+		while (i < command.length() && command[i] == ' ')
+			i++;
 
-std::string Server::extractParams(std::string& command)
-{
-	int			start;
-	int			end;
-	
-	start = 0;
-	while (command[start] == ' ')
-		start++;
-	while (command[start] != ' ' && command[start] != '\r')
-		start++;
-	if (command[start] == '\r')
-		return "";
-	while (command[start] == ' ')
-		start++;
-		
-	end = start;
-	while (command[end] != '\r')
-		end++;
+		start = i;
+		if (command[start] == ':')
+		{
+			commandArgs.push_back(command.substr(start, command.length() - start - 1));
+			return commandArgs;
+		}
+		while (i < command.length() && command[i] != ' ' && command[i] != '\r')
+			i++;
+		if (start < i)
+			commandArgs.push_back(command.substr(start, i - start));
+	}
 
-	return command.substr(start, end - start);
+    return commandArgs;
 }
 
 void Server::manageCommand(Client& client, std::string& command)
 {
-	std::string	commandName;
-	std::string	params;
 
-	// std::cout << YELLOW << "Command parsed : " << command << RESET << std::endl;
-	commandName = extractCommandName(command);
-	// std::cout << YELLOW << "Command name : " << commandName << RESET << std::endl;
-	params = extractParams(command);
-	// std::cout << YELLOW << "Params : " << params << RESET << std::endl;
-	// std::cout << RED << "auth = " << client.getAuth() << RESET << std::endl;
+	std::vector<std::string>	commandArgs;
+	std::vector<std::string>	emptyPass; // au cas ou le client lance une commande avant PASS
 
-	if (commandName == "PASS")
-		pass(client, params);
-	else if (client.getPassOK() == 0 && commandName != "CAP")
-		pass(client, "");
-	else if (commandName == "NICK")
-		nick(client, params);
-	else if (commandName == "USER")
-		user(client, params);
-	else if (commandName == "PING")
-		pong(client, params);
-	else if (commandName == "QUIT")
-		quit(client, params);
-	else if (commandName == "PRIVMSG")
-		privmsg(client, params);
-	else if (commandName == "JOIN")
-		join(client, params);
-	else if (commandName == "PART")
-		part(client, params);
-	// else if (commandName == "MODE")
+	emptyPass.push_back("PASS");
+	emptyPass.push_back("");
+	commandArgs = parseCommand(command);
+
+	for (std::vector<std::string>::iterator it = commandArgs.begin(); it != commandArgs.end(); it++)
+		std::cout << YELLOW << *it << RESET << std::endl;
+	std::cout << std::endl;
+
+	// commandArgs.at(0) correspond au nom de la commande
+	if (commandArgs.at(0) == "PASS")
+		pass(client, commandArgs);
+	else if (client.getPassOK() == 0 && commandArgs.at(0) != "CAP")
+	{
+		std::cout << "entree avec emptypass" << std::endl;
+		pass(client, emptyPass);
+	}
+	else if (commandArgs.at(0) == "NICK")
+		nick(client, commandArgs);
+	else if (commandArgs.at(0) == "USER")
+		user(client, commandArgs);
+	else if (commandArgs.at(0) == "PING")
+		pong(client, commandArgs);
+	else if (commandArgs.at(0) == "QUIT")
+		quit(client, commandArgs);
+	else if (commandArgs.at(0) == "PRIVMSG")
+		privmsg(client, commandArgs);
+	else if (commandArgs.at(0) == "JOIN")
+		join(client, commandArgs);
+	else if (commandArgs.at(0) == "PART")
+		part(client, commandArgs);
+	// else if (commandArgs.at(0) == "MODE")
 	// 	mode(client, params);
-	else if (commandName == "KICK")
-		kick(client, params);
-	else if (commandName == "INVITE")
-		invite(client, params);
-	else if (commandName == "TOPIC")
-		topic(client, params);
-	else if (commandName == "OPER")
-		oper(client, params);
-	else if (commandName == "KILL")
-		kill(client, params);
+	else if (commandArgs.at(0) == "KICK")
+		kick(client, commandArgs);
+	else if (commandArgs.at(0) == "INVITE")
+		invite(client, commandArgs);
+	else if (commandArgs.at(0) == "TOPIC")
+		topic(client, commandArgs);
+	else if (commandArgs.at(0) == "OPER")
+		oper(client, commandArgs);
+	else if (commandArgs.at(0) == "KILL")
+		kill(client, commandArgs);
 		
+	commandArgs.clear();
 }
 
 void Server::parseData(int& senderFd)

@@ -6,7 +6,7 @@
 /*   By: hepompid <hepompid@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/22 19:15:10 by hepompid          #+#    #+#             */
-/*   Updated: 2025/05/30 12:55:24 by hepompid         ###   ########.fr       */
+/*   Updated: 2025/05/30 14:51:56 by hepompid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ void Server::part(Client& client, std::vector<std::string>& args)
 
 	membersFd = this->channels_[channelName].getMembersFd();
 	for (it it = membersFd.begin(); it != membersFd.end(); it++)
-		this->replies_.push_back(setReply(PART_MSG(client.getNickname(), client.getUsername(), SERVER_HOST, channelName), STATUS_OK, *it));
+		this->replies_.push_back(setReply(PART_MSG(client.getNickname(), client.getUsername(), SERVER_HOST, channelName, reason), STATUS_OK, *it));
 
 	// si le client est le dernier membre du channel
 	if (this->channels_[channelName].getNumberOfMembers() == 1)
