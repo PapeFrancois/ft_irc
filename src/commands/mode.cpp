@@ -6,7 +6,7 @@
 /*   By: hepompid <hepompid@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/23 10:46:08 by hepompid          #+#    #+#             */
-/*   Updated: 2025/05/30 17:58:29 by hepompid         ###   ########.fr       */
+/*   Updated: 2025/05/30 19:06:52 by hepompid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -121,9 +121,6 @@ void Server::mode(Client& client, std::vector<std::string>& args)
 		mode = args.at(2);
 	else
 		mode = "";
-
-	std::cout << PURPLE_BG << "channel name = " << channelName << RESET << std::endl;
-	std::cout << PURPLE_BG << "mode = " << mode << RESET << std::endl;	
 	
 	// soit si le channel n'existe pas, soit si c'est un mode user
 	if (this->channels_.find(channelName) == this->channels_.end())

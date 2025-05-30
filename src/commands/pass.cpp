@@ -6,7 +6,7 @@
 /*   By: hepompid <hepompid@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/25 19:56:31 by hepompid          #+#    #+#             */
-/*   Updated: 2025/05/30 14:39:58 by hepompid         ###   ########.fr       */
+/*   Updated: 2025/05/30 19:07:09 by hepompid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,12 +15,6 @@
 void Server::pass(Client& client, std::vector<std::string>& args)
 {
 	std::string	key;
-
-	// std::cout << PURPLE << args.at(0) << RESET << std::endl;
-
-	for (std::vector<std::string>::iterator it = args.begin(); it != args.end(); it++)
-		std::cout << PURPLE << *it << RESET << std::endl;
-	std::cout << std::endl;
 	
 	// pas de mot de passe donne dans la commande
 	if (args.size() == 1)

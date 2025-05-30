@@ -6,7 +6,7 @@
 /*   By: hepompid <hepompid@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/29 17:14:13 by hepompid          #+#    #+#             */
-/*   Updated: 2025/05/30 12:18:53 by hepompid         ###   ########.fr       */
+/*   Updated: 2025/05/30 19:06:58 by hepompid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,8 +54,6 @@ void Server::join(Client& client, std::vector<std::string>& args)
 		key = args.at(2);
 	else
 		key = "";
-
-	std::cout << PURPLE << "Channel name : " << channelName << std::endl << "Key : " << key << RESET << std::endl;
 
 	// nom de channel invalide
 	if (!validName(channelName))
