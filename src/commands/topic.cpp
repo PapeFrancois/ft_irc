@@ -6,42 +6,13 @@
 /*   By: hepompid <hepompid@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/25 14:54:11 by hepompid          #+#    #+#             */
-/*   Updated: 2025/05/25 15:46:22 by hepompid         ###   ########.fr       */
+/*   Updated: 2025/05/30 12:28:00 by hepompid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "Server.hpp"
 
-static std::string extractChannelName(std::string& params)
-{
-	int	spacePos;
-
-	spacePos = params.find(" ");
-	
-	if (spacePos == -1)
-		return params;
-	else
-		return params.substr(0, spacePos);
-}
-
-static std::string extractNewTopic(std::string& params)
-{
-	int	spacePos;
-
-	spacePos = params.find(" ");
-	
-	if (spacePos == -1)
-		return "";
-		
-	for (int i = spacePos; params[i]; i++)
-	{
-		if (params[i] != ' ')
-			return params.substr(i, params.length() - i);
-	}
-	return "";
-}
-
-void Server::topic(Client& client, std::string& params)
+void Server::topic(Client& client, std::vector<std::string>& args)
 {
 	typedef std::vector<int>::iterator	it;
 
@@ -49,14 +20,17 @@ void Server::topic(Client& client, std::string& params)
 	std::string			newTopic;
 	std::vector<int>	membersFd;
 	
-	if (params == "")
+	if (args.size() < 2)
 	{
 		this->replies_.push_back(setReply(ERR_NEEDMOREPARAMS(SERVER_NAME, client.getNickname(), "TOPIC"), STATUS_OK, client.getSockFd()));
 		return;
 	}
 
-	channelName = extractChannelName(params);
-	newTopic = extractNewTopic(params);
+	channelName = args.at(1);
+	if (args.size() >= 3)
+		newTopic = args.at(2);
+	else
+		newTopic = "";
 
 	// le channel n'existe pas
 	if (this->channels_.find(channelName) == this->channels_.end())

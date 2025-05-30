@@ -6,54 +6,26 @@
 /*   By: hepompid <hepompid@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/26 10:07:48 by hepompid          #+#    #+#             */
-/*   Updated: 2025/05/26 15:03:10 by hepompid         ###   ########.fr       */
+/*   Updated: 2025/05/30 14:04:24 by hepompid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "Server.hpp"
 
-static std::string extractTarget(std::string& params)
+void Server::kill(Client& client, std::vector<std::string>& args)
 {
-	int	spacePos;
-
-	spacePos = params.find(" ");
+	std::string					target;
+	std::string					reason;
+	std::vector<std::string>	quitArgs;
 	
-	if (spacePos == -1)
-		return params;
-	else
-		return params.substr(0, spacePos);
-}
-
-static std::string extractReason(std::string& params)
-{
-	int	spacePos;
-
-	spacePos = params.find(" ");
-	
-	if (spacePos == -1)
-		return "";
-		
-	for (int i = spacePos; params[i]; i++)
-	{
-		if (params[i] != ' ')
-			return params.substr(i, params.length() - i);
-	}
-	return "";
-}
-
-void Server::kill(Client& client, std::string& params)
-{
-	std::string	target;
-	std::string	reason;
-
-	target = extractTarget(params);
-
-	// pas assez de params
-	if (target == "")
+	// pas assez de params, on attend une target
+	if (args.size() < 2)
 	{
 		this->replies_.push_back(setReply(ERR_NEEDMOREPARAMS(SERVER_NAME, client.getNickname(), "KILL"), STATUS_OK, client.getSockFd()));
 		return;
 	}
+	
+	target = args.at(1);
 
 	if (!getClientFromNick(target))
 	{
@@ -68,9 +40,12 @@ void Server::kill(Client& client, std::string& params)
 		return;
 	}
 	
-	reason = extractReason(params);
-	if (reason == "")
+	if (args.size() >= 3)
+	reason = args.at(2);
+	else
 		reason = "killed";
 	
-	quit(*getClientFromNick(target), reason);
+	quitArgs.push_back("QUIT");
+	quitArgs.push_back(reason);
+	quit(*getClientFromNick(target), quitArgs);
 }

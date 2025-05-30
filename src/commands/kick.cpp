@@ -6,40 +6,13 @@
 /*   By: hepompid <hepompid@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/23 18:09:15 by hepompid          #+#    #+#             */
-/*   Updated: 2025/05/25 11:54:01 by hepompid         ###   ########.fr       */
+/*   Updated: 2025/05/30 12:22:33 by hepompid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "Server.hpp"
 
-std::vector<std::string> getKickParams(std::string& params)
-{
-	std::vector<std::string>	kickParams;
-	int							start;
-    
-
-	for (int i = 0; params[i]; i++)
-	{
-		while (params[i] && params[i] == ' ')
-			i++;
-
-		start = i;
-		if (kickParams.size() == 2)
-		{
-			kickParams.push_back(params.substr(start, params.length() - start));
-			break;
-		}
-		while (params[i] && params[i] != ' ')
-			i++;
-
-		if (start < i)
-			kickParams.push_back(params.substr(start, i - start));
-	}
-
-    return kickParams;
-}
-
-void Server::kick(Client& client, std::string& params)
+void Server::kick(Client& client, std::vector<std::string>& args)
 {
 	typedef std::vector<int>::iterator	it;
 
@@ -50,25 +23,23 @@ void Server::kick(Client& client, std::string& params)
 	std::vector<int>			membersFd;
 
 	// pas de parametres donnes
-	if (params == "")
+	if (args.size() == 1)
 	{
 		this->replies_.push_back(setReply(ERR_NEEDMOREPARAMS(SERVER_NAME, client.getNickname(), "KICK"), STATUS_OK, client.getSockFd()));
 		return;
 	}
 
-	kickParams = getKickParams(params);
-
-	// pas assez de parametres donnes
-	if (kickParams.size() <  2)
+	// pas assez de parametres donnes, il faut le nom d'un channel et une target
+	if (args.size() <  3)
 	{
 		this->replies_.push_back(setReply(ERR_NEEDMOREPARAMS(SERVER_NAME, client.getNickname(), "KICK"), STATUS_OK, client.getSockFd()));
 		return;
 	}
 
-	channelName = kickParams.at(0);
-	target = kickParams.at(1);
-	if (kickParams.size() == 3)
-		message = kickParams.at(2);
+	channelName = args.at(1);
+	target = args.at(2);
+	if (args.size() >= 4)
+		message = args.at(3);
 	else
 		message = ":" + client.getNickname();
 

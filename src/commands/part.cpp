@@ -6,25 +6,33 @@
 /*   By: hepompid <hepompid@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/22 19:15:10 by hepompid          #+#    #+#             */
-/*   Updated: 2025/05/26 10:12:38 by hepompid         ###   ########.fr       */
+/*   Updated: 2025/05/30 12:55:24 by hepompid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "Server.hpp"
 
-void Server::part(Client& client, std::string& channelName)
+void Server::part(Client& client, std::vector<std::string>& args)
 {
 	typedef std::vector<int>::iterator	it;
 
 	std::vector<int>	membersFd;
+	std::string			channelName;
+	std::string			reason;
 
 	
 	// pas de channel name donne
-	if (channelName == "")
+	if (args.size() < 2)
 	{
 		this->replies_.push_back(setReply(ERR_NEEDMOREPARAMS(SERVER_NAME, client.getNickname(), "PART"), STATUS_OK, client.getSockFd()));
 		return;
 	}
+
+	channelName = args.at(1);
+	if (args.size() >= 3)
+		reason = args.at(2);
+	else
+		reason = ":bye britney";
 
 	// le channel n'existe pas
 	if (this->channels_.find(channelName) == channels_.end())

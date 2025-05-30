@@ -6,62 +6,26 @@
 /*   By: hepompid <hepompid@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/25 12:30:53 by hepompid          #+#    #+#             */
-/*   Updated: 2025/05/25 13:03:10 by hepompid         ###   ########.fr       */
+/*   Updated: 2025/05/30 12:26:03 by hepompid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "Server.hpp"
 
-static std::string extractTarget(std::string& params)
+void Server::invite(Client& client, std::vector<std::string>& args)
 {
-	int	spacePos;
-
-	spacePos = params.find(" ");
-	
-	if (spacePos == -1)
-		return params;
-	else
-		return params.substr(0, spacePos);
-}
-
-static std::string extractChannelName(std::string& params)
-{
-	int	spacePos;
-
-	spacePos = params.find(" ");
-	
-	if (spacePos == -1)
-		return "";
-		
-	for (int i = spacePos; params[i]; i++)
-	{
-		if (params[i] != ' ')
-			return params.substr(i, params.length() - i);
-	}
-	return "";
-}
-
-void Server::invite(Client& client, std::string& params)
-{
-	std::string	target;
 	std::string channelName;
+	std::string	target;
 
-	// pas de params
-	if (params == "")
+	// pas assez de params, on attend le name d'un channel et une target
+	if (args.size() < 3)
 	{
 		this->replies_.push_back(setReply(ERR_NEEDMOREPARAMS(SERVER_NAME, client.getNickname(), "JOIN"), STATUS_OK, client.getSockFd()));
 		return;
 	}
-
-	target = extractTarget(params);
-	channelName = extractChannelName(params);
-
-	// pas assez de params
-	if (target == "" || channelName == "")
-	{
-		this->replies_.push_back(setReply(ERR_NEEDMOREPARAMS(SERVER_NAME, client.getNickname(), "JOIN"), STATUS_OK, client.getSockFd()));
-		return;
-	}
+	
+	channelName = args.at(1);
+	target = args.at(2);
 
 	// la target n'existe pas
 	if (this->getClientFromNick(target) == NULL)

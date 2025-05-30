@@ -6,53 +6,13 @@
 /*   By: hepompid <hepompid@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/24 12:01:29 by hepompid          #+#    #+#             */
-/*   Updated: 2025/05/25 12:48:09 by hepompid         ###   ########.fr       */
+/*   Updated: 2025/05/30 12:31:39 by hepompid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "Server.hpp"
 
-static std::string extractTarget(std::string& params)
-{
-	int	start;
-	int	end;
-	
-	start = 0;
-	while (params[start] == ' ')
-		start++;
-	
-	end = start;
-	while (params[end] != ' ' && params[end])
-		end++;
-
-	return params.substr(start, end - start);
-}
-
-std::string extractMessage(std::string& params)
-{
-	int			start;
-	int			end;
-	
-	start = 0;
-	while (params[start] == ' ')
-		start++;
-	while (params[start] != ' ' && params[start])
-		start++;
-	if (!params[start])
-		return "";
-	while (params[start] == ' ')
-		start++;
-	if (params[start] == ':')
-		start++;
-		
-	end = start;
-	while (params[end])
-		end++;
-
-	return params.substr(start, end - start);
-}
-
-void Server::privmsg(Client& client, std::string& params)
+void Server::privmsg(Client& client, std::vector<std::string>& args)
 {
 	typedef std::vector<int>::iterator	it;
 
@@ -61,9 +21,18 @@ void Server::privmsg(Client& client, std::string& params)
     std::string 		message;
 	std::vector<int>	membersFd;
 
-    target = extractTarget(params);
-    message = extractMessage(params);
-    std::cout << PURPLE_BG << "target = " << target << ", message = " << message << RESET << std::endl;
+
+	if (args.size() < 2)
+	{
+		this->replies_.push_back(setReply(ERR_NEEDMOREPARAMS(SERVER_NAME, client.getNickname(), "PRIVMSG"), STATUS_OK, client.getSockFd()));
+		return;
+	}
+	
+    target = args.at(1);
+	if (args.size() >= 3)
+    	message = args.at(2);
+	else
+		message = "";
 	
 	// target mais pas de message
 	if (message.empty())

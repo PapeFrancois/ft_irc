@@ -6,7 +6,7 @@
 /*   By: hepompid <hepompid@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/28 12:05:24 by hepompid          #+#    #+#             */
-/*   Updated: 2025/05/25 17:09:55 by hepompid         ###   ########.fr       */
+/*   Updated: 2025/05/30 12:47:02 by hepompid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,10 +52,16 @@ bool uniqueNick(std::map<int, Client>& clients, std::string& nickname)
 	return true;
 }
 
-void Server::nick(Client& client, std::string& nickname)
+void Server::nick(Client& client, std::vector<std::string>& args)
 {
 	typedef std::map<int, Client>::iterator	it;
+
+	std::string	nickname;
 	
+	if (args.size() >= 2)
+		nickname = args.at(1);
+	else
+		nickname = "";
 	
 	// si aucun nickname n'est donne lors de l'authentification
 	if (nickname == "" && client.getAuth() == 0)

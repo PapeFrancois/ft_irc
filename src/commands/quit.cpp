@@ -6,20 +6,26 @@
 /*   By: hepompid <hepompid@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/24 10:46:57 by hepompid          #+#    #+#             */
-/*   Updated: 2025/05/26 15:07:42 by hepompid         ###   ########.fr       */
+/*   Updated: 2025/05/30 14:02:14 by hepompid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "Server.hpp"
 
-void Server::quit(Client& client, std::string& params)
+void Server::quit(Client& client, std::vector<std::string>& args)
 {
 	typedef	std::map<std::string, Channel>::iterator	iter;
 	
-	std::string	reason;
-	iter		it;
-	iter		jt;
+	iter						it;
+	iter						jt;
+	std::string					reason;
+	std::vector<std::string>	partArgs;
 	
+	if (args.size() >= 2)
+		reason = args.at(1);
+	else
+		reason = ":thank you britney";
+
 	it = this->channels_.begin();
 	
 	while (it != this->channels_.end())
@@ -27,15 +33,15 @@ void Server::quit(Client& client, std::string& params)
 		if (it->second.isMember(&client))
 		{
 			jt = it++;
-			part(client, (std::string&)jt->first);
+			partArgs.push_back("PART");
+			partArgs.push_back(jt->first);
+			partArgs.push_back(reason);
+			part(client, partArgs);
 		}
 		else
 			it++;
 	}
 	
-	reason = params;
-	if (reason == "")
-		reason = ":thank you britney";
 
 	for (std::map<int, Client>::iterator it = this->fdCli_.begin(); it != this->fdCli_.end(); it++)
 	{

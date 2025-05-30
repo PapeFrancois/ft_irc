@@ -6,40 +6,11 @@
 /*   By: hepompid <hepompid@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/29 17:14:13 by hepompid          #+#    #+#             */
-/*   Updated: 2025/05/25 11:03:01 by hepompid         ###   ########.fr       */
+/*   Updated: 2025/05/30 12:18:53 by hepompid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "Server.hpp"
-
-static std::string extractChannelName(std::string& params)
-{
-	int	spacePos;
-
-	spacePos = params.find(" ");
-	
-	if (spacePos == -1)
-		return params;
-	else
-		return params.substr(0, spacePos);
-}
-
-std::string extractKey(std::string& params)
-{
-	int	spacePos;
-
-	spacePos = params.find(" ");
-	
-	if (spacePos == -1)
-		return "";
-		
-	for (int i = spacePos; params[i]; i++)
-	{
-		if (params[i] != ' ')
-			return params.substr(i, params.length() - i);
-	}
-	return "";
-}
 
 bool validName(const std::string& name)
 {
@@ -62,7 +33,7 @@ bool validName(const std::string& name)
 	return true;
 }
 
-void Server::join(Client& client, std::string& params)
+void Server::join(Client& client, std::vector<std::string>& args)
 {
 	typedef std::vector<int>::iterator	it;
 	
@@ -71,14 +42,18 @@ void Server::join(Client& client, std::string& params)
 	std::vector<int>	membersFd;
 
 	// pas de params donnes
-	if (params == "")
+	if (args.size() == 1)
 	{
 		this->replies_.push_back(setReply(ERR_NEEDMOREPARAMS(SERVER_NAME, client.getNickname(), "JOIN"), STATUS_OK, client.getSockFd()));
 		return;
 	}
 
-	channelName = extractChannelName(params);
-	key = extractKey(params);
+	channelName = args.at(1);
+
+	if (args.size() > 2)
+		key = args.at(2);
+	else
+		key = "";
 
 	std::cout << PURPLE << "Channel name : " << channelName << std::endl << "Key : " << key << RESET << std::endl;
 
@@ -89,7 +64,7 @@ void Server::join(Client& client, std::string& params)
 		return ;
 	}
 	
-		// le channel n'existe pas
+	// le channel n'existe pas
 	if (this->channels_.find(channelName) == this->channels_.end())
 	{
 		createChannel(channelName, &client);
@@ -116,6 +91,7 @@ void Server::join(Client& client, std::string& params)
 		}
 
 		// si l'user n'est pas invite
+		std::cout << RED_BG << "segfault 1" << RESET << std::endl;
 		if (this->channels_[channelName].getIMode() && !this->channels_[channelName].userIsInvited(&client))
 		{
 			this->replies_.push_back(setReply(ERR_INVITEONLYCHAN(SERVER_NAME, client.getNickname(), channelName), STATUS_OK, client.getSockFd()));
