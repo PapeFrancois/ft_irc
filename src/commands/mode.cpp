@@ -6,102 +6,12 @@
 /*   By: hepompid <hepompid@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/23 10:46:08 by hepompid          #+#    #+#             */
-/*   Updated: 2025/05/27 14:31:23 by hepompid         ###   ########.fr       */
+/*   Updated: 2025/05/30 16:06:01 by hepompid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "Server.hpp"
 
-static std::string extractChannelName(std::string& params)
-{
-	int	spacePos;
-
-	spacePos = params.find(" ");
-	
-	if (spacePos == -1)
-		return params;
-	else
-		return params.substr(0, spacePos);
-}
-
-std::string extractMode(std::string& params)
-{
-	int	spacePos;
-
-	spacePos = params.find(" ");
-	
-	if (spacePos == -1)
-		return "";
-		
-	for (int i = spacePos; params[i]; i++)
-	{
-		if (params[i] != ' ')
-			return params.substr(i, params.length() - i);
-	}
-	return "";
-}
-
-bool	kIsBeforeL(std::string& modeLetters)
-{
-	bool	l;
-
-	l = 0;
-	for (int i = 0; modeLetters[i]; i++)
-	{
-		if (modeLetters[i] == 'l')
-			l = 1;
-		else if (modeLetters[i] == 'k' && l == 1)
-			return false;
-		else if (modeLetters[i] == 'k' && l == 0)
-			return true;
-	}
-	if (l == 1)
-		return false;
-	return true;
-}
-
-std::vector<std::string> getModeParams(std::string& mode)
-{
-	std::vector<std::string>	modeParams;
-	size_t							start;
-    
-
-	for (size_t i = 0; i < mode.length(); i++)
-	{
-		while (i < mode.length() && mode[i] == ' ')
-			i++;
-
-		start = i;
-		while (i < mode.length() && mode[i] != ' ')
-			i++;
-		if (start < i)
-			modeParams.push_back(mode.substr(start, i - start));
-	}
-
-    return modeParams;
-}
-
-std::string getKeyArg(std::vector<std::string>& modeParams)
-{
-	std::string	key;
-	
-	if (kIsBeforeL(modeParams.at(0)) && modeParams.size() >= 2)
-			key = modeParams.at(1);
-		else if (!kIsBeforeL(modeParams.at(0)) && modeParams.size() >= 3)
-			key = modeParams.at(2);
-	return key;
-}
-
-std::string	getLimitArg(std::vector<std::string>& modeParams)
-{
-	std::string	limitOfMembers;
-
-	if (!kIsBeforeL(modeParams.at(0)) && modeParams.size() >= 2)
-		limitOfMembers = modeParams.at(1);
-	else if (kIsBeforeL(modeParams.at(0)) && modeParams.size() >= 3)
-		limitOfMembers = modeParams.at(2);
-	return limitOfMembers;
-}
 
 void iModeManager(Channel& channel, char& sign)
 {
@@ -125,10 +35,7 @@ void tModeManager(Channel& channel, char& sign)
 void kModeManager(Channel& channel, char& sign, std::string& key)
 {
 	if (sign == '+')
-	{
 		channel.setKey(key);
-		
-	}
 	else
 		channel.setKey("");
 }
@@ -150,26 +57,30 @@ void lModeManager(Channel& channel, char& sign, std::string& limitOfMembersStr)
 		channel.setLimitOfMembers(0);
 }
 
-void Server::mode(Client& client, std::string& params)
+void Server::mode(Client& client, std::vector<std::string>& args)
 {
 	std::string					channelName;
 	std::string					mode;
-	std::string					modeList;
-	std::string					modeListSuffix;
-	std::vector<std::string>	modeParams;
-	std::string					modeLetters;
-	std::string					key;
-	std::string					limitOfMembers;
+	std::string					reply;
+	std::string					replySuffix;
 	std::vector<int>			membersFd;
+	size_t						tokenUsed;
+	std::string					key;
+	std::string					limitOfUsers;
+	std::string					chanOpTarget;
+	char						sign;
 
-	if (params == "")
+	if (args.size() < 2)
 	{
 		this->replies_.push_back(setReply(ERR_NEEDMOREPARAMS(SERVER_NAME, client.getNickname(), "MODE"), STATUS_OK, client.getSockFd()));
 		return;
 	}
 
-	channelName = extractChannelName(params);
-	mode = extractMode(params);
+	channelName = args.at(1);
+	if (args.size() >= 3)
+		mode = args.at(2);
+	else
+		mode = "";
 
 	std::cout << PURPLE_BG << "channel name = " << channelName << RESET << std::endl;
 	std::cout << PURPLE_BG << "mode = " << mode << RESET << std::endl;	
@@ -182,24 +93,26 @@ void Server::mode(Client& client, std::string& params)
 	// donne les modes du channel
 	if (mode == "")
 	{
-		modeList = "+";
+		reply = "+";
 		if (this->channels_[channelName].getIMode())
-			modeList += "i";
+			reply += "i";
 		if (this->channels_[channelName].getTMode())
-			modeList += "t";
+			reply += "t";
 		if (this->channels_[channelName].getKey() != "")
-			modeList += "k";
+			reply += "k";
 		if (this->channels_[channelName].getLimitOfMembers() != 0)
-			modeList += "l";
-		modeList += " ";
+			reply += "l";
 		if (this->channels_[channelName].getKey() != "")
-			modeList += this->channels_[channelName].getKey();
+		{			
+			reply += " ";
+			reply += this->channels_[channelName].getKey();
+		}
 		if (this->channels_[channelName].getLimitOfMembers() != 0)
 		{
-			modeList += " ";
-			modeList += this->channels_[channelName].getLimitOfMembers();
+			reply += " ";
+			reply += this->channels_[channelName].getLimitOfMembers();
 		}
-		this->replies_.push_back(setReply(RPL_CHANNELMODEIS(SERVER_NAME, client.getNickname(), channelName, modeList), STATUS_OK, client.getSockFd()));
+		this->replies_.push_back(setReply(RPL_CHANNELMODEIS(SERVER_NAME, client.getNickname(), channelName, reply), STATUS_OK, client.getSockFd()));
 		return;
 	}
 
@@ -213,87 +126,70 @@ void Server::mode(Client& client, std::string& params)
 		return;
 	}
 
-	
-	modeParams = getModeParams(mode);
-	key = getKeyArg(modeParams);
-	limitOfMembers = getLimitArg(modeParams);
-	
-	std::cout << PURPLE_BG << "modeParams = " << RESET << std::endl;	
-	for (std::vector<std::string>::iterator it = modeParams.begin(); it != modeParams.end(); it++)
-		std::cout << *it << std::endl;
-
 	if (mode[0] == '+')
-		modeList = '+';
+	{
+		sign = '+';
+		reply = '+';
+	}
 	else if (mode[0] == '-')
-		modeList = '-';
+	{
+		sign = '-';
+		reply = '-';
+	}
+		
 	else
 		return;
 	
-	modeLetters = modeParams.at(0);
-	std::cout << "mode letters = " << modeLetters << std::endl;
-	if (modeLetters.find('i') != std::string::npos)
+
+	tokenUsed = 0;
+	
+	if (mode.find('i') != std::string::npos)
 	{
 		iModeManager(this->channels_[channelName], mode[0]);
-		modeList += 'i';
+		reply += 'i';
 	}
-	if (modeLetters.find('t') != std::string::npos)
+	if (mode.find('t') != std::string::npos)
 	{
 		tModeManager(this->channels_[channelName], mode[0]);
-		modeList += 't';
+		reply += 't';
 	}
-	if (modeLetters.find('k') != std::string::npos)
+	if (mode.find('k') != std::string::npos && args.size() >= tokenUsed + 2)
 	{
+		key = args.at(tokenUsed + 2);
 		kModeManager(this->channels_[channelName], mode[0], key);
-		modeList += 'k';
-		modeListSuffix += key;
+		reply += 'k';
+		replySuffix += key;
+		tokenUsed++;
 	}
-	if (modeLetters.find('l') != std::string::npos)
+	if (mode.find('l') != std::string::npos && args.size() >= tokenUsed + 2)
 	{
-		lModeManager(this->channels_[channelName], mode[0], limitOfMembers);
-		modeList += 'l';
-		modeListSuffix += limitOfMembers;
+		limitOfUsers = args.at(tokenUsed + 2);
+		lModeManager(this->channels_[channelName], mode[0], limitOfUsers);
+		reply += 'l';
+		replySuffix += limitOfUsers;
+		tokenUsed++;
+	}
+	// if (mode.find('o') != std::string::npos && args.size() >= tokenUsed + 2)
+	// {
+	// 	chanOpTarget = args.at(tokenUsed + 2);
+	// 	oModeManager;
+	// 	tokenUsed++;
+	// }
+
+	if (replySuffix != "")
+	{
+		reply += " ";
+		reply += replySuffix;
 	}
 
-	if (modeListSuffix != "")
-	{
-		modeList += " ";
-		modeList += modeListSuffix;
-	}
-
+	if (reply == "")
+		return;
+	
 	membersFd = this->channels_[channelName].getMembersFd();
 	
 	for (std::vector<int>::iterator it = membersFd.begin(); it != membersFd.end(); it++)
 	{
-		this->replies_.push_back(setReply(MODE_MSG(client.getNickname(), client.getUsername(), SERVER_HOST, channelName, modeList), STATUS_OK, *it));
+		this->replies_.push_back(setReply(MODE_MSG(client.getNickname(), client.getUsername(), SERVER_HOST, channelName, reply), STATUS_OK, *it));
 		
-	}
-	
-
-	// for (int i = 0; mode[i]; i++)
-	// {
-	// 	if (mode[i] == ' ')
-	// 		break;
-	// 	if (mode[i] == 'i')
-	// 	{
-	// 		iModeManager(this->channels_[channelName], mode[0]);
-	// 		modeList += 'i';
-	// 	}
-	// 	else if (mode[i] == 't')
-	// 	{
-	// 		tModeManager(this->channels_[channelName], mode[0]);
-	// 		modeList += 't';
-	// 	}
-	// 	else if (mode[i] ==  'k')
-	// 	{
-	// 		kModeManager(this->channels_[channelName], mode[0], modeParams);
-	// 		modeList += 'k';
-	// 	}
-	// 	else if (mode[i] == 'l')
-	// 	{
-	// 		lModeManager(this->channels_[channelName], mode[0], modeParams);
-	// 		modeList += 'l';
-	// 	}
-	// }
-	
-	
+	}	
 }
