@@ -6,7 +6,7 @@
 /*   By: hepompid <hepompid@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/25 12:30:53 by hepompid          #+#    #+#             */
-/*   Updated: 2025/05/30 12:26:03 by hepompid         ###   ########.fr       */
+/*   Updated: 2025/05/30 18:37:38 by hepompid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,8 @@
 
 void Server::invite(Client& client, std::vector<std::string>& args)
 {
-	std::string channelName;
 	std::string	target;
+	std::string channelName;
 
 	// pas assez de params, on attend le name d'un channel et une target
 	if (args.size() < 3)
@@ -24,8 +24,8 @@ void Server::invite(Client& client, std::vector<std::string>& args)
 		return;
 	}
 	
-	channelName = args.at(1);
-	target = args.at(2);
+	target = args.at(1);
+	channelName = args.at(2);
 
 	// la target n'existe pas
 	if (this->getClientFromNick(target) == NULL)
