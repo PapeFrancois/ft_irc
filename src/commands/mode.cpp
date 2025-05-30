@@ -6,7 +6,7 @@
 /*   By: hepompid <hepompid@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/23 10:46:08 by hepompid          #+#    #+#             */
-/*   Updated: 2025/05/30 16:06:01 by hepompid         ###   ########.fr       */
+/*   Updated: 2025/05/30 16:46:36 by hepompid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,21 +40,25 @@ void kModeManager(Channel& channel, char& sign, std::string& key)
 		channel.setKey("");
 }
 
-void lModeManager(Channel& channel, char& sign, std::string& limitOfMembersStr)
+bool lModeManager(Channel& channel, char& sign, std::string& limitOfMembersStr)
 {
 	int	limitOfMembersInt;
 
-	std::istringstream	iss(limitOfMembersStr);
-
-	iss >> limitOfMembersInt;
-
-	if (iss.fail())
-		return;
-	
-	if (sign == '+')
-		channel.setLimitOfMembers(limitOfMembersInt);
-	else
+	if (sign == '-')
+	{
 		channel.setLimitOfMembers(0);
+		return 1;
+	}
+	
+	std::stringstream	ss(limitOfMembersStr);
+
+	ss >> limitOfMembersInt;
+
+	if (ss.fail())
+		return 0;
+	
+	channel.setLimitOfMembers(limitOfMembersInt);
+	return 1;
 }
 
 void Server::mode(Client& client, std::vector<std::string>& args)
@@ -110,7 +114,11 @@ void Server::mode(Client& client, std::vector<std::string>& args)
 		if (this->channels_[channelName].getLimitOfMembers() != 0)
 		{
 			reply += " ";
-			reply += this->channels_[channelName].getLimitOfMembers();
+
+			std::stringstream ss;
+
+			ss << this->channels_[channelName].getLimitOfMembers();
+			reply += ss.str();
 		}
 		this->replies_.push_back(setReply(RPL_CHANNELMODEIS(SERVER_NAME, client.getNickname(), channelName, reply), STATUS_OK, client.getSockFd()));
 		return;
@@ -153,34 +161,44 @@ void Server::mode(Client& client, std::vector<std::string>& args)
 		tModeManager(this->channels_[channelName], mode[0]);
 		reply += 't';
 	}
-	if (mode.find('k') != std::string::npos && args.size() >= tokenUsed + 2)
+	if (mode.find('k') != std::string::npos)
 	{
-		key = args.at(tokenUsed + 2);
+		if (args.size() > tokenUsed + 3 && sign == '+')
+			key = args.at(tokenUsed + 3);
 		kModeManager(this->channels_[channelName], mode[0], key);
 		reply += 'k';
-		replySuffix += key;
-		tokenUsed++;
+		if (sign == '+')
+		{
+			replySuffix += ' ';
+			replySuffix += key;
+			tokenUsed++;
+		}
 	}
-	if (mode.find('l') != std::string::npos && args.size() >= tokenUsed + 2)
+	if (mode.find('l') != std::string::npos)
 	{
-		limitOfUsers = args.at(tokenUsed + 2);
-		lModeManager(this->channels_[channelName], mode[0], limitOfUsers);
-		reply += 'l';
-		replySuffix += limitOfUsers;
-		tokenUsed++;
+		if (args.size() > tokenUsed + 3 && sign == '+')
+			limitOfUsers = args.at(tokenUsed + 3);
+			
+		
+		bool status = lModeManager(this->channels_[channelName], mode[0], limitOfUsers);
+		if (status)
+			reply += 'l';
+		if (sign == '+' && status)
+		{
+			replySuffix += ' ';
+			replySuffix += limitOfUsers;
+			tokenUsed++;
+		}
 	}
-	// if (mode.find('o') != std::string::npos && args.size() >= tokenUsed + 2)
+	// if (mode.find('o') != std::string::npos && args.size() >= tokenUsed + 3)
 	// {
-	// 	chanOpTarget = args.at(tokenUsed + 2);
+	// 	chanOpTarget = args.at(tokenUsed + 3);
 	// 	oModeManager;
 	// 	tokenUsed++;
 	// }
 
 	if (replySuffix != "")
-	{
-		reply += " ";
 		reply += replySuffix;
-	}
 
 	if (reply == "")
 		return;
