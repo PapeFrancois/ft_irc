@@ -6,12 +6,28 @@
 /*   By: hepompid <hepompid@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/23 10:46:08 by hepompid          #+#    #+#             */
-/*   Updated: 2025/05/30 16:46:36 by hepompid         ###   ########.fr       */
+/*   Updated: 2025/05/30 17:03:58 by hepompid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "Server.hpp"
 
+size_t tokenPos(std::string& mode, char option)
+{
+	int	tokenPos;
+
+	// debut des token en pos 3 (command name, channel name, mode options)
+	tokenPos = 3;
+
+	for (int i = 0; mode[i]; i++)
+	{
+		if (mode[i] == option)
+			return tokenPos;
+		if (mode[i] == 'k' || mode[i] == 'l' || mode[i] == 'o')
+			tokenPos++;
+	}
+	return tokenPos;
+}
 
 void iModeManager(Channel& channel, char& sign)
 {
@@ -68,7 +84,6 @@ void Server::mode(Client& client, std::vector<std::string>& args)
 	std::string					reply;
 	std::string					replySuffix;
 	std::vector<int>			membersFd;
-	size_t						tokenUsed;
 	std::string					key;
 	std::string					limitOfUsers;
 	std::string					chanOpTarget;
@@ -144,12 +159,8 @@ void Server::mode(Client& client, std::vector<std::string>& args)
 		sign = '-';
 		reply = '-';
 	}
-		
 	else
 		return;
-	
-
-	tokenUsed = 0;
 	
 	if (mode.find('i') != std::string::npos)
 	{
@@ -163,21 +174,20 @@ void Server::mode(Client& client, std::vector<std::string>& args)
 	}
 	if (mode.find('k') != std::string::npos)
 	{
-		if (args.size() > tokenUsed + 3 && sign == '+')
-			key = args.at(tokenUsed + 3);
+		if (args.size() > tokenPos(mode, 'k') && sign == '+')
+			key = args.at(tokenPos(mode, 'k'));
 		kModeManager(this->channels_[channelName], mode[0], key);
 		reply += 'k';
 		if (sign == '+')
 		{
 			replySuffix += ' ';
 			replySuffix += key;
-			tokenUsed++;
 		}
 	}
 	if (mode.find('l') != std::string::npos)
 	{
-		if (args.size() > tokenUsed + 3 && sign == '+')
-			limitOfUsers = args.at(tokenUsed + 3);
+		if (args.size() > tokenPos(mode, 'l') && sign == '+')
+			limitOfUsers = args.at(tokenPos(mode, 'l'));
 			
 		
 		bool status = lModeManager(this->channels_[channelName], mode[0], limitOfUsers);
@@ -187,7 +197,6 @@ void Server::mode(Client& client, std::vector<std::string>& args)
 		{
 			replySuffix += ' ';
 			replySuffix += limitOfUsers;
-			tokenUsed++;
 		}
 	}
 	// if (mode.find('o') != std::string::npos && args.size() >= tokenUsed + 3)
