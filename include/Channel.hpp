@@ -6,7 +6,7 @@
 /*   By: hepompid <hepompid@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/29 17:20:07 by hepompid          #+#    #+#             */
-/*   Updated: 2025/05/22 19:29:47 by hepompid         ###   ########.fr       */
+/*   Updated: 2025/05/30 16:04:48 by hepompid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,11 +23,11 @@
 class Channel
 {
 	private:
-		const std::string 			name_;
-		std::string 				topic_;
-		std::string					key_;
-		int							numberOfMembers_;
-		int							limitOfMembers_;
+		const std::string 		name_;
+		std::string 			topic_;
+		std::string				key_;
+		int						numberOfMembers_;
+		int						limitOfMembers_;
 		
 		std::vector<Client*>	members_;
 		std::vector<Client*>	operators_;
@@ -68,6 +68,7 @@ class Channel
 		void				removeOperator(Client* user);
 		void				addInvitedUser(Client* user);
 		void				removeInvitedUser(Client* user);
+		void				clearInvitedUsers();
 		
 		bool				userIsInvited(Client* user) const;
 		std::vector<int>	getMembersFd() const;

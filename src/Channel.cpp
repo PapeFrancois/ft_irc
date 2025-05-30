@@ -6,7 +6,7 @@
 /*   By: hepompid <hepompid@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/07 09:58:38 by hepompid          #+#    #+#             */
-/*   Updated: 2025/05/23 14:10:50 by hepompid         ###   ########.fr       */
+/*   Updated: 2025/05/30 16:05:12 by hepompid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -200,11 +200,18 @@ void Channel::removeInvitedUser(Client* user)
 	}
 }
 
+void Channel::clearInvitedUsers()
+{
+	this->invitedUsers_.clear();
+}
+
 bool Channel::userIsInvited(Client* user) const
 {
-	for (int i = 0; this->invitedUsers_[i]; i++)
+	typedef std::vector<Client*>::const_iterator	it;
+	
+	for (it it = this->invitedUsers_.begin(); it != this->invitedUsers_.end(); it++)
 	{
-		if (this->invitedUsers_[i] == user)
+		if (*it == user)
 			return true;
 	}
 	return false;

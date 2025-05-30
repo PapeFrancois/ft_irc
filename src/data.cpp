@@ -6,7 +6,7 @@
 /*   By: hepompid <hepompid@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/19 18:29:26 by hepompid          #+#    #+#             */
-/*   Updated: 2025/05/30 14:46:34 by hepompid         ###   ########.fr       */
+/*   Updated: 2025/05/30 17:58:25 by hepompid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,8 +75,8 @@ void Server::manageCommand(Client& client, std::string& command)
 		join(client, commandArgs);
 	else if (commandArgs.at(0) == "PART")
 		part(client, commandArgs);
-	// else if (commandArgs.at(0) == "MODE")
-	// 	mode(client, params);
+	else if (commandArgs.at(0) == "MODE")
+		mode(client, commandArgs);
 	else if (commandArgs.at(0) == "KICK")
 		kick(client, commandArgs);
 	else if (commandArgs.at(0) == "INVITE")
