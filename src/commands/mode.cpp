@@ -6,7 +6,7 @@
 /*   By: hepompid <hepompid@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/23 10:46:08 by hepompid          #+#    #+#             */
-/*   Updated: 2025/05/30 17:03:58 by hepompid         ###   ########.fr       */
+/*   Updated: 2025/05/30 17:58:29 by hepompid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,6 +75,27 @@ bool lModeManager(Channel& channel, char& sign, std::string& limitOfMembersStr)
 	
 	channel.setLimitOfMembers(limitOfMembersInt);
 	return 1;
+}
+
+bool oModeManager(Channel& channel, char& sign, Client* target)
+{
+	if (!channel.isMember(target))
+		return 0;
+	
+	if (sign == '+')
+	{
+		if (channel.isOper(target))
+			return 0;
+		channel.addOperator(target);
+		return 1;
+	}
+	else
+	{
+		if (!channel.isOper(target))
+			return 0;
+		channel.removeOperator(target);
+		return 1;
+	}
 }
 
 void Server::mode(Client& client, std::vector<std::string>& args)
@@ -199,12 +220,19 @@ void Server::mode(Client& client, std::vector<std::string>& args)
 			replySuffix += limitOfUsers;
 		}
 	}
-	// if (mode.find('o') != std::string::npos && args.size() >= tokenUsed + 3)
-	// {
-	// 	chanOpTarget = args.at(tokenUsed + 3);
-	// 	oModeManager;
-	// 	tokenUsed++;
-	// }
+	if (mode.find('o') != std::string::npos)
+	{
+		if (args.size() > tokenPos(mode, 'o'))
+			chanOpTarget = args.at(tokenPos(mode, 'o'));
+
+		bool status = oModeManager(this->channels_[channelName], sign, this->getClientFromNick(chanOpTarget));
+		if (status)
+		{
+			reply += 'o';
+			replySuffix += ' ';
+			replySuffix += chanOpTarget;
+		}
+	}
 
 	if (replySuffix != "")
 		reply += replySuffix;
