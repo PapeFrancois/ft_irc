@@ -6,7 +6,7 @@
 /*   By: hepompid <hepompid@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/18 16:08:53 by hepompid          #+#    #+#             */
-/*   Updated: 2025/05/30 14:01:13 by hepompid         ###   ########.fr       */
+/*   Updated: 2025/05/30 19:04:09 by hepompid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,42 +84,42 @@ class Server
 
 
 		void			acceptNewConnection();
-		void			addToPollFds(int& socketFd);
+		void			addToPollFds(const int& socketFd);
 		void			createServerSocket();
-		void			endConnection(int& socketFd);
+		void			endConnection(const int& socketFd);
 		void			pollEvent();
-		void			removeFromPollFds(int& socketFd);
+		void			removeFromPollFds(const int& socketFd);
 		
-		std::string		extractCommandName(std::string& command);
-		std::string		extractParams(std::string& command);
-		void			manageCommand(Client& client, std::string& command);
-		void			parseData(int& senderFd);
-		void			processData(int& senderFd);
-		void			readData(int& senderFd);
-		void			sendData();
-		replies			setReply(const std::string& message, const int& status, const int& targetFd);
+		typedef std::vector<std::string> vec;
+		void	manageCommand(Client& client, const std::string& command);
+		vec		parseCommand(const std::string& command) const;
+		void	parseData(const int& senderFd);
+		void	processData(const int& senderFd);
+		void	readData(const int& senderFd);
+		void	sendData();
+		replies	setReply(const std::string& message, const int& status, const int& targetFd);
 		
+		bool			hostMatchesUsername(const std::string& username, const std::string& host) 			const;
+		bool			passwordMatchesUsername(const std::string& username, const std::string& password)	const;
 		serverOperators	setServerOperator(const std::string& name, const std::string& password, const std::string& host);
-		bool			hostMatchesUsername(const std::string& username, const std::string& host);
-		bool			passwordMatchesUsername(const std::string& username, const std::string& password);
 
-		void			pass(Client& client, std::vector<std::string>& args);
-		void			nick(Client& client, std::vector<std::string>& args);
-		void			user(Client& client, std::vector<std::string>& args);
-		void			pong(Client& client, std::vector<std::string>& args);
-		void			quit(Client& client, std::vector<std::string>& args);
-		void			join(Client& client, std::vector<std::string>& args);
-		void			part(Client& client, std::vector<std::string>& args);
-		void			mode(Client& client, std::vector<std::string>& args);
-		void			kick(Client& client, std::vector<std::string>& args);
 		void			invite(Client& client, std::vector<std::string>& args);
-		void			topic(Client& client, std::vector<std::string>& args);
-		void			privmsg(Client& client, std::vector<std::string>& args);
-		void			oper(Client& client, std::vector<std::string>& args);
+		void			join(Client& client, std::vector<std::string>& args);
+		void			kick(Client& client, std::vector<std::string>& args);
 		void			kill(Client& client, std::vector<std::string>& args);
+		void			mode(Client& client, std::vector<std::string>& args);
+		void			nick(Client& client, std::vector<std::string>& args);
+		void			oper(Client& client, std::vector<std::string>& args);
+		void			part(Client& client, std::vector<std::string>& args);
+		void			pass(Client& client, std::vector<std::string>& args);
+		void			pong(Client& client, std::vector<std::string>& args);
+		void			privmsg(Client& client, std::vector<std::string>& args);
+		void			quit(Client& client, std::vector<std::string>& args);
+		void			topic(Client& client, std::vector<std::string>& args);
+		void			user(Client& client, std::vector<std::string>& args);
 		
-		void			validateAuth(Client& client);
 		Client*			getClientFromNick(const std::string& nickname);
+		void			validateAuth(Client& client);
 		
 		void			createChannel(const std::string& name, Client* creator);
 		void			deleteChannel(const std::string& name);
@@ -133,10 +133,10 @@ class Server
 		
 		Server&	operator = (const Server& other);
 
-		const std::string&	getPassword() const;
-		const int&			getPort() const;
+		const std::string&	getPassword()	const;
+		const int&			getPort()		const;
 		
-		void				printClients() const;
+		void				printClients()	const;
 
 		void				initOperList();
 		void				launchServer();

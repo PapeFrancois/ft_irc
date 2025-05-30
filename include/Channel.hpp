@@ -6,7 +6,7 @@
 /*   By: hepompid <hepompid@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/29 17:20:07 by hepompid          #+#    #+#             */
-/*   Updated: 2025/05/30 16:04:48 by hepompid         ###   ########.fr       */
+/*   Updated: 2025/05/30 18:52:27 by hepompid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,8 +33,8 @@ class Channel
 		std::vector<Client*>	operators_;
 		std::vector<Client*>	invitedUsers_;
 		
-		bool						iMode_;
-		bool						tMode_;
+		bool					iMode_;
+		bool					tMode_;
 		
 	public:
 		Channel();
@@ -44,13 +44,13 @@ class Channel
 
 		Channel& operator = (const Channel& other);
 
-		const std::string&	getName() const;
-		const std::string&	getTopic() const;
-		const int&			getNumberOfMembers() const;
-		const int&			getLimitOfMembers() const;
-		const std::string&	getKey() const;
-		const bool&			getIMode() const;
-		const bool&			getTMode() const;
+		const std::string&	getName()				const;
+		const std::string&	getTopic()				const;
+		const int&			getNumberOfMembers()	const;
+		const int&			getLimitOfMembers()		const;
+		const std::string&	getKey()				const;
+		const bool&			getIMode()				const;
+		const bool&			getTMode()				const;
 
 		void				setTopic(const std::string& newTopic);
 		void				setKey(const std::string& newKey);
@@ -58,9 +58,9 @@ class Channel
 		void				setIMode(const bool& newIMode);
 		void				setTMode(const bool& newTMode);
 		
-		void				printMembers() const;
-		void				printOperators() const;
-		void				printInvitedUsers() const;
+		void				printMembers()		const;
+		void				printOperators()	const;
+		void				printInvitedUsers()	const;
 		
 		void				addMember(Client* user);
 		void				removeMember(Client* user);
@@ -70,11 +70,11 @@ class Channel
 		void				removeInvitedUser(Client* user);
 		void				clearInvitedUsers();
 		
-		bool				userIsInvited(Client* user) const;
-		std::vector<int>	getMembersFd() const;
-		std::string			getMembersNickList() const;
-		bool				isOper(Client* user) const;
-		bool				isMember(Client *user) const;
+		bool				userIsInvited(Client* user)	const;
+		std::vector<int>	getMembersFd()				const;
+		std::string			getMembersNickList()		const;
+		bool				isOper(Client* user)		const;
+		bool				isMember(Client *user)		const;
 };
 
 #endif

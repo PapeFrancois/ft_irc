@@ -6,7 +6,7 @@
 /*   By: hepompid <hepompid@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/18 16:39:45 by hepompid          #+#    #+#             */
-/*   Updated: 2025/05/26 15:11:22 by hepompid         ###   ########.fr       */
+/*   Updated: 2025/05/30 19:04:01 by hepompid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,9 +103,9 @@ serverOperators Server::setServerOperator(const std::string& name, const std::st
 	return serverOperator;
 }
 
-bool Server::hostMatchesUsername(const std::string& username, const std::string& host)
+bool Server::hostMatchesUsername(const std::string& username, const std::string& host) const
 {
-	typedef std::vector<serverOperators>::iterator	it;
+	typedef std::vector<serverOperators>::const_iterator	it;
 
 	for (it it = this->serverOperators_.begin(); it != this->serverOperators_.end(); it++)
 		if (it->name == username && it->host == host)
@@ -113,9 +113,9 @@ bool Server::hostMatchesUsername(const std::string& username, const std::string&
 	return false;
 }
 
-bool Server::passwordMatchesUsername(const std::string& username, const std::string& password)
+bool Server::passwordMatchesUsername(const std::string& username, const std::string& password) const
 {
-	typedef std::vector<serverOperators>::iterator	it;
+	typedef std::vector<serverOperators>::const_iterator	it;
 	
 	for (it it = this->serverOperators_.begin(); it != this->serverOperators_.end(); it++)
 		if (it->name == username && it->password == password)

@@ -6,13 +6,13 @@
 /*   By: hepompid <hepompid@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/19 18:29:26 by hepompid          #+#    #+#             */
-/*   Updated: 2025/05/30 17:58:25 by hepompid         ###   ########.fr       */
+/*   Updated: 2025/05/30 19:04:23 by hepompid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "Server.hpp"
 
-std::vector<std::string> parseCommand(std::string& command)
+std::vector<std::string> Server::parseCommand(const std::string& command) const
 {
 	std::vector<std::string>	commandArgs;
 	size_t						start;
@@ -39,7 +39,7 @@ std::vector<std::string> parseCommand(std::string& command)
     return commandArgs;
 }
 
-void Server::manageCommand(Client& client, std::string& command)
+void Server::manageCommand(Client& client, const std::string& command)
 {
 
 	std::vector<std::string>	commandArgs;
@@ -91,7 +91,7 @@ void Server::manageCommand(Client& client, std::string& command)
 	commandArgs.clear();
 }
 
-void Server::parseData(int& senderFd)
+void Server::parseData(const int& senderFd)
 {
 	int	bufferLength;
 	
@@ -127,7 +127,7 @@ void Server::parseData(int& senderFd)
 	}
 }
 
-void Server::readData(int& senderFd)
+void Server::readData(const int& senderFd)
 {
 	int		bytesRead;
 	char	buffer[BUFFERSIZE + 1];
@@ -215,7 +215,7 @@ void Server::sendData()
 	}
 }
 
-void Server::processData(int& senderFd)
+void Server::processData(const int& senderFd)
 {
 	readData(senderFd);
 
