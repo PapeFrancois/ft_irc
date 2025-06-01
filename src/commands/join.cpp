@@ -6,7 +6,7 @@
 /*   By: hepompid <hepompid@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/29 17:14:13 by hepompid          #+#    #+#             */
-/*   Updated: 2025/05/30 19:06:58 by hepompid         ###   ########.fr       */
+/*   Updated: 2025/06/01 16:18:16 by hepompid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,7 +89,6 @@ void Server::join(Client& client, std::vector<std::string>& args)
 		}
 
 		// si l'user n'est pas invite
-		std::cout << RED_BG << "segfault 1" << RESET << std::endl;
 		if (this->channels_[channelName].getIMode() && !this->channels_[channelName].userIsInvited(&client))
 		{
 			this->replies_.push_back(setReply(ERR_INVITEONLYCHAN(SERVER_NAME, client.getNickname(), channelName), STATUS_OK, client.getSockFd()));

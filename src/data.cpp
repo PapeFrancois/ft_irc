@@ -6,7 +6,7 @@
 /*   By: hepompid <hepompid@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/19 18:29:26 by hepompid          #+#    #+#             */
-/*   Updated: 2025/05/30 19:04:23 by hepompid         ###   ########.fr       */
+/*   Updated: 2025/06/01 16:30:38 by hepompid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,8 +16,6 @@ std::vector<std::string> Server::parseCommand(const std::string& command) const
 {
 	std::vector<std::string>	commandArgs;
 	size_t						start;
-    
-	std::cout << "command = " << command << std::endl;
 
 	for (size_t i = 0; i < command.length(); i++)
 	{
@@ -49,18 +47,18 @@ void Server::manageCommand(Client& client, const std::string& command)
 	emptyPass.push_back("");
 	commandArgs = parseCommand(command);
 
-	for (std::vector<std::string>::iterator it = commandArgs.begin(); it != commandArgs.end(); it++)
-		std::cout << YELLOW << *it << RESET << std::endl;
-	std::cout << std::endl;
+	if (commandArgs.empty())
+		return ;
+
+	// for (std::vector<std::string>::iterator it = commandArgs.begin(); it != commandArgs.end(); it++)
+	// 	std::cout << YELLOW << *it << RESET << std::endl;
+	// std::cout << std::endl;
 
 	// commandArgs.at(0) correspond au nom de la commande
 	if (commandArgs.at(0) == "PASS")
 		pass(client, commandArgs);
 	else if (client.getPassOK() == 0 && commandArgs.at(0) != "CAP")
-	{
-		std::cout << "entree avec emptypass" << std::endl;
 		pass(client, emptyPass);
-	}
 	else if (commandArgs.at(0) == "NICK")
 		nick(client, commandArgs);
 	else if (commandArgs.at(0) == "USER")
