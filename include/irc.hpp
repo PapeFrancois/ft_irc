@@ -6,7 +6,7 @@
 /*   By: hepompid <hepompid@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/18 17:37:30 by hepompid          #+#    #+#             */
-/*   Updated: 2025/04/24 09:49:27 by hepompid         ###   ########.fr       */
+/*   Updated: 2025/06/03 14:53:52 by hepompid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@
 # include "Server.hpp"
 # include "ansiCodes.hpp"
 
+void stopServer(int signal);
 
 class NotNumber : public std::exception
 {

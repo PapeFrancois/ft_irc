@@ -6,7 +6,7 @@
 /*   By: hepompid <hepompid@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/18 16:08:53 by hepompid          #+#    #+#             */
-/*   Updated: 2025/05/30 19:04:09 by hepompid         ###   ########.fr       */
+/*   Updated: 2025/06/03 14:49:21 by hepompid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@
 # include <vector>
 # include <cstring>
 # include <cstdlib>
+# include <csignal>
 
 # include <netdb.h>
 # include <arpa/inet.h>
@@ -51,6 +52,8 @@
 #  define STATUS_AUTHFAILED 1
 #  define STATUS_QUIT 2
 # endif
+
+extern bool running;
 
 typedef struct replies {
 	std::string	message;
@@ -91,13 +94,13 @@ class Server
 		void			removeFromPollFds(const int& socketFd);
 		
 		typedef std::vector<std::string> vec;
-		void	manageCommand(Client& client, const std::string& command);
-		vec		parseCommand(const std::string& command) const;
-		void	parseData(const int& senderFd);
-		void	processData(const int& senderFd);
-		void	readData(const int& senderFd);
-		void	sendData();
-		replies	setReply(const std::string& message, const int& status, const int& targetFd);
+		void			manageCommand(Client& client, const std::string& command);
+		vec				parseCommand(const std::string& command) const;
+		void			parseData(const int& senderFd);
+		void			processData(const int& senderFd);
+		void			readData(const int& senderFd);
+		void			sendData();
+		replies			setReply(const std::string& message, const int& status, const int& targetFd);
 		
 		bool			hostMatchesUsername(const std::string& username, const std::string& host) 			const;
 		bool			passwordMatchesUsername(const std::string& username, const std::string& password)	const;

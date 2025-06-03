@@ -6,7 +6,7 @@
 /*   By: hepompid <hepompid@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/18 16:06:33 by hepompid          #+#    #+#             */
-/*   Updated: 2025/05/25 17:09:16 by hepompid         ###   ########.fr       */
+/*   Updated: 2025/06/03 14:49:33 by hepompid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,10 +50,9 @@ int main(int argc, char** argv)
 	
 	Server server(port, argv[2]);
 
-	
-
 	try
 	{
+		signal(SIGINT, stopServer);
 		server.initOperList();
 		server.launchServer();
 	}

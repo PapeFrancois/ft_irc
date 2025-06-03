@@ -6,7 +6,7 @@
 /*   By: hepompid <hepompid@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/18 16:39:45 by hepompid          #+#    #+#             */
-/*   Updated: 2025/05/30 19:04:01 by hepompid         ###   ########.fr       */
+/*   Updated: 2025/06/03 14:24:38 by hepompid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,11 @@ Server& Server::operator = (const Server& other)
 	this->fdCli_ = other.fdCli_;
 	this->pollFds_ = other.pollFds_;
 	this->serverFd_ = other.serverFd_;
+	this->bufferRead_ = other.bufferRead_;
+	this->replies_ = other.replies_;
+	this->commands_ = other.commands_;
+	this->channels_ = other.channels_;
+	this->serverOperators_ = other.serverOperators_;
 
 	return *this;
 }

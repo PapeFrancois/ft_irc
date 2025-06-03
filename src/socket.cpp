@@ -6,11 +6,13 @@
 /*   By: hepompid <hepompid@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/18 19:36:40 by hepompid          #+#    #+#             */
-/*   Updated: 2025/05/30 18:58:43 by hepompid         ###   ########.fr       */
+/*   Updated: 2025/06/03 14:52:44 by hepompid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "Server.hpp"
+
+bool running = 1;
 
 void Server::addToPollFds(const int& socketFd)
 {
@@ -150,14 +152,14 @@ void Server::launchServer()
 		throw;
 	}
 
-	while (1)
+	while (running)
 	{
 		status = poll(&(this->pollFds_[0]), this->pollFds_.size(), TIMEOUT);
-		if (status == -1)
+		if (status == -1 && running)
 			throw PollFailed();
 		// else if (status == 0)
 		// 	std::cout << "Waiting..." << std::endl;
-		else
+		else if (running)
 		{
 			try
 			{
@@ -170,4 +172,13 @@ void Server::launchServer()
 			
 		}
 	}
+
+	std::cout << std::endl;
+	std::cout << GREEN << "Server closed connection" << RESET << std::endl;
+}
+
+void stopServer(int signal)
+{
+	(void)signal;
+	running = 0;
 }
